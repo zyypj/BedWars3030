@@ -44,11 +44,11 @@ public class MainConfig extends ConfigManager {
         YamlConfiguration yml = getYml();
 
         yml.options().header(plugin.getDescription().getName() + " by Mr. Ceasar.\n" +
-                "Documentation here: https://wiki.tomkeuper.com/docs/BedWars2023\n");
+                "Documentação aqui: https://wiki.tomkeuper.com/docs/BedWars2023\n");
         yml.addDefault("timeZone", "Europe/Rome");
         yml.addDefault("serverType", "MULTIARENA");
         yml.addDefault("language", "en");
-        yml.addDefault(ConfigPath.GENERAL_CONFIGURATION_DISABLED_LANGUAGES, Collections.singletonList("your language iso here"));
+        yml.addDefault(ConfigPath.GENERAL_CONFIGURATION_DISABLED_LANGUAGES, Collections.singletonList("coloque aqui o iso do seu idioma"));
         yml.addDefault("storeLink", "https://example.com/");
         yml.addDefault(ConfigPath.GENERAL_CONFIGURATION_ENABLE_HALLOWEEN, true);
         yml.addDefault(ConfigPath.GENERAL_CONFIGURATION_GOLDEN_GG_ENABLED, true);
@@ -263,7 +263,7 @@ public class MainConfig extends ConfigManager {
         }
         Language def = Language.getLang(whatLang);
 
-        if (def == null) throw new IllegalStateException("Could not found default language: " + whatLang);
+        if (def == null) throw new IllegalStateException("Não foi possível encontrar o idioma padrão: " + whatLang);
         Language.setDefaultLanguage(def);
 
         //remove languages if disabled

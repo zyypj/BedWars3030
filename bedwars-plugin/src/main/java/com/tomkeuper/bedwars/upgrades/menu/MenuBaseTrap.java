@@ -70,8 +70,8 @@ public class MenuBaseTrap implements MenuContent, EnemyBaseEnterTrap, TeamUpgrad
         this.displayItem = BedWars.nms.addCustomData(displayItem, "MCONT_" + name);
         this.name = name;
         String nPath = name.replace("base-trap-", "");
-        Language.saveIfNotExists(Messages.UPGRADES_BASE_TRAP_ITEM_NAME_PATH + nPath, "&cName not set");
-        Language.saveIfNotExists(Messages.UPGRADES_BASE_TRAP_ITEM_LORE_PATH + nPath, Collections.singletonList("&cLore not set"));
+        Language.saveIfNotExists(Messages.UPGRADES_BASE_TRAP_ITEM_NAME_PATH + nPath, "&cNome não definido");
+        Language.saveIfNotExists(Messages.UPGRADES_BASE_TRAP_ITEM_LORE_PATH + nPath, Collections.singletonList("&cLore não definida"));
         if (BedWars.getUpgradeManager().getConfiguration().getBoolean(name + ".custom-announce")) {
             Language.saveIfNotExists(Messages.UPGRADES_TRAP_CUSTOM_MSG + nPath, "Edit path: " + Messages.UPGRADES_TRAP_CUSTOM_MSG + nPath);
             Language.saveIfNotExists(Messages.UPGRADES_TRAP_CUSTOM_TITLE + nPath, "Edit path: " + Messages.UPGRADES_TRAP_CUSTOM_TITLE + nPath);
@@ -90,12 +90,12 @@ public class MenuBaseTrap implements MenuContent, EnemyBaseEnterTrap, TeamUpgrad
             switch (type[0].trim().toLowerCase()) {
                 case "player-effect":
                     if (data.length < 4) {
-                        BedWars.plugin.getLogger().warning("Invalid " + type[0] + " at upgrades2: " + name);
+                        BedWars.plugin.getLogger().warning("Invalid " + type[0] + " em upgrades2: " + name);
                         continue;
                     }
                     PotionEffectType pe = PotionEffectType.getByName(data[0].toUpperCase());
                     if (pe == null) {
-                        BedWars.plugin.getLogger().warning("Invalid potion effect " + data[0] + " at upgrades2: " + name);
+                        BedWars.plugin.getLogger().warning("Invalid potion effect " + data[0] + " em upgrades2: " + name);
                         continue;
                     }
                     PlayerEffectAction.ApplyType applyType = null;
@@ -112,7 +112,7 @@ public class MenuBaseTrap implements MenuContent, EnemyBaseEnterTrap, TeamUpgrad
                             break;
                     }
                     if (applyType == null) {
-                        BedWars.plugin.getLogger().warning("Invalid apply type " + data[3] + " at upgrades2: " + name);
+                        BedWars.plugin.getLogger().warning("Tipo de aplicação inválido " + data[3] + " em upgrades2: " + name);
                         continue;
                     }
                     int amp = 1, time = 0;
@@ -125,12 +125,12 @@ public class MenuBaseTrap implements MenuContent, EnemyBaseEnterTrap, TeamUpgrad
                     break;
                 case "disenchant-item":
                     if (data.length < 2) {
-                        BedWars.plugin.getLogger().warning("Invalid " + type[0] + " at upgrades2: " + name);
+                        BedWars.plugin.getLogger().warning("Invalid " + type[0] + " em upgrades2: " + name);
                         continue;
                     }
                     Enchantment re = Enchantment.getByName(data[0].toUpperCase());
                     if (re == null) {
-                        BedWars.plugin.getLogger().warning("Invalid enchantment " + data[0] + " at upgrades2: " + name);
+                        BedWars.plugin.getLogger().warning("Invalid enchantment " + data[0] + " em upgrades2: " + name);
                         continue;
                     }
                     DisenchantAction.ApplyType da = null;
@@ -146,19 +146,19 @@ public class MenuBaseTrap implements MenuContent, EnemyBaseEnterTrap, TeamUpgrad
                             break;
                     }
                     if (da == null) {
-                        BedWars.plugin.getLogger().warning("Invalid apply type " + data[3] + " at upgrades2: " + name);
+                        BedWars.plugin.getLogger().warning("Tipo de aplicação inválido " + data[3] + " em upgrades2: " + name);
                         continue;
                     }
                     ua = new DisenchantAction(re, da);
                     break;
                 case "remove-effect":
                     if (data.length < 1) {
-                        BedWars.plugin.getLogger().warning("Invalid " + type[0] + " at upgrades2: " + name);
+                        BedWars.plugin.getLogger().warning("Invalid " + type[0] + " em upgrades2: " + name);
                         continue;
                     }
                     PotionEffectType pet = PotionEffectType.getByName(data[0].toUpperCase());
                     if (pet == null) {
-                        BedWars.plugin.getLogger().warning("Invalid potion effect " + data[0] + " at upgrades2: " + name);
+                        BedWars.plugin.getLogger().warning("Invalid potion effect " + data[0] + " em upgrades2: " + name);
                         continue;
                     }
                     ua = new RemoveEffectAction(pet);

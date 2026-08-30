@@ -43,7 +43,7 @@ public class Build extends SubCommand {
         setPriority(9);
         showInList(true);
         setPermission(Permissions.PERMISSION_BUILD);
-        setDisplayInfo(Misc.msgHoverClick("§6 ▪ §7/" + getParent().getName() + " "+getSubCommandName()+ "         §8 - §ebuild permission", "§fEnable or disable build session \n§fso you can break or place blocks.",
+        setDisplayInfo(Misc.msgHoverClick("§6 ▪ §7/" + getParent().getName() + " "+getSubCommandName()+ "         §8 - §epermissão de construção", "§fAtiva ou desativa o modo de construção \n§fpara você poder quebrar e colocar blocos.",
                 "/" + getParent().getName() + " "+getSubCommandName(), ClickEvent.Action.RUN_COMMAND));
     }
 
@@ -52,14 +52,14 @@ public class Build extends SubCommand {
         if (s instanceof ConsoleCommandSender) return false;
         Player p = (Player) s;
         if (!MainCommand.isLobbySet() && p != null) {
-            p.sendMessage("§c▪ §7You have to set the lobby location first!");
+            p.sendMessage("§c▪ §7Você precisa definir a localização do lobby primeiro!");
             return true;
         }
         if (BreakPlace.isBuildSession(p)) {
-            p.sendMessage("§6 ▪ §7You can't place and break blocks anymore!");
+            p.sendMessage("§6 ▪ §7Você não pode mais colocar e quebrar blocos!");
             BreakPlace.removeBuildSession(p);
         } else {
-            p.sendMessage("§6 ▪ §7You can place and break blocks now.");
+            p.sendMessage("§6 ▪ §7Agora você pode colocar e quebrar blocos.");
             BreakPlace.addBuildSession(p);
         }
         return true;

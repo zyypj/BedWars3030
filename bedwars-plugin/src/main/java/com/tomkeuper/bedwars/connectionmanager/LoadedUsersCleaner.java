@@ -47,7 +47,7 @@ public class LoadedUsersCleaner implements Runnable {
                         plp.clean();
                     }
                 }
-                c.destroy("Removed by cleaner task.");
+                c.destroy("Removido pela tarefa de limpeza.");
             });
             toRemove.clear();
         }

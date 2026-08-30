@@ -614,12 +614,12 @@ public class DamageDeathMove implements Listener {
 
         // handle drops
         if (PlayerDrops.handlePlayerDrops(arena, victim, killer, victimsTeam, killersTeam, cause, drops)) {
-            BedWars.debug("PlayerDeathEvent: Drops handled by PlayerDrops module.");
+            BedWars.debug("PlayerDeathEvent: drops tratados pelo módulo PlayerDrops.");
             drops.clear();
             e.setDroppedExp(0);
         }
         else {
-            BedWars.debug("PlayerDeathEvent: Dropping default inventory items.");
+            BedWars.debug("PlayerDeathEvent: dropando os itens padrão do inventário.");
             World w = victim.getWorld();
             for (ItemStack inventoryItem : drops) {
                 w.dropItemNaturally(victim.getLocation(), inventoryItem);
@@ -710,8 +710,8 @@ public class DamageDeathMove implements Listener {
         ITeam t = a.getTeam(player);
         if (t == null) {
             e.setRespawnLocation(a.getReSpawnLocation());
-            plugin.getLogger().severe(e.getPlayer().getName() + " re-spawn error on " + a.getArenaName() + "[" + a.getWorldName() + "] because the team was NULL and he was not spectating!");
-            plugin.getLogger().severe("This is caused by one of your plugins: remove or configure any re-spawn related plugins.");
+            plugin.getLogger().severe(e.getPlayer().getName() + " erro de renascimento em " + a.getArenaName() + "[" + a.getWorldName() + "] porque o time era NULL e ele não estava assistindo!");
+            plugin.getLogger().severe("Isso é causado por um dos seus plugins: remova ou configure qualquer plugin relacionado a renascimento.");
             a.removePlayer(player, false);
             a.removeSpectator(player, false);
             return;

@@ -41,16 +41,16 @@ public class RedisUpdate extends SubCommand {
         if (!(s instanceof ConsoleCommandSender)) return false;
 
         if (args.length < 1) {
-            s.sendMessage("§cUsage: §o/bedwars redisUpdate <key>");
+            s.sendMessage("§cUso: §o/bedwars redisUpdate <chave>");
             return true;
         }
 
         String key = args[0];
         if (key.equals("default_rankup_cost")){
             BedWars.getRedisConnection().storeSettings(key, String.valueOf(LevelsConfig.getNextCost(1)));
-            s.sendMessage("§aUpdated default rankup cost to " + LevelsConfig.getNextCost(1));
+            s.sendMessage("§aCusto padrão de rankup atualizado para " + LevelsConfig.getNextCost(1));
         } else {
-            s.sendMessage("§cUnknown key: §o" + key);
+            s.sendMessage("§cChave desconhecida: §o" + key);
         }
 
 

@@ -140,7 +140,7 @@ public class GameStartingTask implements Runnable, StartingTask {
             }
 
             for (IShopCategory categoryContent : arena.getLinkedShop().getCategoryList()) {
-                BedWars.debug("Pre-resolving shop category: " + categoryContent.getName() + " for arena: " + arena.getArenaName());
+                BedWars.debug("Pré-resolvendo a categoria da loja: " + categoryContent.getName() + " para a arena: " + arena.getArenaName());
             }
 
             //Spawn shopkeepers

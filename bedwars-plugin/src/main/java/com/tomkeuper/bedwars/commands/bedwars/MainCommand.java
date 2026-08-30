@@ -42,6 +42,7 @@ import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.defaults.BukkitCommand;
 import org.bukkit.entity.Player;
+import org.bukkit.util.StringUtil;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -136,13 +137,13 @@ public class MainCommand extends BukkitCommand implements ParentCommand {
                         Bukkit.dispatchCommand(s, getName() + " cmds");
                     } else {
                         BedWars.plugin.adventure().sender(s).sendMessage(Component.text(" "));
-                        BedWars.plugin.adventure().sender(s).sendMessage(ChatFormatting.parseLegacyMini("§8§l" + dot + " §6" + plugin.getDescription().getName() + " v" + plugin.getDescription().getVersion() + " §7- §c Admin Commands"));
+                        BedWars.plugin.adventure().sender(s).sendMessage(ChatFormatting.parseLegacyMini("§8§l" + dot + " §6" + plugin.getDescription().getName() + " v" + plugin.getDescription().getVersion() + " §7- §c Comandos de Admin"));
                         BedWars.plugin.adventure().sender(s).sendMessage(Component.text(" "));
                         sendSubCommands(s);
                     }
                 } else {
                     BedWars.plugin.adventure().sender(s).sendMessage(Component.text(" "));
-                    BedWars.plugin.adventure().sender(s).sendMessage(ChatFormatting.parseLegacyMini("§8§l" + dot + " §6" + plugin.getDescription().getName() + " v" + plugin.getDescription().getVersion() + " §7- §c Console Commands"));
+                    BedWars.plugin.adventure().sender(s).sendMessage(ChatFormatting.parseLegacyMini("§8§l" + dot + " §6" + plugin.getDescription().getName() + " v" + plugin.getDescription().getVersion() + " §7- §c Comandos de Console"));
                     BedWars.plugin.adventure().sender(s).sendMessage(Component.text(" "));
                     sendSubCommands(s);
                 }
@@ -220,14 +221,27 @@ public class MainCommand extends BukkitCommand implements ParentCommand {
             for (SubCommand sb : getSubCommands()) {
                 if (sb.canSee(s, BedWars.getAPI())) sub.add(sb.getSubCommandName());
             }
-            return sub;
+            return matching(sub, args[0]);
         } else if (args.length == 2) {
             if (hasSubCommand(args[0])) {
                 if (getSubCommand(args[0]).canSee(s, BedWars.getAPI()))
-                    return getSubCommand(args[0]).getTabComplete();
+                    return matching(getSubCommand(args[0]).getTabComplete(), args[1]);
             }
         }
         return null;
+    }
+
+    /**
+     * Keep only the suggestions starting with what the sender has typed so far.
+     * Overriding {@link BukkitCommand#tabComplete} skips the partial matching Bukkit does by default,
+     * so it has to be applied here.
+     */
+    private static List<String> matching(List<String> options, String typed) {
+        if (options == null || options.isEmpty()) return options;
+        List<String> matches = new ArrayList<>(options.size());
+        StringUtil.copyPartialMatches(typed, options, matches);
+        matches.sort(String.CASE_INSENSITIVE_ORDER);
+        return matches;
     }
 
 

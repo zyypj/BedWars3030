@@ -41,7 +41,7 @@ public class H2 implements IDatabase {
         File folder = new File(BedWars.plugin.getDataFolder() + "/Cache");
         if (!folder.exists()) {
             if (!folder.mkdir()) {
-                BedWars.plugin.getLogger().severe("Could not create /Cache folder!");
+                BedWars.plugin.getLogger().severe("Não foi possível criar a pasta /Cache!");
             }
         }
         this.url = "jdbc:h2:" + BedWars.plugin.getDataFolder().getAbsolutePath() + File.separator + "Cache"+ File.separator + "player_data.h2" + ";TRACE_LEVEL_FILE=0";
@@ -50,7 +50,7 @@ public class H2 implements IDatabase {
             DriverManager.getConnection(url);
         } catch (SQLException | ClassNotFoundException e) {
             if (e instanceof ClassNotFoundException) {
-                BedWars.plugin.getLogger().severe("Could Not Find H2 Driver on your system!");
+                BedWars.plugin.getLogger().severe("Driver H2 não encontrado no seu sistema!");
             }
             e.printStackTrace();
         }
@@ -108,11 +108,11 @@ public class H2 implements IDatabase {
             }
 
             if (source == null) {
-                BedWars.plugin.getLogger().info("Quick Buy table migration not needed. Table 'quick_buy_2' does not exist.");
+                BedWars.plugin.getLogger().info("Migração da tabela Quick Buy não é necessária. A tabela 'quick_buy_2' não existe.");
                 return true;
             }
             return false;
-//            BedWars.plugin.getLogger().info("Found '" + source + "' table. Starting migration...");
+//            BedWars.plugin.getLogger().info("Found '" + source + "'. Iniciando a migração...");
 //
 //            // Drop existing target if present (both name variants)
 //            try (Statement st = connection.createStatement()) {
@@ -126,10 +126,10 @@ public class H2 implements IDatabase {
 //                st.executeUpdate(renameSql);
 //            }
 //
-//            BedWars.plugin.getLogger().info("Successfully renamed '" + source + "' to 'quick_buy'.");
+//            BedWars.plugin.getLogger().info("Successfully renamed '" + source + "' para 'quick_buy'.");
 //            return true;
         } catch (SQLException e) {
-            BedWars.plugin.getLogger().severe("Failed to migrate Quick Buy table: " + e.getMessage());
+            BedWars.plugin.getLogger().severe("Falha ao migrar a tabela Quick Buy: " + e.getMessage());
             e.printStackTrace();
             return false;
         }

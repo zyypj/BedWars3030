@@ -45,7 +45,7 @@ public class Level extends SubCommand {
         setPermission(Permissions.PERMISSION_LEVEL);
         setPriority(10);
         showInList(true);
-        setDisplayInfo(Misc.msgHoverClick("§6 ▪ §7/" + getParent().getName() + " " + getSubCommandName() + " §8      - §eclick for details", "§fManage a player level.",
+        setDisplayInfo(Misc.msgHoverClick("§6 ▪ §7/" + getParent().getName() + " " + getSubCommandName() + " §8      - §eclique para detalhes", "§fGerencia o nível de um jogador.",
                 "/" + getParent().getName() + " " + getSubCommandName(), ClickEvent.Action.RUN_COMMAND));
     }
 
@@ -57,12 +57,12 @@ public class Level extends SubCommand {
         }
         if (args[0].equalsIgnoreCase("setlevel")) {
             if (args.length != 3) {
-                s.sendMessage(ChatColor.GOLD + " ▪ " + ChatColor.GRAY + "Usage: /bw level setLevel §o<player> <level>");
+                s.sendMessage(ChatColor.GOLD + " ▪ " + ChatColor.GRAY + "Uso: /bw level setLevel §o<jogador> <nível>");
                 return true;
             }
             Player pl = Bukkit.getPlayer(args[1]);
             if (pl == null) {
-                s.sendMessage(ChatColor.RED + " ▪ " + ChatColor.GRAY + "Player not found!");
+                s.sendMessage(ChatColor.RED + " ▪ " + ChatColor.GRAY + "Jogador não encontrado!");
                 return true;
             }
 
@@ -71,7 +71,7 @@ public class Level extends SubCommand {
             try {
                 level = Integer.parseInt(args[2]);
             } catch (Exception e) {
-                s.sendMessage(ChatColor.RED + "Level must be an integer!");
+                s.sendMessage(ChatColor.RED + "O nível precisa ser um número inteiro!");
                 return true;
             }
 
@@ -86,17 +86,17 @@ public class Level extends SubCommand {
 
             BedWars.plugin.getServer().getScheduler().runTaskAsynchronously(BedWars.plugin, () -> {
                 BedWars.getRemoteDatabase().setLevelData(pl.getUniqueId(), level, 0, levelName, nextLevelCost);
-                s.sendMessage(ChatColor.GOLD + " ▪ " + ChatColor.GRAY + pl.getName() + " level was set to: " + args[2]);
-                s.sendMessage(ChatColor.GOLD + " ▪ " + ChatColor.GRAY + "The player may need to rejoin to see it updated.");
+                s.sendMessage(ChatColor.GOLD + " ▪ " + ChatColor.GRAY + pl.getName() + " teve o nível definido como: " + args[2]);
+                s.sendMessage(ChatColor.GOLD + " ▪ " + ChatColor.GRAY + "O jogador pode precisar reconectar para ver a atualização.");
             });
         } else if (args[0].equalsIgnoreCase("givexp")) {
             if (args.length != 3) {
-                s.sendMessage(ChatColor.GOLD + " ▪ " + ChatColor.GRAY + "Usage: /bw level giveXp §o<player> <amount>");
+                s.sendMessage(ChatColor.GOLD + " ▪ " + ChatColor.GRAY + "Uso: /bw level giveXp §o<jogador> <quantidade>");
                 return true;
             }
             Player pl = Bukkit.getPlayer(args[1]);
             if (pl == null) {
-                s.sendMessage(ChatColor.RED + " ▪ " + ChatColor.GRAY + "Player not found!");
+                s.sendMessage(ChatColor.RED + " ▪ " + ChatColor.GRAY + "Jogador não encontrado!");
                 return true;
             }
 
@@ -105,7 +105,7 @@ public class Level extends SubCommand {
             try {
                 amount = Integer.parseInt(args[2]);
             } catch (Exception e) {
-                s.sendMessage(ChatColor.RED + "Amount must be an integer!");
+                s.sendMessage(ChatColor.RED + "A quantidade precisa ser um número inteiro!");
                 return true;
             }
 
@@ -114,8 +114,8 @@ public class Level extends SubCommand {
             BedWars.plugin.getServer().getScheduler().runTaskAsynchronously(BedWars.plugin, () -> {
                 Object[] data = BedWars.getRemoteDatabase().getLevelData(pl.getUniqueId());
                 BedWars.getRemoteDatabase().setLevelData(pl.getUniqueId(), (Integer) data[0], ((Integer)data[1]) + amount, (String) data[2], (Integer)data[3]);
-                s.sendMessage(ChatColor.GOLD + " ▪ " + ChatColor.GRAY + args[2] + " xp was given to: " + pl.getName());
-                s.sendMessage(ChatColor.GOLD + " ▪ " + ChatColor.GRAY + "The player may need to rejoin to see it updated.");
+                s.sendMessage(ChatColor.GOLD + " ▪ " + ChatColor.GRAY + args[2] + " de XP foi dado para: " + pl.getName());
+                s.sendMessage(ChatColor.GOLD + " ▪ " + ChatColor.GRAY + "O jogador pode precisar reconectar para ver a atualização.");
             });
         } else {
             sendSubCommands(s, BedWars.getAPI());
@@ -126,15 +126,15 @@ public class Level extends SubCommand {
     private void sendSubCommands(CommandSender s, com.tomkeuper.bedwars.api.BedWars api) {
         if (s instanceof Player) {
             Player p = (Player) s;
-            p.spigot().sendMessage(Misc.msgHoverClick("§6 ▪ §7/" + getParent().getName() + " " + getSubCommandName() + " setLevel §o<player> <level>",
-                    "Set a player level.", "/" + getParent().getName() + " " + getSubCommandName() + " setLevel",
+            p.spigot().sendMessage(Misc.msgHoverClick("§6 ▪ §7/" + getParent().getName() + " " + getSubCommandName() + " setLevel §o<jogador> <nível>",
+                    "Define o nível de um jogador.", "/" + getParent().getName() + " " + getSubCommandName() + " setLevel",
                     ClickEvent.Action.SUGGEST_COMMAND));
-            p.spigot().sendMessage(Misc.msgHoverClick("§6 ▪ §7/" + getParent().getName() + " " + getSubCommandName() + " giveXp §o<player> <amount>",
-                    "Give Xp to a player.", "/" + getParent().getName() + " " + getSubCommandName() + " giveXp",
+            p.spigot().sendMessage(Misc.msgHoverClick("§6 ▪ §7/" + getParent().getName() + " " + getSubCommandName() + " giveXp §o<jogador> <quantidade>",
+                    "Dá XP a um jogador.", "/" + getParent().getName() + " " + getSubCommandName() + " giveXp",
                     ClickEvent.Action.SUGGEST_COMMAND));
         } else {
-            s.sendMessage(ChatColor.GOLD + "bw level setLevel <player> <level>");
-            s.sendMessage(ChatColor.GOLD + "bw level giveXp <player> <amount>");
+            s.sendMessage(ChatColor.GOLD + "bw level setLevel <jogador> <nível>");
+            s.sendMessage(ChatColor.GOLD + "bw level giveXp <jogador> <quantidade>");
         }
     }
 

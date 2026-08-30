@@ -48,30 +48,30 @@ public class ContentTier implements IContentTier {
         BedWars.debug("Loading content tier" + path);
 
         if (yml.get(path + ConfigPath.SHOP_CONTENT_TIER_ITEM_MATERIAL) == null) {
-            BedWars.plugin.getLogger().severe("tier-item material not set at " + path);
+            BedWars.plugin.getLogger().severe("material do tier-item não definido em " + path);
             return;
         }
 
         try {
             value = Integer.parseInt(tierName.replace("tier", ""));
         } catch (Exception e) {
-            BedWars.plugin.getLogger().severe(path + " doesn't end with a number. It's not recognized as a tier!");
+            BedWars.plugin.getLogger().severe(path + " não termina com um número. Não é reconhecido como um nível!");
             return;
         }
 
         if (yml.get(path + ConfigPath.SHOP_CONTENT_TIER_SETTINGS_COST) == null) {
-            BedWars.plugin.getLogger().severe("Cost not set for " + path);
+            BedWars.plugin.getLogger().severe("Preço não definido para " + path);
             return;
         }
         price = yml.getInt(path + ConfigPath.SHOP_CONTENT_TIER_SETTINGS_COST);
 
         if (yml.get(path + ConfigPath.SHOP_CONTENT_TIER_SETTINGS_CURRENCY) == null) {
-            BedWars.plugin.getLogger().severe("Currency not set for " + path);
+            BedWars.plugin.getLogger().severe("Moeda não definida para " + path);
             return;
         }
 
         if (yml.getString(path + ConfigPath.SHOP_CONTENT_TIER_SETTINGS_CURRENCY).isEmpty()) {
-            BedWars.plugin.getLogger().severe("Invalid currency at " + path);
+            BedWars.plugin.getLogger().severe("Moeda inválida em " + path);
             return;
         }
 
@@ -84,7 +84,7 @@ public class ContentTier implements IContentTier {
                 currency = CategoryContent.getCurrency(yml.getString(path + ConfigPath.SHOP_CONTENT_TIER_SETTINGS_CURRENCY).toLowerCase());
                 break;
             default:
-                BedWars.plugin.getLogger().severe("Invalid currency at " + path);
+                BedWars.plugin.getLogger().severe("Moeda inválida em " + path);
                 currency = Material.IRON_INGOT;
                 break;
         }
@@ -136,11 +136,11 @@ public class ContentTier implements IContentTier {
                     ((BuyItem) bii).setItemStack(itemStack.clone());
                 }
             }
-            BedWars.debug("Applying inherit-buy-items at " + path + " amount=" + itemStack.getAmount());
+            BedWars.debug("Aplicando inherit-buy-items em " + path + " amount=" + itemStack.getAmount());
         }
 
         if (buyItemsList.isEmpty()) {
-            Bukkit.getLogger().warning("Loaded 0 buy content for: " + path);
+            Bukkit.getLogger().warning("0 conteúdos de compra carregados para: " + path);
         }
 
         loaded = true;

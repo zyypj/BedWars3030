@@ -55,25 +55,25 @@ public class SetSpawn extends SubCommand {
         Player p = (Player) s;
         SetupSession ss = SetupSession.getSession(p.getUniqueId());
         if (ss == null) {
-            //s.sendMessage("§c ▪ §7You're not in a setup session!");
+            //s.sendMessage("§c ▪ §7Você não está em uma sessão de setup!");
             return false;
         }
         if (args.length < 1) {
-            p.sendMessage(ss.getPrefix() + ChatColor.RED + "Usage: /" + BedWars.mainCmd + " setSpawn <team>");
+            p.sendMessage(ss.getPrefix() + ChatColor.RED + "Uso: /" + BedWars.mainCmd + " setSpawn <team>");
             if (ss.getConfig().getYml().get("Team") != null) {
                 for (String team : Objects.requireNonNull(ss.getConfig().getYml().getConfigurationSection("Team")).getKeys(false)) {
                     if (ss.getConfig().getYml().get("Team." + team + ".Spawn") == null) {
-                        p.spigot().sendMessage(Misc.msgHoverClick(ss.getPrefix() + "Set spawn for: " + ss.getTeamColor(team) + team + " " + ChatColor.getLastColors(ss.getPrefix()) + "(click to set)", ChatColor.WHITE + "Set spawn for " + ss.getTeamColor(team) + team, "/" + BedWars.mainCmd + " setSpawn " + team, ClickEvent.Action.RUN_COMMAND));
+                        p.spigot().sendMessage(Misc.msgHoverClick(ss.getPrefix() + "Spawn definido para: " + ss.getTeamColor(team) + team + " " + ChatColor.getLastColors(ss.getPrefix()) + "(clique para definir)", ChatColor.WHITE + "Spawn definido para " + ss.getTeamColor(team) + team, "/" + BedWars.mainCmd + " setSpawn " + team, ClickEvent.Action.RUN_COMMAND));
                     }
                 }
             }
         } else {
             if (ss.getConfig().getYml().get("Team." + args[0]) == null) {
-                p.sendMessage(ss.getPrefix() + ChatColor.RED + "Could not find target team: " + ChatColor.RED + args[0]);
+                p.sendMessage(ss.getPrefix() + ChatColor.RED + "Time alvo não encontrado: " + ChatColor.RED + args[0]);
                 if (ss.getConfig().getYml().get("Team") != null) {
-                    p.sendMessage(ss.getPrefix() + "Teams list: ");
+                    p.sendMessage(ss.getPrefix() + "Lista de times: ");
                     for (String team : Objects.requireNonNull(ss.getConfig().getYml().getConfigurationSection("Team")).getKeys(false)) {
-                        p.spigot().sendMessage(Misc.msgHoverClick(ChatColor.GOLD + " " + '▪' + " " + ss.getTeamColor(team) + team + " " + ChatColor.getLastColors(ss.getPrefix()) + "(click to set)", ChatColor.WHITE + "Set spawn for " + ss.getTeamColor(team) + team, "/" + BedWars.mainCmd + " setSpawn " + team, ClickEvent.Action.RUN_COMMAND));
+                        p.spigot().sendMessage(Misc.msgHoverClick(ChatColor.GOLD + " " + '▪' + " " + ss.getTeamColor(team) + team + " " + ChatColor.getLastColors(ss.getPrefix()) + "(clique para definir)", ChatColor.WHITE + "Spawn definido para " + ss.getTeamColor(team) + team, "/" + BedWars.mainCmd + " setSpawn " + team, ClickEvent.Action.RUN_COMMAND));
                     }
                 }
             } else {
@@ -82,7 +82,7 @@ public class SetSpawn extends SubCommand {
                 }
                 ss.getConfig().saveArenaLoc("Team." + args[0] + ".Spawn", p.getLocation());
                 String teamm = ss.getTeamColor(args[0]) + args[0];
-                p.sendMessage(ChatColor.GOLD + " " + '▪' + " " + "Spawn set for: " + teamm);
+                p.sendMessage(ChatColor.GOLD + " " + '▪' + " " + "Spawn definido para: " + teamm);
                 ss.createSpawnHologram(p, p.getLocation(), teamm);
                 int radius = ss.getConfig().getInt(ConfigPath.ARENA_ISLAND_RADIUS);
                 Location l = p.getLocation();
@@ -108,7 +108,7 @@ public class SetSpawn extends SubCommand {
                         }
                     }
                     if (remainging.toString().length() > 0) {
-                        p.sendMessage(ss.getPrefix() + "Remaining: " + remainging.toString());
+                        p.sendMessage(ss.getPrefix() + "Restantes: " + remainging.toString());
                     }
                 }
             }

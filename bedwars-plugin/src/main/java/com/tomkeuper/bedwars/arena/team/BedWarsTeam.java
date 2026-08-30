@@ -248,7 +248,7 @@ public class BedWarsTeam implements ITeam {
                         try {
                             Integer.parseInt(parm[1]);
                         } catch (Exception ex) {
-                            plugin.getLogger().severe(parm[1] + " is not an integer at: " + s + " (config)");
+                            plugin.getLogger().severe(parm[1] + " não é um número inteiro em: " + s + " (config)");
                             continue;
                         }
                         i = new ItemStack(Material.valueOf(parm[0]), Integer.parseInt(parm[1]));
@@ -259,7 +259,7 @@ public class BedWarsTeam implements ITeam {
                         try {
                             Integer.parseInt(parm[2]);
                         } catch (Exception ex) {
-                            plugin.getLogger().severe(parm[2] + " is not an integer at: " + s + " (config)");
+                            plugin.getLogger().severe(parm[2] + " não é um número inteiro em: " + s + " (config)");
                             continue;
                         }
                         i.setAmount(Integer.parseInt(parm[2]));
@@ -321,7 +321,7 @@ public class BedWarsTeam implements ITeam {
                         try {
                             Integer.parseInt(parm[1]);
                         } catch (Exception ex) {
-                            plugin.getLogger().severe(parm[1] + " is not an integer at: " + s + " (config)");
+                            plugin.getLogger().severe(parm[1] + " não é um número inteiro em: " + s + " (config)");
                             continue;
                         }
                         i = new ItemStack(Material.valueOf(parm[0]), Integer.parseInt(parm[1]));
@@ -332,7 +332,7 @@ public class BedWarsTeam implements ITeam {
                         try {
                             Integer.parseInt(parm[2]);
                         } catch (Exception ex) {
-                            plugin.getLogger().severe(parm[2] + " is not an integer at: " + s + " (config)");
+                            plugin.getLogger().severe(parm[2] + " não é um número inteiro em: " + s + " (config)");
                             continue;
                         }
                         i.setAmount(Integer.parseInt(parm[2]));
@@ -800,7 +800,7 @@ public class BedWarsTeam implements ITeam {
         this.bedDestroyed = bedDestroyed;
         if (!bedDestroyed) {
             if (!getBed().getBlock().getType().toString().contains("BED")) {
-                BedWars.plugin.getLogger().severe("Bed not set for team: " + getName() + " in arena: " + getArena().getArenaName());
+                BedWars.plugin.getLogger().severe("Cama não definida para o time: " + getName() + " na arena: " + getArena().getArenaName());
                 return;
             }
             nms.colorBed(this);

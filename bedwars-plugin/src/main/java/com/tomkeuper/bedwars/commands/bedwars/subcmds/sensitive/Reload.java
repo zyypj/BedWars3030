@@ -42,14 +42,14 @@ public class Reload extends SubCommand {
         setPriority(11);
         showInList(true);
         setPermission(Permissions.PERMISSION_RELOAD);
-        setDisplayInfo(Misc.msgHoverClick("§6 ▪ §7/" + getParent().getName() + " "+getSubCommandName()+"       §8 - §ereload messages",
-                "§fReload messages.\n§cNot recommended!", "/"+ getParent().getName() + " "+getSubCommandName(), ClickEvent.Action.RUN_COMMAND));
+        setDisplayInfo(Misc.msgHoverClick("§6 ▪ §7/" + getParent().getName() + " "+getSubCommandName()+"       §8 - §erecarregar mensagens",
+                "§fRecarrega as mensagens.\n§cNão recomendado!", "/"+ getParent().getName() + " "+getSubCommandName(), ClickEvent.Action.RUN_COMMAND));
     }
 
     @Override
     public boolean execute(String[] args, CommandSender s) {
         if (!MainCommand.isLobbySet()) {
-            s.sendMessage("§c▪ §7You have to set the lobby location first!");
+            s.sendMessage("§c▪ §7Você precisa definir a localização do lobby primeiro!");
             return true;
         }
         for (Language l : Language.getLanguages()){

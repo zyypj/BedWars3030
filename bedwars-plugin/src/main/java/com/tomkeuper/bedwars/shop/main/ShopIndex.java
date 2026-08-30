@@ -165,7 +165,7 @@ public class ShopIndex extends AbstractInventoryLayout implements IShopIndex {
     @Override
     public void addShopCategory(IShopCategory sc) {
         categoryList.add(sc);
-        BedWars.debug("Adding shop category: " + sc.getName() + " at slot " + sc.getSlot());
+        BedWars.debug("Adicionando categoria da loja: " + sc.getName() + " at slot " + sc.getSlot());
     }
 
     // ===== Pre-resolution API =====

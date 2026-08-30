@@ -86,7 +86,7 @@ public class HologramTask implements Runnable {
                 }
             }
         } catch (Exception e) {
-            BedWars.debug("An error occurred while updating holograms: " + e.getMessage());
+            BedWars.debug("Ocorreu um erro ao atualizar os hologramas: " + e.getMessage());
         }
     }
 }

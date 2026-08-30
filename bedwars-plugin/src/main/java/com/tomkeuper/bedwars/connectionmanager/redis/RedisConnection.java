@@ -69,7 +69,7 @@ public class RedisConnection implements IRedisClient {
     public boolean connect(){
         try {
             listenerPool.execute(() -> {
-                BedWars.debug("Subscribing to redis channel: " + channel);
+                BedWars.debug("Inscrevendo-se no canal redis: " + channel);
                 try (final Jedis listenerConnection = subscriptionPool.getResource()){
                     listenerConnection.subscribe(redisPubSubListener, channel);
                 } catch (Exception e) {
@@ -80,7 +80,7 @@ public class RedisConnection implements IRedisClient {
                  * we can shut down thread when the pub-sub listener stops
                  * or fails.
                  */
-                BedWars.debug("Unsubscribing from redis channel: " + channel);
+                BedWars.debug("Cancelando a inscrição no canal redis: " + channel);
                 listenerPool.shutdown();
             });
             return true;
@@ -97,7 +97,7 @@ public class RedisConnection implements IRedisClient {
 
             for (String key : keys) {
                 jedis.del(key);
-                BedWars.debug("Deleted arena redis with key: " + key);
+                BedWars.debug("Arena removida do redis com a chave: " + key);
             }
         } catch (Exception ignored) {
         }
@@ -107,7 +107,7 @@ public class RedisConnection implements IRedisClient {
         try (Jedis jedis = dataPool.getResource()) {
             String key = "bwa-" + BedWars.config.getString(ConfigPath.GENERAL_CONFIGURATION_BUNGEE_OPTION_SERVER_ID) + "-" + a.getWorldName();
             jedis.del(key);
-            BedWars.debug("Deleted arena redis with key: " + key);
+            BedWars.debug("Arena removida do redis com a chave: " + key);
         } catch (Exception ignored) {
         }
     }
@@ -142,7 +142,7 @@ public class RedisConnection implements IRedisClient {
             String key = "bwa-" + BedWars.config.getString(ConfigPath.GENERAL_CONFIGURATION_BUNGEE_OPTION_SERVER_ID) + "-" + a.getWorldName();
             jedis.hmset(key, arenaInfoMap);
 
-            BedWars.debug("Storing arena info for: " + a.getArenaName() + " - " + arenaInfoMap);
+            BedWars.debug("Salvando as informações da arena: " + a.getArenaName() + " - " + arenaInfoMap);
             return true;
         } catch (Exception e) {
             e.printStackTrace();
@@ -161,7 +161,7 @@ public class RedisConnection implements IRedisClient {
             if (jedis.exists(key)) {
                 String retrievedSetting = jedis.hget(key, redisSettingIdentifier);
                 if (!defaultSetting.equals(retrievedSetting)) {
-                    Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "Setting '"+ redisSettingIdentifier +"' does not match the stored value of '" + retrievedSetting + "' is '" + defaultSetting + "'.");
+                    Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "Setting '"+ redisSettingIdentifier +"' não corresponde ao valor armazenado de '" + retrievedSetting + "' is '" + defaultSetting + "'.");
                     return false;
                 }
             } else {

@@ -46,20 +46,20 @@ public class SetMaxInTeam extends SubCommand {
         Player p = (Player) s;
         SetupSession ss = SetupSession.getSession(p.getUniqueId());
         if (ss == null){
-            s.sendMessage("§c ▪ §7You're not in a setup session!");
+            s.sendMessage("§c ▪ §7Você não está em uma sessão de setup!");
             return true;
         }
         if (args.length == 0) {
-            p.sendMessage("§c▪ §7Usage: /" + com.tomkeuper.bedwars.BedWars.mainCmd + " setMaxInTeam <int>");
+            p.sendMessage("§c▪ §7Uso: /" + com.tomkeuper.bedwars.BedWars.mainCmd + " setMaxInTeam <int>");
         } else {
             try {
                 Integer.parseInt(args[0]);
             } catch (Exception ex) {
-                p.sendMessage("§c▪ §7Usage: /" + com.tomkeuper.bedwars.BedWars.mainCmd + " setMaxInTeam <int>");
+                p.sendMessage("§c▪ §7Uso: /" + com.tomkeuper.bedwars.BedWars.mainCmd + " setMaxInTeam <int>");
                 return true;
             }
             ss.getConfig().set("maxInTeam", Integer.valueOf(args[0]));
-            p.sendMessage("§6 ▪ §7Max in team set!");
+            p.sendMessage("§6 ▪ §7Máximo por time definido!");
         }
         return true;
     }

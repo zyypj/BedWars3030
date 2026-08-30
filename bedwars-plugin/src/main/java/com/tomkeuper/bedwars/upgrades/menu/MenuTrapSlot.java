@@ -49,9 +49,9 @@ public class MenuTrapSlot implements MenuContent {
     public MenuTrapSlot(String name, ItemStack displayItem) {
         this.displayItem = BedWars.nms.addCustomData(displayItem, "MCONT_" + name);
         this.name = name;
-        Language.saveIfNotExists(Messages.UPGRADES_TRAP_SLOT_ITEM_NAME_PATH + name.replace("trap-slot-", ""), "&cName not set");
-        Language.saveIfNotExists(Messages.UPGRADES_TRAP_SLOT_ITEM_LORE1_PATH + name.replace("trap-slot-", ""), Collections.singletonList("&cLore1 not set"));
-        Language.saveIfNotExists(Messages.UPGRADES_TRAP_SLOT_ITEM_LORE2_PATH + name.replace("trap-slot-", ""), Collections.singletonList("&cLore2 not set"));
+        Language.saveIfNotExists(Messages.UPGRADES_TRAP_SLOT_ITEM_NAME_PATH + name.replace("trap-slot-", ""), "&cNome não definido");
+        Language.saveIfNotExists(Messages.UPGRADES_TRAP_SLOT_ITEM_LORE1_PATH + name.replace("trap-slot-", ""), Collections.singletonList("&cLore1 não definida"));
+        Language.saveIfNotExists(Messages.UPGRADES_TRAP_SLOT_ITEM_LORE2_PATH + name.replace("trap-slot-", ""), Collections.singletonList("&cLore2 não definida"));
         trap = BedWars.getUpgradeManager().getConfiguration().getInt(name + ".trap");
         if (trap < 0) trap = 0;
         if (trap != 0) trap -= 1;

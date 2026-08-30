@@ -54,17 +54,17 @@ public class SetBed extends SubCommand {
         Player p = (Player) s;
         SetupSession ss = SetupSession.getSession(p.getUniqueId());
         if (ss == null) {
-            //s.sendMessage("§c ▪ §7You're not in a setup session!");
+            //s.sendMessage("§c ▪ §7Você não está em uma sessão de setup!");
             return false;
         }
         if (args.length == 0) {
             String foundTeam = ss.getNearestTeam();
             if (foundTeam.isEmpty()) {
                 p.sendMessage("");
-                p.sendMessage(ss.getPrefix() + ChatColor.RED + "Could not find any nearby team.");
-                p.spigot().sendMessage(Misc.msgHoverClick(ss.getPrefix() + "Make sure you set the team's spawn first!", ChatColor.WHITE + "Set a team bed.", "/" + getParent().getName() + " " + getSubCommandName() + " ", ClickEvent.Action.SUGGEST_COMMAND));
-                p.spigot().sendMessage(Misc.msgHoverClick(ss.getPrefix() + "Or if you set the spawn and it wasn't found automatically try using: /bw " + getSubCommandName() + " <team>", "Add a team bed.", "/" + getParent().getName() + " " + getSubCommandName() + " ", ClickEvent.Action.SUGGEST_COMMAND));
-                BedWars.nms.sendTitle(p, " ", ChatColor.RED + "Could not find any nearby team.", 5, 60, 5);
+                p.sendMessage(ss.getPrefix() + ChatColor.RED + "Nenhum time encontrado por perto.");
+                p.spigot().sendMessage(Misc.msgHoverClick(ss.getPrefix() + "Certifique-se de definir o spawn do time primeiro!", ChatColor.WHITE + "Define a cama de um time.", "/" + getParent().getName() + " " + getSubCommandName() + " ", ClickEvent.Action.SUGGEST_COMMAND));
+                p.spigot().sendMessage(Misc.msgHoverClick(ss.getPrefix() + "Ou, se você definiu o spawn e ele não foi encontrado automaticamente, tente usar: /bw " + getSubCommandName() + " <team>", "Adiciona a cama de um time.", "/" + getParent().getName() + " " + getSubCommandName() + " ", ClickEvent.Action.SUGGEST_COMMAND));
+                BedWars.nms.sendTitle(p, " ", ChatColor.RED + "Nenhum time encontrado por perto.", 5, 60, 5);
                 Sounds.playSound(ConfigPath.SOUNDS_INSUFF_MONEY, p);
                 ss.displayAvailableTeams();
 
@@ -74,17 +74,17 @@ public class SetBed extends SubCommand {
         } else {
             if (!(BedWars.nms.isBed(p.getLocation().clone().add(0, -0.5, 0).getBlock().getType()) || BedWars.nms.isBed(p.getLocation().clone().add(0, 0.5, 0).getBlock().getType())
                     || BedWars.nms.isBed(p.getLocation().clone().getBlock().getType()))) {
-                p.sendMessage(ss.getPrefix() + ChatColor.RED + "You must stay on a bed while using this command!");
-                BedWars.nms.sendTitle(p, " ", ChatColor.RED + "You must stay on a bed.", 5, 40, 5);
+                p.sendMessage(ss.getPrefix() + ChatColor.RED + "Você precisa estar sobre uma cama ao usar este comando!");
+                BedWars.nms.sendTitle(p, " ", ChatColor.RED + "Você precisa estar sobre uma cama.", 5, 40, 5);
                 Sounds.playSound(ConfigPath.SOUNDS_INSUFF_MONEY, p);
                 return true;
             }
             if (ss.getConfig().getYml().get("Team." + args[0]) == null) {
-                p.sendMessage(ss.getPrefix() + ChatColor.RED + "This team doesn't exist!");
+                p.sendMessage(ss.getPrefix() + ChatColor.RED + "Este time não existe!");
                 if (ss.getConfig().getYml().get("Team") != null) {
-                    p.sendMessage(ss.getPrefix() + "Available teams: ");
+                    p.sendMessage(ss.getPrefix() + "Times disponíveis: ");
                     for (String team : Objects.requireNonNull(ss.getConfig().getYml().getConfigurationSection("Team")).getKeys(false)) {
-                        p.spigot().sendMessage(Misc.msgHoverClick(ChatColor.GOLD + " " + '▪' + " " + ss.getTeamColor(team) + team, ChatColor.WHITE + "Set bed for " + ss.getTeamColor(team) + team, "/" + BedWars.mainCmd + " setBed " + team, ClickEvent.Action.RUN_COMMAND));
+                        p.spigot().sendMessage(Misc.msgHoverClick(ChatColor.GOLD + " " + '▪' + " " + ss.getTeamColor(team) + team, ChatColor.WHITE + "Cama definida para " + ss.getTeamColor(team) + team, "/" + BedWars.mainCmd + " setBed " + team, ClickEvent.Action.RUN_COMMAND));
                     }
                 }
             } else {
@@ -94,9 +94,9 @@ public class SetBed extends SubCommand {
                 }
                 ss.createBedHologram(p, p.getLocation().add(0.5, 0, 0.5), team);
                 ss.getConfig().saveArenaLoc("Team." + args[0] + ".Bed", p.getLocation());
-                p.sendMessage(ss.getPrefix() + "Bed set for: " + team);
+                p.sendMessage(ss.getPrefix() + "Cama definida para: " + team);
 
-                BedWars.nms.sendTitle(p, " ", ChatColor.GREEN + "Bed set for: " + team, 5, 40, 5);
+                BedWars.nms.sendTitle(p, " ", ChatColor.GREEN + "Cama definida para: " + team, 5, 40, 5);
                 Sounds.playSound(ConfigPath.SOUNDS_BOUGHT, p);
 
                 if (ss.getSetupType() == SetupType.ASSISTED) {

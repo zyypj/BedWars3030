@@ -41,11 +41,11 @@ public class Warnings implements Listener {
         if(!player.isOp()) return;
 
         if (Bukkit.getPluginManager().isPluginEnabled("Multiverse-Core")) {
-            Bukkit.getScheduler().runTaskLater(plugin, () -> player.sendMessage(ChatColor.RED + "[BedWars2023] Multiverse-Core detected! Please remove it or make sure it won't touch BedWars maps!"), 5); // run after 5 ticks to make sure its after any update spam on join
+            Bukkit.getScheduler().runTaskLater(plugin, () -> player.sendMessage(ChatColor.RED + "[BedWars2023] Multiverse-Core detectado! Remova-o ou garanta que ele não mexa nos mapas do BedWars!"), 5); // run after 5 ticks to make sure its after any update spam on join
         }
 
         if(Bukkit.getServer().getSpawnRadius() > 0) {
-            Bukkit.getScheduler().runTaskLater(plugin, () -> player.sendMessage(ChatColor.RED + "[BedWars2023] Your spawn-protection in server.properties is enabled. "+ChatColor.YELLOW+"This might mess with BedWars arenas!"+ChatColor.GRAY+" It is highly recommended setting it to 0."), 5);
+            Bukkit.getScheduler().runTaskLater(plugin, () -> player.sendMessage(ChatColor.RED + "[BedWars2023] O spawn-protection do seu server.properties está ativado. "+ChatColor.YELLOW+"Isso pode atrapalhar as arenas do BedWars!"+ChatColor.GRAY+" É altamente recomendável defini-lo como 0."), 5);
         }
     }
 }

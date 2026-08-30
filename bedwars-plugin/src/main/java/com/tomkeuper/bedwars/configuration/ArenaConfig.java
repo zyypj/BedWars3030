@@ -34,8 +34,8 @@ public class ArenaConfig extends ConfigManager {
         super(plugin, name, dir);
 
         YamlConfiguration yml = getYml();
-        yml.options().header(plugin.getDescription().getName() + " arena configuration file.\n" +
-                "Documentation here: https://wiki.tomkeuper.com/docs/BedWars2023/configuration/Arena-Configuration\n");
+        yml.options().header(plugin.getDescription().getName() + " - arquivo de configuração da arena.\n" +
+                "Documentação aqui: https://wiki.tomkeuper.com/docs/BedWars2023/configuration/Arena-Configuration\n");
         yml.addDefault("group", "Default");
         yml.addDefault(ConfigPath.ARENA_DISPLAY_NAME, "");
         yml.addDefault(ConfigPath.ARENA_USE_MAP, "");

@@ -36,11 +36,11 @@ public class NoEconomy implements IEconomy {
 
     @Override
     public void giveMoney(Player p, double money) {
-        p.sendMessage("§cVault support missing!");
+        p.sendMessage("§cSuporte ao Vault ausente!");
     }
 
     @Override
     public void buyAction(Player p, double cost) {
-        p.sendMessage("§cVault support missing!");
+        p.sendMessage("§cSuporte ao Vault ausente!");
     }
 }

@@ -138,7 +138,7 @@ public class HungerWeatherSpawn implements Listener {
                 int task = Bukkit.getScheduler().runTaskLater(plugin, () -> {
                     Arena.magicMilk.remove(p.getUniqueId());
                     BedWars.plugin.adventure().player(p).sendMessage(ChatFormatting.parseLegacyMini(getMsg(p, Messages.INTERACT_MAGIC_MILK_REMOVED)));
-                    debug("PlayerItemConsumeEvent player " + p + " was removed from magicMilk");
+                    debug("PlayerItemConsumeEvent player " + p + " foi removido do magicMilk");
                 }, 20L * Arena.getArenaByPlayer(p).getMagicMilkTime()).getTaskId();
 
                 Arena.magicMilk.put(p.getUniqueId(), task);

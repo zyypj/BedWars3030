@@ -480,12 +480,12 @@ public class API implements com.tomkeuper.bedwars.api.BedWars {
     @Override
     public void setRestoreAdapter(RestoreAdapter adapter) throws IllegalAccessError {
         if (!Arena.getArenas().isEmpty()) {
-            throw new IllegalAccessError("Arenas must be unloaded when changing the adapter");
+            throw new IllegalAccessError("As arenas precisam estar descarregadas ao trocar o adaptador");
         }
         restoreAdapter = adapter;
         if (adapter.getOwner() != null) {
             if (adapter.getOwner() != BedWars.plugin) {
-                BedWars.plugin.getLogger().log(Level.WARNING, adapter.getOwner().getName() + " changed the restore system to its own adapter.");
+                BedWars.plugin.getLogger().log(Level.WARNING, adapter.getOwner().getName() + " trocou o sistema de restauração para o próprio adaptador.");
             }
         }
     }
@@ -496,7 +496,7 @@ public class API implements com.tomkeuper.bedwars.api.BedWars {
         if (partyAdapter == null) return;
         if (partyAdapter.equals(BedWars.getPartyManager())) return;
         BedWars.setPartyManager(partyAdapter);
-        BedWars.plugin.getLogger().log(Level.WARNING,  "One of your plugins changed the Party adapter to: " + partyAdapter.getClass().getName());
+        BedWars.plugin.getLogger().log(Level.WARNING,  "Um dos seus plugins trocou o adaptador de Party para: " + partyAdapter.getClass().getName());
     }
 
     @SuppressWarnings("unused")
@@ -664,9 +664,9 @@ public class API implements com.tomkeuper.bedwars.api.BedWars {
         @SuppressWarnings("unused")
         @Override
         public boolean registerItemHandler(IPermanentItemHandler handler) throws IllegalArgumentException {
-            if (handler.getId() == null) throw new IllegalArgumentException("Handler ID is not set!");
-            if (handler.getPlugin() == null) throw new IllegalArgumentException("Handler plugin is not set!");
-            if (handler.getType() == null)  throw new IllegalArgumentException("Handler type is not set!");
+            if (handler.getId() == null) throw new IllegalArgumentException("O ID do handler não está definido!");
+            if (handler.getPlugin() == null) throw new IllegalArgumentException("O plugin do handler não está definido!");
+            if (handler.getType() == null)  throw new IllegalArgumentException("O tipo do handler não está definido!");
             return BedWars.registerItemHandler(handler);
         }
 

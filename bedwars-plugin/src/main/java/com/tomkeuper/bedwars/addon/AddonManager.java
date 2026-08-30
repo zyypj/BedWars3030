@@ -116,7 +116,7 @@ public class AddonManager implements IAddonManager {
     @Override
     public void loadAddons() {
         if (registeredAddons.isEmpty()) {
-            log("No addons were found!");
+            log("Nenhum addon foi encontrado!");
             return;
         }
 
@@ -149,7 +149,7 @@ public class AddonManager implements IAddonManager {
             loadedAddons.add(addon);
             unloadedAddons.remove(addon);
             addon.load();
-            log(name + " addon loaded and registered successfully!");
+            log(name + " addon carregado e registrado com sucesso!");
         }
     }
 

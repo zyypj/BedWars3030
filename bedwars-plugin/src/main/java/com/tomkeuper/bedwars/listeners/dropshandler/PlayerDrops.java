@@ -49,37 +49,37 @@ public class PlayerDrops {
      * @return true if event drops must be cleared.
      */
     public static boolean handlePlayerDrops(IArena arena, Player victim, Player killer, ITeam victimsTeam, ITeam killersTeam, PlayerKillEvent.PlayerKillCause cause, List<ItemStack> inventory) {
-        BedWars.debug("PlayerDrops - Handling player drops for victim: " + victim.getName() + ", killer: " + (killer != null ? killer.getName() : "null") + ", cause: " + cause);
+        BedWars.debug("PlayerDrops - Tratando os drops da vítima: " + victim.getName() + ", killer: " + (killer != null ? killer.getName() : "null") + ", cause: " + cause);
         if (arena.getConfig().getBoolean(ConfigPath.ARENA_NORMAL_DEATH_DROPS)) {
-            BedWars.debug("PlayerDrops - Normal death drops enabled, skipping custom drop handling.");
+            BedWars.debug("PlayerDrops - Drops de morte normais ativados, ignorando o tratamento customizado.");
             return false;
         }
 
         if ((cause == PlayerKillEvent.PlayerKillCause.PLAYER_PUSH || cause == PlayerKillEvent.PlayerKillCause.PLAYER_PUSH_FINAL) && killer == null) {
             // if died by fall damage drop items at location
-            BedWars.debug("PlayerDrops - Death by player push but killer is null, dropping items at location.");
+            BedWars.debug("PlayerDrops - Morte por empurrão, mas o assassino é nulo; dropando os itens no local.");
             return true;
         }
 
         if (killer == null) {
             // Death without an attacker drops items on the floor
-            BedWars.debug("PlayerDrops - Death without an attacker, dropping items at location.");
+            BedWars.debug("PlayerDrops - Morte sem atacante; dropando os itens no local.");
             return true;
         }
 
         if (cause.isDespawnable()) {
             // If killed by an ironGolem or silverFish drop on floor
-            BedWars.debug("PlayerDrops - Death by despawnable entity, dropping items at location.");
+            BedWars.debug("PlayerDrops - Morte por entidade temporária; dropando os itens no local.");
             return true;
         }
         if (cause.isPvpLogOut()) {
             // if is pvp log out drop at disconnect location
-            BedWars.debug("PlayerDrops - Death by PvP logout, dropping items at location.");
+            BedWars.debug("PlayerDrops - Morte por desconexão em combate; dropando os itens no local.");
             return true;
         }
 
         if (cause.isFinalKill()) {
-            BedWars.debug("PlayerDrops - Final kill, dropping ender chest items at team generator.");
+            BedWars.debug("PlayerDrops - Abate final; dropando os itens do ender chest no gerador do time.");
             // if is final kill drop items at generator
             if (victimsTeam != null) {
                 Vector killDropsLocation = victimsTeam.getKillDropsLocation();
@@ -96,7 +96,7 @@ public class PlayerDrops {
             BedWars.debug("PlayerDrops - Handling victim's inventory drops.");
             // if final kill give items at kill drops location (team generator)
             if (victimsTeam.isBedDestroyed()) {
-                BedWars.debug("PlayerDrops - Victim's bed is destroyed, dropping items at team generator.");
+                BedWars.debug("PlayerDrops - A cama da vítima foi destruída; dropando os itens no gerador do time.");
                 for (ItemStack i : inventory) {
                     if (i == null) continue;
                     if (i.getType() == Material.AIR) continue;
@@ -110,14 +110,14 @@ public class PlayerDrops {
             } else {
                 // add-to-inventory feature if receiver is not respawning
                 if (!arena.isPlayer(killer)) {
-                    BedWars.debug("PlayerDrops - Killer is not in arena.");
+                    BedWars.debug("PlayerDrops - O assassino não está na arena.");
                     return true;
                 }
                 if (arena.isReSpawning(killer)) {
-                    BedWars.debug("PlayerDrops - Killer is respawning.");
+                    BedWars.debug("PlayerDrops - O assassino está renascendo.");
                     return true;
                 }
-                BedWars.debug("PlayerDrops - Adding eligible items to killer's inventory.");
+                BedWars.debug("PlayerDrops - Adicionando os itens elegíveis ao inventário do assassino.");
                 Map<Material, Integer> materialDrops = new HashMap<>();
                 for (ItemStack i : inventory) {
                     if (i == null) continue;

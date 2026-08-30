@@ -49,7 +49,7 @@ public class ShopManager extends ConfigManager implements IShopManager {
     }
 
     private void saveDefaults() {
-        getYml().options().header("Shop with quick buy and tiers");
+        getYml().options().header("Loja com compra rápida e níveis");
 
         //quick buy
         getYml().addDefault(ConfigPath.SHOP_SETTINGS_QUICK_BUY_BUTTON_MATERIAL, BedWars.getForCurrentVersion("NETHER_STAR", "NETHER_STAR", "NETHER_STAR"));
@@ -371,17 +371,17 @@ public class ShopManager extends ConfigManager implements IShopManager {
         //try materials
         try {
             String material = getYml().getString(ConfigPath.SHOP_SPECIAL_IRON_GOLEM_MATERIAL);
-            BedWars.debug(ConfigPath.SHOP_SPECIAL_IRON_GOLEM_MATERIAL + " is set to: " + material);
+            BedWars.debug(ConfigPath.SHOP_SPECIAL_IRON_GOLEM_MATERIAL + " está definido como: " + material);
             Material.valueOf(material);
         } catch (Exception ex) {
-            BedWars.plugin.getLogger().severe("Invalid material at " + ConfigPath.SHOP_SPECIAL_IRON_GOLEM_MATERIAL);
+            BedWars.plugin.getLogger().severe("Material inválido em " + ConfigPath.SHOP_SPECIAL_IRON_GOLEM_MATERIAL);
         }
         try {
             String material = getYml().getString(ConfigPath.SHOP_SPECIAL_SILVERFISH_MATERIAL);
-            BedWars.debug(ConfigPath.SHOP_SPECIAL_SILVERFISH_MATERIAL + " is set to: " + material);
+            BedWars.debug(ConfigPath.SHOP_SPECIAL_SILVERFISH_MATERIAL + " está definido como: " + material);
             Material.valueOf(material);
         } catch (Exception ex) {
-            BedWars.plugin.getLogger().severe("Invalid material at " + ConfigPath.SHOP_SPECIAL_SILVERFISH_MATERIAL);
+            BedWars.plugin.getLogger().severe("Material inválido em " + ConfigPath.SHOP_SPECIAL_SILVERFISH_MATERIAL);
         }
 
         getYml().options().copyDefaults(true);
@@ -441,7 +441,7 @@ public class ShopManager extends ConfigManager implements IShopManager {
             String name = file.getName().replace(".yml", "");
             org.bukkit.configuration.file.YamlConfiguration yml = org.bukkit.configuration.file.YamlConfiguration.loadConfiguration(file);
             for (String s : yml.getConfigurationSection("").getKeys(false)) {
-                BedWars.debug("adding shop category: " + s);
+                BedWars.debug("adicionando categoria da loja: " + s);
                 if (s.equalsIgnoreCase(ConfigPath.SHOP_SETTINGS_PATH)) continue;
                 if (s.equals(ConfigPath.SHOP_QUICK_DEFAULTS_PATH)) continue;
                 if (s.equalsIgnoreCase(ConfigPath.SHOP_SPECIALS_PATH)) continue;

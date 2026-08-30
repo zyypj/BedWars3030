@@ -87,22 +87,22 @@ public class CategoryContent implements ICategoryContent {
         if (path == null || name == null || categoryName == null || yml == null) return;
 
         if (yml.get(path + "." + ConfigPath.SHOP_CATEGORY_CONTENT_CONTENT_SLOT) == null) {
-            BedWars.plugin.getLogger().severe("Content slot not set at " + path);
+            BedWars.plugin.getLogger().severe("Slot do conteúdo não definido em " + path);
             return;
         }
 
         if (yml.get(path + "." + ConfigPath.SHOP_CATEGORY_CONTENT_CONTENT_TIERS) == null) {
-            BedWars.plugin.getLogger().severe("No tiers set for " + path);
+            BedWars.plugin.getLogger().severe("Nenhum nível definido para " + path);
             return;
         }
 
         if (yml.getConfigurationSection(path + "." + ConfigPath.SHOP_CATEGORY_CONTENT_CONTENT_TIERS).getKeys(false).isEmpty()) {
-            BedWars.plugin.getLogger().severe("No tiers set for " + path);
+            BedWars.plugin.getLogger().severe("Nenhum nível definido para " + path);
             return;
         }
 
         if (yml.get(path + "." + ConfigPath.SHOP_CATEGORY_CONTENT_CONTENT_TIERS + ".tier1") == null) {
-            BedWars.plugin.getLogger().severe("tier1 not found for " + path);
+            BedWars.plugin.getLogger().severe("tier1 não encontrado para " + path);
             return;
         }
 
@@ -140,13 +140,13 @@ public class CategoryContent implements ICategoryContent {
         itemNamePath = Messages.SHOP_CONTENT_TIER_ITEM_NAME.replace("%category%", categoryName).replace("%content%", contentName);
         for (Language lang : Language.getLanguages()) {
             if (!lang.exists(itemNamePath)) {
-                lang.set(itemNamePath, "&cName not set");
+                lang.set(itemNamePath, "&cNome não definido");
             }
         }
         itemLorePath = Messages.SHOP_CONTENT_TIER_ITEM_LORE.replace("%category%", categoryName).replace("%content%", contentName);
         for (Language lang : Language.getLanguages()) {
             if (!lang.exists(itemLorePath)) {
-                lang.set(itemLorePath, "&cLore not set");
+                lang.set(itemLorePath, "&cLore não definida");
             }
         }
 
@@ -168,7 +168,7 @@ public class CategoryContent implements ICategoryContent {
         }
 
         if (shopCache.getContentTier(getIdentifier()) > contentTiers.size()) {
-            Bukkit.getLogger().severe("Wrong tier order at: " + getIdentifier());
+            Bukkit.getLogger().severe("Ordem de níveis incorreta em: " + getIdentifier());
             return false;
         }
 
@@ -254,7 +254,7 @@ public class CategoryContent implements ICategoryContent {
         if (list == null || list.isEmpty()) {
             // Graceful fallback: no buy-items defined for this tier. Give the tier display item instead.
             ItemStack display = tier.getItemStack().clone();
-            BedWars.debug("[SHOP_FALLBACK] No buy-items for " + getIdentifier() + " tier=" + (tierIndex+1) + ". Granting tier-item: " + display.getType() + " x" + display.getAmount());
+            BedWars.debug("[SHOP_FALLBACK] Nenhum buy-item para " + getIdentifier() + " tier=" + (tierIndex+1) + ". Granting tier-item: " + display.getType() + " x" + display.getAmount());
             try {
                 if (arena != null && arena.getTeam(player) != null) {
                     ItemStack coloured = BedWars.nms.colourItem(display, arena.getTeam(player));
@@ -476,7 +476,7 @@ public class CategoryContent implements ICategoryContent {
     public static void takeMoney(Player player, Material currency, int amount) {
         if (currency == Material.AIR) {
             if (!BedWars.getEconomy().isEconomy()) {
-                player.sendMessage("§4§lERROR: This requires Vault Support! Please install Vault plugin!");
+                player.sendMessage("§4§lERRO: Isso exige suporte ao Vault! Instale o plugin Vault!");
                 return;
             }
             BedWars.getEconomy().buyAction(player, amount);

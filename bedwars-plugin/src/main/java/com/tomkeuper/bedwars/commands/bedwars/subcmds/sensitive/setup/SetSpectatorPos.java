@@ -48,14 +48,14 @@ public class SetSpectatorPos extends SubCommand {
         Player p = (Player) s;
         SetupSession ss = SetupSession.getSession(p.getUniqueId());
         if (ss == null) {
-            //s.sendMessage("§c ▪ §7You're not in a setup session!");
+            //s.sendMessage("§c ▪ §7Você não está em uma sessão de setup!");
             return false;
         }
         if (args.length != 0) {
-            p.sendMessage(ss.getPrefix() + ChatColor.RED + "Usage: /" + com.tomkeuper.bedwars.BedWars.mainCmd + " " + getSubCommandName());
+            p.sendMessage(ss.getPrefix() + ChatColor.RED + "Uso: /" + com.tomkeuper.bedwars.BedWars.mainCmd + " " + getSubCommandName());
         } else {
             ss.getConfig().saveArenaLoc(ConfigPath.ARENA_SPEC_LOC, p.getLocation());
-            p.sendMessage(ss.getPrefix() + "Spectator location set!");
+            p.sendMessage(ss.getPrefix() + "Localização dos espectadores definida!");
         }
         return true;
     }

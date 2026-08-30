@@ -79,7 +79,7 @@ public class JoinListenerBungee implements Listener {
             // check if arena is not available, time out etc.
             if (arena == null || proxyUser.isTimedOut() || status == GameState.restarting) {
                 e.disallow(PlayerLoginEvent.Result.KICK_OTHER, playerLang.m(Messages.ARENA_STATUS_RESTARTING_NAME));
-                proxyUser.destroy("Time out or game unavailable at PlayerLoginEvent");
+                proxyUser.destroy("Tempo esgotado ou partida indisponível no PlayerLoginEvent");
                 return;
             }
 
@@ -109,7 +109,7 @@ public class JoinListenerBungee implements Listener {
                     }
                     break;
                 default:
-                    throw new IllegalStateException("Unhandled game status!");
+                    throw new IllegalStateException("Status de jogo não tratado!");
             }
 
         }
@@ -162,7 +162,7 @@ public class JoinListenerBungee implements Listener {
                     p.kickPlayer(playerLang.m(Messages.REJOIN_DENIED));
                 }
                 // ReJoin handled, stop here
-                proxyUser.destroy("Rejoin handled. PreLoaded user no longer needed.");
+                proxyUser.destroy("Rejoin tratado. O usuário pré-carregado não é mais necessário.");
                 return;
             }
 
@@ -174,7 +174,7 @@ public class JoinListenerBungee implements Listener {
             // Check if the arena is still available or request time-out etc.
             if (arena == null || proxyUser.isTimedOut() || status == GameState.restarting) {
                 p.kickPlayer(playerLang.m(Messages.ARENA_STATUS_RESTARTING_NAME));
-                proxyUser.destroy("Time out or game unavailable at PlayerLoginEvent");
+                proxyUser.destroy("Tempo esgotado ou partida indisponível no PlayerLoginEvent");
                 return;
             }
 
@@ -240,9 +240,9 @@ public class JoinListenerBungee implements Listener {
                     arena.addSpectator(p, false, spectatorTarget);
                     break;
                 default:
-                    throw new IllegalStateException("Unhandled game status!");
+                    throw new IllegalStateException("Status de jogo não tratado!");
             }
-            proxyUser.destroy("Joined as player or spectator. PreLoaded user no longer needed.");
+            proxyUser.destroy("Entrou como jogador ou espectador. O usuário pré-carregado não é mais necessário.");
         }
     }
 }

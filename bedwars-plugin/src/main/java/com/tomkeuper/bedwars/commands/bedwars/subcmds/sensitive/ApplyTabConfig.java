@@ -49,21 +49,21 @@ public class ApplyTabConfig extends SubCommand {
     @Override
     public boolean execute(String[] args, CommandSender sender) {
         if (!(sender instanceof ConsoleCommandSender)) {
-            sender.sendMessage("§cThis command can only be executed from the console.");
+            sender.sendMessage("§cEste comando só pode ser executado pelo console.");
             return true;
         }
 
         // Check if TAB plugin is installed
         Plugin tabPlugin = Bukkit.getPluginManager().getPlugin(TAB_PLUGIN_NAME);
         if (tabPlugin == null) {
-            sender.sendMessage("§cError: The TAB plugin is not installed or not enabled.");
+            sender.sendMessage("§cErro: O plugin TAB não está instalado ou não está ativado.");
             return true;
         }
 
         // Get TAB plugin's config folder
         File tabConfigFolder = tabPlugin.getDataFolder();
         if (!tabConfigFolder.exists() && !tabConfigFolder.mkdirs()) {
-            sender.sendMessage("§cError: Could not create TAB plugin's config folder.");
+            sender.sendMessage("§cErro: Não foi possível criar a pasta de config do plugin TAB.");
             return true;
         }
 
@@ -72,14 +72,14 @@ public class ApplyTabConfig extends SubCommand {
         // Copy file from BedWars JAR to TAB config folder
         try (InputStream input = BedWars.plugin.getResource(RESOURCE_FILE)) {
             if (input == null) {
-                sender.sendMessage("§cError: Could not find " + RESOURCE_FILE + " inside the BedWars JAR.");
+                sender.sendMessage("§cErro: Não foi possível encontrar " + RESOURCE_FILE + " dentro do JAR do BedWars.");
                 return true;
             }
 
             Files.copy(input, destinationFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
-            sender.sendMessage("§aSuccessfully applied the TAB plugin configuration to " + destinationFile.getPath());
+            sender.sendMessage("§aConfiguração do plugin TAB aplicada com sucesso em " + destinationFile.getPath());
         } catch (IOException e) {
-            sender.sendMessage("§cError while copying the TAB config: " + e.getMessage());
+            sender.sendMessage("§cErro ao copiar a config do TAB: " + e.getMessage());
         }
 
         return true;

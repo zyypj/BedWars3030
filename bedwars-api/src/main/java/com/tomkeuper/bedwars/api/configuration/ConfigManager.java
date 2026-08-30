@@ -51,7 +51,7 @@ public class ConfigManager {
         File d = new File(dir);
         if (!d.exists()) {
             if (!d.mkdirs()) {
-                plugin.getLogger().log(Level.SEVERE, "Could not create " + d.getPath());
+                plugin.getLogger().log(Level.SEVERE, "Não foi possível criar " + d.getPath());
                 return;
             }
         }
@@ -62,7 +62,7 @@ public class ConfigManager {
             plugin.getLogger().log(Level.INFO, "Creating " + config.getPath());
             try {
                 if (!config.createNewFile()) {
-                    plugin.getLogger().log(Level.SEVERE, "Could not create " + config.getPath());
+                    plugin.getLogger().log(Level.SEVERE, "Não foi possível criar " + config.getPath());
                     return;
                 }
             } catch (IOException e) {
@@ -77,13 +77,13 @@ public class ConfigManager {
             yml.options().copyDefaults(true);
         } catch (InvalidConfigurationException e) {
             loadError = true;
-            plugin.getLogger().log(Level.SEVERE, "Failed to parse configuration file due to invalid YAML syntax: " + config.getPath());
+            plugin.getLogger().log(Level.SEVERE, "Falha ao ler o arquivo de configuração por sintaxe YAML inválida: " + config.getPath());
             plugin.getLogger().log(Level.SEVERE, e.getMessage());
             // Do NOT overwrite the file later on save; keep loadError=true to block saving.
         } catch (IOException e) {
             // IO error while reading: log and prevent saving to avoid overwriting existing content
             loadError = true;
-            plugin.getLogger().log(Level.SEVERE, "I/O error while reading configuration file: " + config.getPath(), e);
+            plugin.getLogger().log(Level.SEVERE, "Erro de I/O ao ler o arquivo de configuração: " + config.getPath(), e);
         }
         this.name = name;
     }
@@ -100,11 +100,11 @@ public class ConfigManager {
             this.yml = newYml;
         } catch (InvalidConfigurationException e) {
             loadError = true;
-            Bukkit.getLogger().log(Level.SEVERE, "Failed to parse configuration file on reload due to invalid YAML syntax: " + config.getPath());
+            Bukkit.getLogger().log(Level.SEVERE, "Falha ao ler o arquivo de configuração no reload por sintaxe YAML inválida: " + config.getPath());
             Bukkit.getLogger().log(Level.SEVERE, e.getMessage());
         } catch (IOException e) {
             loadError = true;
-            Bukkit.getLogger().log(Level.SEVERE, "I/O error while reloading configuration file: " + config.getPath(), e);
+            Bukkit.getLogger().log(Level.SEVERE, "Erro de I/O ao recarregar o arquivo de configuração: " + config.getPath(), e);
         }
     }
 
@@ -208,7 +208,7 @@ public class ConfigManager {
     public void save() {
         if (loadError) {
             // Prevent accidental overwrite of a malformed/invalid file
-            Bukkit.getLogger().log(Level.SEVERE, "Skipping save for invalid configuration (would overwrite). Fix the YAML syntax in: " + config.getPath());
+            Bukkit.getLogger().log(Level.SEVERE, "Salvamento ignorado por configuração inválida (sobrescreveria). Corrija a sintaxe YAML em: " + config.getPath());
             return;
         }
         try {

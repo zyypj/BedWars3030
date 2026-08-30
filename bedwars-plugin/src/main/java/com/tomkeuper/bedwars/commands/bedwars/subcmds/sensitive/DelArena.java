@@ -48,7 +48,7 @@ public class DelArena extends SubCommand {
         setPriority(4);
         showInList(true);
         setPermission(Permissions.PERMISSION_DEL_ARENA);
-        setDisplayInfo(Misc.msgHoverClick("§6 ▪ §7/" + MainCommand.getInstance().getName() + " "+getSubCommandName()+" §6<worldName>", "§fDelete a map and its configuration.",
+        setDisplayInfo(Misc.msgHoverClick("§6 ▪ §7/" + MainCommand.getInstance().getName() + " "+getSubCommandName()+" §6<worldName>", "§fApaga um mapa e a sua configuração.",
                 "/" + MainCommand.getInstance().getName() + " "+getSubCommandName(), ClickEvent.Action.SUGGEST_COMMAND));
     }
 
@@ -56,24 +56,24 @@ public class DelArena extends SubCommand {
     public boolean execute(String[] args, CommandSender s) {
         assert s != null;
         if (!MainCommand.isLobbySet()) {
-            s.sendMessage("§c▪ §7You have to set the lobby location first!");
+            s.sendMessage("§c▪ §7Você precisa definir a localização do lobby primeiro!");
             return true;
         }
         if (args.length != 1) {
-            s.sendMessage("§c▪ §7Usage: §o/" + MainCommand.getInstance().getName() + " delArena <mapName>");
+            s.sendMessage("§c▪ §7Uso: §o/" + MainCommand.getInstance().getName() + " delArena <mapName>");
             return true;
         }
         if (!BedWars.getAPI().getRestoreAdapter().isWorld(args[0])) {
-            s.sendMessage("§c▪ §7" + args[0] + " doesn't exist as a world folder!");
+            s.sendMessage("§c▪ §7" + args[0] + " não existe como pasta de mundo!");
             return true;
         }
         if (Arena.getArenaByName(args[0]) != null) {
-            s.sendMessage("§c▪ §7Please disable it first!");
+            s.sendMessage("§c▪ §7Desative-a primeiro!");
             return true;
         }
         File ac = new File(BedWars.plugin.getDataFolder(), "/Arenas/" + args[0]+ ".yml");
         if (!ac.exists()) {
-            s.sendMessage("§c▪ §7This arena doesn't exist!");
+            s.sendMessage("§c▪ §7Esta arena não existe!");
             return true;
         }
         if (delArenaConfirm.containsKey(s)) {
@@ -83,10 +83,10 @@ public class DelArena extends SubCommand {
                 s.sendMessage("§c▪ §7" + args[0] + " was deleted!");
                 return true;
             }
-            s.sendMessage("§6 ▪ §7Type again to confirm.");
+            s.sendMessage("§6 ▪ §7Digite novamente para confirmar.");
             delArenaConfirm.replace(s, System.currentTimeMillis());
         } else {
-            s.sendMessage("§6 ▪ §7Type again to confirm.");
+            s.sendMessage("§6 ▪ §7Digite novamente para confirmar.");
             delArenaConfirm.put(s, System.currentTimeMillis());
         }
         return true;

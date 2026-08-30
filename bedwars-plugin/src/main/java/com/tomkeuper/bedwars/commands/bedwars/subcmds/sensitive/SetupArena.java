@@ -41,7 +41,7 @@ public class SetupArena extends SubCommand {
     public SetupArena(ParentCommand parent, String name) {
         super(parent, name);
         setPriority(2);
-        setDisplayInfo(Misc.msgHoverClick("§6 ▪ §7/" + MainCommand.getInstance().getName() + " setupArena §6<worldName>", "§fCreate or edit an arena.\n'_' and '-' will not be displayed in the arena's name.",
+        setDisplayInfo(Misc.msgHoverClick("§6 ▪ §7/" + MainCommand.getInstance().getName() + " setupArena §6<worldName>", "§fCria ou edita uma arena.\n'_' e '-' não serão exibidos no nome da arena.",
                 "/" + MainCommand.getInstance().getName() + " setupArena ", ClickEvent.Action.SUGGEST_COMMAND));
         showInList(true);
         setPermission(Permissions.PERMISSION_SETUP_ARENA);
@@ -52,27 +52,27 @@ public class SetupArena extends SubCommand {
         if (s instanceof ConsoleCommandSender) return false;
         Player p = (Player) s;
         if (!MainCommand.isLobbySet() && p != null) {
-            p.sendMessage("§c▪ §7You have to set the lobby location first!");
+            p.sendMessage("§c▪ §7Você precisa definir a localização do lobby primeiro!");
             return true;
         }
         if (args.length != 1) {
-            p.sendMessage("§c▪ §7Usage: §o/" + getParent().getName() + " " + getSubCommandName() + " <mapName>");
+            p.sendMessage("§c▪ §7Uso: §o/" + getParent().getName() + " " + getSubCommandName() + " <mapName>");
             return true;
         }
         if (!args[0].equals(args[0].toLowerCase())) {
-            p.sendMessage("§c▪ §c" + args[0] + ChatColor.GRAY + " mustn't contain capital letters! Rename your folder to: " + ChatColor.GREEN + args[0].toLowerCase());
+            p.sendMessage("§c▪ §c" + args[0] + ChatColor.GRAY + " não pode conter letras maiúsculas! Renomeie a pasta para: " + ChatColor.GREEN + args[0].toLowerCase());
             return true;
         }
         if (args[0].contains("+")) {
-            p.sendMessage("§c▪ §7" + args[0] + " mustn't contain this symbol: " + ChatColor.RED + "+");
+            p.sendMessage("§c▪ §7" + args[0] + " não pode conter este símbolo: " + ChatColor.RED + "+");
             return true;
         }
         if (Arena.getArenaByName(args[0]) != null && !BedWars.autoscale) {
-            p.sendMessage("§c▪ §7Please disable it first!");
+            p.sendMessage("§c▪ §7Desative-a primeiro!");
             return true;
         }
         if (SetupSession.isInSetupSession(p.getUniqueId())) {
-            p.sendMessage("§c ▪ §7You're already in a setup session!");
+            p.sendMessage("§c ▪ §7Você já está em uma sessão de setup!");
             return true;
         }
         new SetupSession(p, args[0]);

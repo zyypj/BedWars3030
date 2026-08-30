@@ -42,8 +42,8 @@ public class SetLobby extends SubCommand {
         setPriority(1);
         showInList(true);
         setPermission(Permissions.PERMISSION_SETUP_ARENA);
-        setDisplayInfo(Misc.msgHoverClick("§6 ▪ §7/"+ MainCommand.getInstance().getName()+" "+getSubCommandName()+ (BedWars.config.getLobbyWorldName().isEmpty() ? " §c(not set)" : " §a(set)"),
-                "§aSet the main lobby. §fThis is required but\n§fif you are going to use the server in §eBUNGEE §fmode\n§fthe lobby location will §enot §fbe used.\n§eType again to replace the old spawn location.",
+        setDisplayInfo(Misc.msgHoverClick("§6 ▪ §7/"+ MainCommand.getInstance().getName()+" "+getSubCommandName()+ (BedWars.config.getLobbyWorldName().isEmpty() ? " §c(não definido)" : " §a(set)"),
+                "§aDefine o lobby principal. §fIsso é obrigatório, mas\n§fse você for usar o servidor no modo §eBUNGEE§f,\n§fa localização do lobby §enão §fserá usada.\n§eDigite novamente para substituir o spawn antigo.",
                 "/"+getParent().getName()+" "+getSubCommandName(), ClickEvent.Action.RUN_COMMAND));
     }
 
@@ -52,11 +52,11 @@ public class SetLobby extends SubCommand {
         if (s instanceof ConsoleCommandSender) return false;
         Player p = (Player) s;
         if (SetupSession.isInSetupSession(p.getUniqueId())){
-            p.sendMessage("§6 ▪ §4This command can't be used in arenas. It is meant for the main lobby!");
+            p.sendMessage("§6 ▪ §4Este comando não pode ser usado em arenas. Ele é para o lobby principal!");
             return true;
         }
         BedWars.config.saveConfigLoc("lobbyLoc", p.getLocation());
-        p.sendMessage("§6 ▪ §7Lobby location set!");
+        p.sendMessage("§6 ▪ §7Localização do lobby definida!");
         BedWars.config.reload();
         BedWars.setLobbyWorld(p.getLocation().getWorld().getName());
         return true;

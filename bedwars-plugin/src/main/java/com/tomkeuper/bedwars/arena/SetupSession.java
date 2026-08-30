@@ -90,7 +90,7 @@ public class SetupSession implements ISetupSession {
      * Gets the setup type gui inv name
      */
     public static String getInvName() {
-        return "§8Choose a setup method";
+        return "§8Escolha um método de configuração";
     }
 
     /**
@@ -140,15 +140,15 @@ public class SetupSession implements ISetupSession {
         Inventory inv = Bukkit.createInventory(null, 9, getInvName());
         ItemStack assisted = new ItemStack(Material.GLOWSTONE_DUST);
         ItemMeta am = assisted.getItemMeta();
-        am.setDisplayName("§e§lASSISTED SETUP");
-        am.setLore(Arrays.asList("", "§aEasy and quick setup!", "§7For beginners and lazy staff :D", "", "§3Reduced options."));
+        am.setDisplayName("§e§lCONFIGURAÇÃO ASSISTIDA");
+        am.setLore(Arrays.asList("", "§aConfiguração fácil e rápida!", "§7Para iniciantes e staff preguiçosa :D", "", "§3Opções reduzidas."));
         assisted.setItemMeta(am);
         inv.setItem(getAssistedSlot(), assisted);
 
         ItemStack advanced = new ItemStack(Material.REDSTONE);
         ItemMeta amm = advanced.getItemMeta();
-        amm.setDisplayName("§c§lADVANCED SETUP");
-        amm.setLore(Arrays.asList("", "§aDetailed setup!", "§7For experienced staff :D", "", "§3Advanced options."));
+        amm.setDisplayName("§c§lCONFIGURAÇÃO AVANÇADA");
+        amm.setLore(Arrays.asList("", "§aConfiguração detalhada!", "§7Para staff experiente :D", "", "§3Opções avançadas."));
         advanced.setItemMeta(amm);
         inv.setItem(getAdvancedSlot(), advanced);
 
@@ -161,7 +161,7 @@ public class SetupSession implements ISetupSession {
     public void cancel() {
         getSetupSessions().remove(this);
         if (isStarted()) {
-            player.sendMessage("§6 ▪ §7" + getWorldName() + " setup cancelled!");
+            player.sendMessage("§6 ▪ §7" + getWorldName() + " configuração cancelada!");
             done();
         }
     }
@@ -230,14 +230,14 @@ public class SetupSession implements ISetupSession {
         for (int x = 0; x < 10; x++) {
             getPlayer().sendMessage(" ");
         }
-        player.sendMessage(ChatColor.GREEN + "You were teleported to the " + ChatColor.GOLD + getWorldName() + ChatColor.GREEN + "'s spawn.");
+        player.sendMessage(ChatColor.GREEN + "Você foi teleportado para o spawn de " + ChatColor.GOLD + getWorldName() + ChatColor.GREEN + ".");
         if (getSetupType() == SetupType.ASSISTED && getConfig().getYml().get("waiting.Loc") == null) {
             player.sendMessage("");
             player.sendMessage(ChatColor.GREEN + "Hello " + player.getDisplayName() + "!");
-            player.sendMessage(ChatColor.WHITE + "Please set the waiting spawn.");
-            player.sendMessage(ChatColor.WHITE + "It is the place where players will wait the game to start.");
-            player.spigot().sendMessage(Misc.msgHoverClick(ChatColor.BLUE + "     ▪     " + ChatColor.GOLD + "CLICK HERE TO SET THE WAITING LOBBY    " + ChatColor.BLUE + " ▪", ChatColor.LIGHT_PURPLE + "Click to set the waiting spawn.", "/" + BedWars.mainCmd + " setWaitingSpawn", ClickEvent.Action.RUN_COMMAND));
-            player.spigot().sendMessage(MainCommand.createTC(ChatColor.YELLOW + "Or type: " + ChatColor.GRAY + "/" + BedWars.mainCmd + " to see the command list.", "/" + BedWars.mainCmd + "", ChatColor.WHITE + "Show commands list."));
+            player.sendMessage(ChatColor.WHITE + "Defina o spawn de espera.");
+            player.sendMessage(ChatColor.WHITE + "É o local onde os jogadores esperam a partida começar.");
+            player.spigot().sendMessage(Misc.msgHoverClick(ChatColor.BLUE + "     ▪     " + ChatColor.GOLD + "CLIQUE AQUI PARA DEFINIR O LOBBY DE ESPERA    " + ChatColor.BLUE + " ▪", ChatColor.LIGHT_PURPLE + "Clique para definir o spawn de espera.", "/" + BedWars.mainCmd + " setWaitingSpawn", ClickEvent.Action.RUN_COMMAND));
+            player.spigot().sendMessage(MainCommand.createTC(ChatColor.YELLOW + "Ou digite: " + ChatColor.GRAY + "/" + BedWars.mainCmd + " para ver a lista de comandos.", "/" + BedWars.mainCmd + "", ChatColor.WHITE + "Mostra a lista de comandos."));
         } else {
             Bukkit.dispatchCommand(player, BedWars.mainCmd + " cmds");
         }
@@ -335,7 +335,7 @@ public class SetupSession implements ISetupSession {
      */
     public void displayAvailableTeams() {
         if (getConfig().getYml().get("Team") != null) {
-            getPlayer().sendMessage(getPrefix() + "Available teams: ");
+            getPlayer().sendMessage(getPrefix() + "Times disponíveis: ");
             for (String team : Objects.requireNonNull(getConfig().getYml().getConfigurationSection("Team")).getKeys(false)) {
                 getPlayer().sendMessage(getPrefix() + TeamColor.getChatColor(Objects.requireNonNull(getConfig().getYml().getString("Team." + team + ".Color"))) + team);
             }
@@ -376,38 +376,38 @@ public class SetupSession implements ISetupSession {
 
     public void createBedHologram(Player p, Location loc, String team) {
         manageHologram(
-                bedHologramsPerTeam, p, loc, team, getTeamColor(team) + team + " " + ChatColor.GOLD + "BED SET"
+                bedHologramsPerTeam, p, loc, team, getTeamColor(team) + team + " " + ChatColor.GOLD + "CAMA DEFINIDA"
         );
     }
 
     public void createSpawnHologram(Player p, Location loc, String team) {
         manageHologram(
-                spawnHologramsPerTeam, p, loc, team, getTeamColor(team) + team + " " + ChatColor.GOLD + "SPAWN SET"
+                spawnHologramsPerTeam, p, loc, team, getTeamColor(team) + team + " " + ChatColor.GOLD + "SPAWN DEFINIDO"
         );
     }
 
     public void createShopHologram(Player p, Location loc, String team) {
         manageHologram(
-                shopHologramsPerTeam, p, loc, team, getTeamColor(team) + team + " " + ChatColor.GOLD + "SHOP SET"
+                shopHologramsPerTeam, p, loc, team, getTeamColor(team) + team + " " + ChatColor.GOLD + "LOJA DEFINIDA"
         );
     }
 
     public void createUpgradeHologram(Player p, Location loc, String team) {
         manageHologram(
-                upgradeHologramsPerTeam, p, loc, team, getTeamColor(team) + team + " " + ChatColor.GOLD + "UPGRADE SET"
+                upgradeHologramsPerTeam, p, loc, team, getTeamColor(team) + team + " " + ChatColor.GOLD + "MELHORIA DEFINIDA"
         );
     }
 
     public void createKillDropsHologram(Player p, Location loc, String team) {
         manageHologram(
-                killDropsHologramsPerTeam, p, loc, team, getTeamColor(team) + team + " " + ChatColor.GOLD + "KILL DROPS SET"
+                killDropsHologramsPerTeam, p, loc, team, getTeamColor(team) + team + " " + ChatColor.GOLD + "DROPS DE ABATE DEFINIDOS"
         );
     }
 
     public void createGeneratorHologram(Player p, Location loc, String team, String type) {
         String message = team != null
-                ? getTeamColor(team) + team + " " + ChatColor.GOLD + type + " GENERATOR SET"
-                : ChatColor.GOLD + type + " GENERATOR SET";
+                ? getTeamColor(team) + team + " " + ChatColor.GOLD + type + " GERADOR DEFINIDO"
+                : ChatColor.GOLD + type + " GERADOR DEFINIDO";
 
         manageHologramForLocation(generatorHologramsPerTeam, p, loc, message);
     }
@@ -499,7 +499,7 @@ public class SetupSession implements ISetupSession {
 
     private IHologram getHologramForLocation(Map<Location, IHologram> locationHologramsMap, Location location) {
         // Debugging: Log the map and input location for analysis
-        BedWars.debug("Looking for hologram at location: " + location + " in map with " + locationHologramsMap.size() + " entries");
+        BedWars.debug("Procurando holograma na localização: " + location + " em um mapa com " + locationHologramsMap.size() + " entries");
 
         // Stream to find the existing location by comparing x, y, z, and world
         IHologram hologram = locationHologramsMap.entrySet().stream()
@@ -510,10 +510,10 @@ public class SetupSession implements ISetupSession {
 
         if (hologram == null) {
             // Debugging: Log all entries for failed matches
-            locationHologramsMap.forEach((key, value) -> BedWars.debug("Map entry: Location=" + key + ", IHologram=" + value));
-            BedWars.debug("No hologram found for location: " + location);
+            locationHologramsMap.forEach((key, value) -> BedWars.debug("Entrada do mapa: Localização=" + key + ", IHologram=" + value));
+            BedWars.debug("Nenhum holograma encontrado para a localização: " + location);
         } else {
-            BedWars.debug("Found hologram at location: " + location);
+            BedWars.debug("Holograma encontrado na localização: " + location);
         }
 
         return hologram;

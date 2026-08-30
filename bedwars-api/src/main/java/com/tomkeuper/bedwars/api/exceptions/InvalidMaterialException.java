@@ -25,6 +25,6 @@ import com.tomkeuper.bedwars.api.server.VersionSupport;
 public class InvalidMaterialException extends Exception {
 
     public InvalidMaterialException(String s) {
-        super(s + " is not a valid " + VersionSupport.getName() + " material! Using defaults..");
+        super(s + " não é um(a) " + VersionSupport.getName() + " válido! Usando os padrões..");
     }
 }

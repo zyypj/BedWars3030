@@ -58,7 +58,7 @@ public class SetKillDropsLoc extends SubCommand {
         Player p = (Player) s;
         SetupSession ss = SetupSession.getSession(p.getUniqueId());
         if (ss == null) {
-            //s.sendMessage(ss.getPrefix()"§c ▪ §7You're not in a setup session!");
+            //s.sendMessage(ss.getPrefix()"§c ▪ §7Você não está em uma sessão de setup!");
             return false;
         }
         ArenaConfig arena = ss.getConfig();
@@ -66,8 +66,8 @@ public class SetKillDropsLoc extends SubCommand {
             String foundTeam = "";
             double distance = 100;
             if (ss.getConfig().getYml().getConfigurationSection("Team") == null) {
-                p.sendMessage(ss.getPrefix() + "Please create teams first!");
-                com.tomkeuper.bedwars.BedWars.nms.sendTitle(p, " ", ChatColor.RED + "Please create teams first!", 5, 40, 5);
+                p.sendMessage(ss.getPrefix() + "Crie os times primeiro!");
+                com.tomkeuper.bedwars.BedWars.nms.sendTitle(p, " ", ChatColor.RED + "Crie os times primeiro!", 5, 40, 5);
                 Sounds.playSound(ConfigPath.SOUNDS_INSUFF_MONEY, p);
                 return true;
             }
@@ -87,9 +87,9 @@ public class SetKillDropsLoc extends SubCommand {
                 }
                 arena.set("Team." + foundTeam + "." + ConfigPath.ARENA_TEAM_KILL_DROPS_LOC, arena.stringLocationArenaFormat(p.getLocation()));
                 String team = ss.getTeamColor(foundTeam) + foundTeam;
-                p.sendMessage(ss.getPrefix() + "Kill drops set for team: " + team);
+                p.sendMessage(ss.getPrefix() + "Drops de abate definidos para o time: " + team);
                 ss.createKillDropsHologram(p, p.getLocation(), foundTeam);
-                com.tomkeuper.bedwars.BedWars.nms.sendTitle(p, " ", ChatColor.GREEN + "Kill drops set for team: " + team, 5, 40, 5);
+                com.tomkeuper.bedwars.BedWars.nms.sendTitle(p, " ", ChatColor.GREEN + "Drops de abate definidos para o time: " + team, 5, 40, 5);
                 Sounds.playSound(ConfigPath.SOUNDS_BOUGHT, p);
 
                 if (ss.getSetupType() == SetupType.ASSISTED) {
@@ -98,7 +98,7 @@ public class SetKillDropsLoc extends SubCommand {
                 return true;
             }
 
-            p.sendMessage(ss.getPrefix() + ChatColor.RED + "Usage: /" + mainCmd + " setKillDrops <teamName>");
+            p.sendMessage(ss.getPrefix() + ChatColor.RED + "Uso: /" + mainCmd + " setKillDrops <teamName>");
             return true;
         }
 
@@ -106,10 +106,10 @@ public class SetKillDropsLoc extends SubCommand {
 
         if (foundTeam.isEmpty()) {
             p.sendMessage("");
-            p.sendMessage(ss.getPrefix() + ChatColor.RED + "Could not find any nearby team.");
-            p.spigot().sendMessage(Misc.msgHoverClick(ss.getPrefix() + "Make sure you set the team's spawn first!", ChatColor.WHITE + "Set a team spawn.", "/" + getParent().getName() + " " + getSubCommandName() + " ", ClickEvent.Action.SUGGEST_COMMAND));
-            p.spigot().sendMessage(Misc.msgHoverClick(ss.getPrefix() + "Or if you set the spawn and it wasn't found automatically try using: /bw " + getSubCommandName() + " <team>", "Set kill drops location for a team.", "/" + getParent().getName() + " " + getSubCommandName() + " ", ClickEvent.Action.SUGGEST_COMMAND));
-            com.tomkeuper.bedwars.BedWars.nms.sendTitle(p, " ", ChatColor.RED + "Could not find any nearby team.", 5, 60, 5);
+            p.sendMessage(ss.getPrefix() + ChatColor.RED + "Nenhum time encontrado por perto.");
+            p.spigot().sendMessage(Misc.msgHoverClick(ss.getPrefix() + "Certifique-se de definir o spawn do time primeiro!", ChatColor.WHITE + "Define o spawn de um time.", "/" + getParent().getName() + " " + getSubCommandName() + " ", ClickEvent.Action.SUGGEST_COMMAND));
+            p.spigot().sendMessage(Misc.msgHoverClick(ss.getPrefix() + "Ou, se você definiu o spawn e ele não foi encontrado automaticamente, tente usar: /bw " + getSubCommandName() + " <team>", "Define o local dos drops de abate de um time.", "/" + getParent().getName() + " " + getSubCommandName() + " ", ClickEvent.Action.SUGGEST_COMMAND));
+            com.tomkeuper.bedwars.BedWars.nms.sendTitle(p, " ", ChatColor.RED + "Nenhum time encontrado por perto.", 5, 60, 5);
             Sounds.playSound(ConfigPath.SOUNDS_INSUFF_MONEY, p);
             return true;
         }
@@ -118,11 +118,11 @@ public class SetKillDropsLoc extends SubCommand {
             if (arena.getYml().get("Team." + args[0]) != null) {
                 foundTeam = args[0];
             } else {
-                p.sendMessage(ss.getPrefix() + ChatColor.RED + "This team doesn't exist!");
+                p.sendMessage(ss.getPrefix() + ChatColor.RED + "Este time não existe!");
                 if (arena.getYml().get("Team") != null) {
-                    p.sendMessage(ss.getPrefix() + "Available teams: ");
+                    p.sendMessage(ss.getPrefix() + "Times disponíveis: ");
                     for (String team : Objects.requireNonNull(arena.getYml().getConfigurationSection("Team")).getKeys(false)) {
-                        p.spigot().sendMessage(com.tomkeuper.bedwars.arena.Misc.msgHoverClick(ChatColor.GOLD + " " + '▪' + " " + "Kill drops " + ss.getTeamColor(team) + team + " " + ChatColor.getLastColors(ss.getPrefix()) + "(click to set)", ChatColor.WHITE + "Set Kill drops for " + ss.getTeamColor(team) + team, "/" + com.tomkeuper.bedwars.BedWars.mainCmd + " setKillDrops " + team, ClickEvent.Action.RUN_COMMAND));
+                        p.spigot().sendMessage(com.tomkeuper.bedwars.arena.Misc.msgHoverClick(ChatColor.GOLD + " " + '▪' + " " + "Drops de abate " + ss.getTeamColor(team) + team + " " + ChatColor.getLastColors(ss.getPrefix()) + "(clique para definir)", ChatColor.WHITE + "Drops de abate definidos para " + ss.getTeamColor(team) + team, "/" + com.tomkeuper.bedwars.BedWars.mainCmd + " setKillDrops " + team, ClickEvent.Action.RUN_COMMAND));
                     }
                 }
                 return true;
@@ -130,7 +130,7 @@ public class SetKillDropsLoc extends SubCommand {
         }
 
         arena.set("Team." + foundTeam + "." + ConfigPath.ARENA_TEAM_KILL_DROPS_LOC, arena.stringLocationArenaFormat(p.getLocation()));
-        p.sendMessage(ss.getPrefix() + "Kill drops set for: " + ss.getTeamColor(foundTeam) + foundTeam);
+        p.sendMessage(ss.getPrefix() + "Drops de abate definidos para: " + ss.getTeamColor(foundTeam) + foundTeam);
 
         if (ss.getSetupType() == SetupType.ASSISTED) {
             Bukkit.dispatchCommand(p, getParent().getName());

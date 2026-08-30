@@ -54,10 +54,10 @@ class PlayerGoods {
     }
 
     PlayerGoods(Player p, boolean prepare, boolean rejoin) {
-        BedWars.debug("Creating PlayerGoods for player " + p.getUniqueId() + " rejoin: " + rejoin + ".");
+        BedWars.debug("Criando PlayerGoods para o jogador " + p.getUniqueId() + " rejoin: " + rejoin + ".");
         // Do not overwrite an existing snapshot
         if (hasGoods(p)) {
-            plugin.getLogger().severe("Skipping PlayerGoods creation for " + p.getName() + " because a snapshot already exists.");
+            plugin.getLogger().severe("Ignorando a criação de PlayerGoods para " + p.getName() + " porque já existe um snapshot.");
             return;
         }
 
@@ -71,7 +71,7 @@ class PlayerGoods {
                         || currentArena.getStatus() == com.tomkeuper.bedwars.api.arena.GameState.starting;
             }
             if (isRejoin || inGamePhase) {
-                BedWars.debug("Skipping PlayerGoods creation for " + p.getName() + " due to rejoin/in-game detection.");
+                BedWars.debug("Ignorando a criação de PlayerGoods para " + p.getName() + " por detecção de rejoin/em jogo.");
                 return;
             }
         } catch (Throwable t) {
@@ -148,7 +148,7 @@ class PlayerGoods {
         // If there's already a snapshot, return it as-is
         PlayerGoods existing = getPlayerGoods(p);
         if (existing != null) {
-            BedWars.debug("PlayerGoods already exists for " + p.getName() + ", returning existing snapshot.");
+            BedWars.debug("PlayerGoods já existe para " + p.getName() + ", returning existing snapshot.");
             return existing;
         }
 
@@ -168,7 +168,7 @@ class PlayerGoods {
         }
 
         if (skip) {
-            BedWars.debug("Skipping PlayerGoods snapshot creation for " + p.getName() + " (rejoin/in-game).");
+            BedWars.debug("Ignorando a criação do snapshot de PlayerGoods para " + p.getName() + " (rejoin/em jogo).");
             return null;
         }
 
@@ -199,7 +199,7 @@ class PlayerGoods {
      * restore player
      */
     void restore() {
-        BedWars.debug("Restoring PlayerGoods for player " + uuid.toString());
+        BedWars.debug("Restaurando PlayerGoods do jogador " + uuid.toString());
         Player player = Bukkit.getPlayer(uuid);
         if (player == null) return;
         playerGoods.remove(player.getUniqueId());
@@ -216,7 +216,7 @@ class PlayerGoods {
         try {
             player.setHealth(health);
         } catch (Exception e){
-            BedWars.plugin.getLogger().severe("Something went wrong when restoring player health: "+health+". Giving default of: 20");
+            BedWars.plugin.getLogger().severe("Algo deu errado ao restaurar a vida do jogador: "+health+". Aplicando o padrão: 20");
             player.setHealth(20);
         }
         player.setFoodLevel(foodLevel);

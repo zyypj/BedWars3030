@@ -86,7 +86,7 @@ public class QuitAndTeleportListener implements Listener {
                             if (a.isPlayer(partyMember)) a.removePlayer(partyMember, false, true);
                             else if (a.isSpectator(partyMember)) a.removeSpectator(partyMember, false, true);
                             else {
-                                BedWars.debug("Cannot remove " + partyMember.getName() + " from " + a.getDisplayName() + " because member is not a player nor a spectator.");
+                                BedWars.debug("Não é possível remover " + partyMember.getName() + " from " + a.getDisplayName() + " porque o membro não é jogador nem espectador.");
                             }
                         }
                     }
@@ -127,7 +127,7 @@ public class QuitAndTeleportListener implements Listener {
                 if (!a1.equals(a)) {
                     if (a.isSpectator(e.getPlayer())) a.removeSpectator(e.getPlayer(), false);
                     if (a.isPlayer(e.getPlayer())) a.removePlayer(e.getPlayer(), false);
-                    e.getPlayer().sendMessage("PlayerTeleportEvent something went wrong. You have joined an arena world while playing on a different map.");
+                    e.getPlayer().sendMessage("PlayerTeleportEvent: algo deu errado. Você entrou no mundo de uma arena enquanto jogava em outro mapa.");
                 }
             }
         }
@@ -156,7 +156,7 @@ public class QuitAndTeleportListener implements Listener {
                 if (a.getStatus() == GameState.waiting || a.getStatus() == GameState.starting) return;
                 if (!e.getPlayer().getWorld().getName().equalsIgnoreCase(a.getWorld().getName())) {
                     a.removePlayer(e.getPlayer(), BedWars.getServerType() == ServerType.BUNGEE);
-                    debug(e.getPlayer().getName() + " was removed from " + a.getDisplayName() + " because he was teleported outside the arena.");
+                    debug(e.getPlayer().getName() + " foi removido de " + a.getDisplayName() + " porque foi teleportado para fora da arena.");
                 }
             }
         }
