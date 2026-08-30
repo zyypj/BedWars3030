@@ -89,7 +89,7 @@ public class BoardManager implements IScoreboardService {
 
             Objects.requireNonNull(TabAPI.getInstance().getEventBus()).register(TabLoadEvent.class, event -> {
                 BoardManager.refreshTabManagers();
-                BedWars.plugin.getLogger().info("[BoardManager] TAB plugin enabled; refreshed TAB managers.");
+                BedWars.plugin.getLogger().info("[BoardManager] Plugin TAB ativado; gerenciadores do TAB atualizados.");
                 instance.registerPlaceholders();
                 instance.registerLobbyScoreboards();
                 for (IArena arena : Arena.getArenas()) {
@@ -109,7 +109,7 @@ public class BoardManager implements IScoreboardService {
             placeholderManager = api.getPlaceholderManager();
             nameTagManager = api.getNameTagManager();
         } catch (Throwable t) {
-            BedWars.plugin.getLogger().severe("[BoardManager] Failed to refresh TAB managers: " + t.getMessage());
+            BedWars.plugin.getLogger().severe("[BoardManager] Falha ao atualizar os gerenciadores do TAB: " + t.getMessage());
         }
     }
 
@@ -127,7 +127,7 @@ public class BoardManager implements IScoreboardService {
 
     public void registerLobbyScoreboards() {
         if (!BedWars.config.getBoolean(ConfigPath.SB_CONFIG_SIDEBAR_USE_LOBBY_SIDEBAR)) return;
-        BedWars.debug("Registering lobby scoreboards...");
+        BedWars.debug("Registrando as scoreboards do lobby...");
 
         for (Language language : Language.getLanguages()) {
             List<String> lines = language.l(Messages.SCOREBOARD_LOBBY);
@@ -139,7 +139,7 @@ public class BoardManager implements IScoreboardService {
     public List<Scoreboard> registerArenaScoreboards(IArena arena) {
         // Technically it's possible to have per arena scoreboards. Future feature?
         // TODO fix issue with scoreboard overwrites
-        BedWars.debug("Registering scoreboard for arena: " + arena.getDisplayName());
+        BedWars.debug("Registrando a scoreboard da arena: " + arena.getDisplayName());
         List<Scoreboard> scoreboards = new ArrayList<>();
         for (Language language : Language.getLanguages()) {
             List<String> waiting = getScoreboardLines(arena, language, "waiting", Messages.SCOREBOARD_DEFAULT_WAITING);
@@ -185,8 +185,8 @@ public class BoardManager implements IScoreboardService {
         placeholderManager = TabAPI.getInstance().getPlaceholderManager();
         nameTagManager = TabAPI.getInstance().getNameTagManager();
         BossBarManager bossBarManager = TabAPI.getInstance().getBossBarManager();
-        if (bossBarManager == null) BedWars.plugin.getLogger().warning("BossBar is disabled in TAB config! Please enable it there.\n Make sure to remove the ServerInfo default config if you want to use dragon boss-bars");
-        if (tabListFormatManager == null) BedWars.plugin.getLogger().warning("TabList Format Manager is null! You dont have the tablist-name-formatting enabled in TAB config.\nWithout this feature the plugin will NOT work properly");
+        if (bossBarManager == null) BedWars.plugin.getLogger().warning("A BossBar está desativada na config do TAB! Ative-a por lá.\n Lembre-se de remover a config padrão ServerInfo se quiser usar as bossbars de dragão");
+        if (tabListFormatManager == null) BedWars.plugin.getLogger().warning("O TabList Format Manager é nulo! Você não está com o tablist-name-formatting ativado na config do TAB.\nSem esse recurso o plugin NÃO vai funcionar corretamente");
     }
 
     private void registerPlaceholders(){
@@ -194,28 +194,28 @@ public class BoardManager implements IScoreboardService {
 
         int placeholderRefresh = BedWars.config.getInt(ConfigPath.SB_CONFIG_SIDEBAR_PLACEHOLDERS_REFRESH_INTERVAL);
         if (placeholderRefresh < 50) {
-            BedWars.plugin.getLogger().warning("Placeholder refresh interval is set to `" + placeholderRefresh + "` but cannot be lower than 50! Overriding to 100 now...");
+            BedWars.plugin.getLogger().warning("O intervalo de atualização de placeholders está definido como `" + placeholderRefresh + "` mas não pode ser menor que 50! Ajustando para 100 agora...");
             BedWars.config.set(ConfigPath.SB_CONFIG_SIDEBAR_PLACEHOLDERS_REFRESH_INTERVAL, 100);
             placeholderRefresh = 100;
         }
 
         int PrefixRefresh = BedWars.config.getInt(ConfigPath.SB_CONFIG_SIDEBAR_PREFIX_REFRESH_INTERVAL);
         if (PrefixRefresh < 50) {
-            BedWars.plugin.getLogger().warning("Prefix Suffix refresh interval is set to `" + PrefixRefresh + "` but cannot be lower than 50! Overriding to 100 now...");
+            BedWars.plugin.getLogger().warning("O intervalo de atualização de prefixo/sufixo está definido como `" + PrefixRefresh + "` mas não pode ser menor que 50! Ajustando para 100 agora...");
             BedWars.config.set(ConfigPath.SB_CONFIG_SIDEBAR_PREFIX_REFRESH_INTERVAL, 100);
             PrefixRefresh = 100;
         }
 
         int SuffixRefresh = BedWars.config.getInt(ConfigPath.SB_CONFIG_SIDEBAR_SUFFIX_REFRESH_INTERVAL);
         if (SuffixRefresh < 50) {
-            BedWars.plugin.getLogger().warning("Prefix Suffix refresh interval is set to `" + SuffixRefresh + "` but cannot be lower than 50! Overriding to 100 now...");
+            BedWars.plugin.getLogger().warning("O intervalo de atualização de prefixo/sufixo está definido como `" + SuffixRefresh + "` mas não pode ser menor que 50! Ajustando para 100 agora...");
             BedWars.config.set(ConfigPath.SB_CONFIG_SIDEBAR_SUFFIX_REFRESH_INTERVAL, 100);
             SuffixRefresh = 100;
         }
 
         int titleRefresh = BedWars.config.getInt(ConfigPath.SB_CONFIG_SIDEBAR_TITLE_REFRESH_INTERVAL);
         if (titleRefresh < 50) {
-            BedWars.plugin.getLogger().warning("Scoreboard title refresh interval is set to `" + titleRefresh + "` but cannot be lower than 50! Overriding to 100 now...");
+            BedWars.plugin.getLogger().warning("O intervalo de atualização do título da scoreboard está definido como `" + titleRefresh + "` mas não pode ser menor que 50! Ajustando para 100 agora...");
             BedWars.config.set(ConfigPath.SB_CONFIG_SIDEBAR_TITLE_REFRESH_INTERVAL, 100);
             titleRefresh = 100;
         }
@@ -363,11 +363,11 @@ public class BoardManager implements IScoreboardService {
             TabPlayer tabPlayer = getTabPlayer(player);
 
             if (nameTagManager == null) {
-                BedWars.plugin.getLogger().severe("An error occurred while giving Tab Features to player, TAB nameTagManager is null!");
+                BedWars.plugin.getLogger().severe("Ocorreu um erro ao aplicar os recursos do TAB ao jogador: o nameTagManager do TAB é nulo!");
                 return;
             }
             if (tabPlayer == null){
-                BedWars.plugin.getLogger().severe("An error occurred while giving Tab Features to player, TAB tabPlayer is null!");
+                BedWars.plugin.getLogger().severe("Ocorreu um erro ao aplicar os recursos do TAB ao jogador: o tabPlayer do TAB é nulo!");
                 return;
             }
 
@@ -543,7 +543,7 @@ public class BoardManager implements IScoreboardService {
                             fixList = Language.getList(player, Messages.FORMATTING_SCOREBOARD_TAB_PREFIX_RESTARTING);
                             break;
                         default:
-                            BedWars.debug("Unhandled game state for BedWars prefix");
+                            BedWars.debug("Estado de jogo não tratado para o prefixo do BedWars");
                             fixList = Collections.singletonList("");
                             break;
                     }
@@ -578,7 +578,7 @@ public class BoardManager implements IScoreboardService {
                             fixList = Language.getList(player, Messages.FORMATTING_SCOREBOARD_HEAD_PREFIX_RESTARTING);
                             break;
                         default:
-                            BedWars.debug("Unhandled game state for BedWars prefix");
+                            BedWars.debug("Estado de jogo não tratado para o prefixo do BedWars");
                             fixList = Collections.singletonList("");
                             break;
                     }
@@ -632,7 +632,7 @@ public class BoardManager implements IScoreboardService {
                             fixList = Language.getList(player, Messages.FORMATTING_SCOREBOARD_TAB_SUFFIX_RESTARTING);
                             break;
                         default:
-                            BedWars.debug("Unhandled game state for BedWars suffix");
+                            BedWars.debug("Estado de jogo não tratado para o sufixo do BedWars");
                             fixList = Collections.singletonList("");
                             break;
                     }
@@ -666,7 +666,7 @@ public class BoardManager implements IScoreboardService {
                             fixList = Language.getList(player, Messages.FORMATTING_SCOREBOARD_HEAD_SUFFIX_RESTARTING);
                             break;
                         default:
-                            BedWars.debug("Unhandled game state for BedWars suffix");
+                            BedWars.debug("Estado de jogo não tratado para o sufixo do BedWars");
                             fixList = Collections.singletonList("");
                             break;
                     }

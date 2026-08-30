@@ -46,7 +46,7 @@ public class CloneArena extends SubCommand {
         setPriority(7);
         showInList(true);
         setPermission(Permissions.PERMISSION_CLONE);
-        setDisplayInfo(Misc.msgHoverClick("§6 ▪ §7/" + getParent().getName() + " " + getSubCommandName() + " §6<worldName> <newName>", "§fClone an existing arena.",
+        setDisplayInfo(Misc.msgHoverClick("§6 ▪ §7/" + getParent().getName() + " " + getSubCommandName() + " §6<worldName> <newName>", "§fClona uma arena existente.",
                 "/" + getParent().getName() + " " + getSubCommandName(), ClickEvent.Action.SUGGEST_COMMAND));
     }
 
@@ -54,32 +54,32 @@ public class CloneArena extends SubCommand {
     public boolean execute(String[] args, CommandSender s) {
         assert s != null;
         if (!MainCommand.isLobbySet()) {
-            s.sendMessage("§c▪ §7You have to set the lobby location first!");
+            s.sendMessage("§c▪ §7Você precisa definir a localização do lobby primeiro!");
             return true;
         }
         if (args.length != 2) {
-            s.sendMessage("§c▪ §7Usage: §o/" + getParent().getName() + " " + getSubCommandName() + " <mapName> <newArena>");
+            s.sendMessage("§c▪ §7Uso: §o/" + getParent().getName() + " " + getSubCommandName() + " <mapName> <newArena>");
             return true;
         }
         if (!BedWars.getAPI().getRestoreAdapter().isWorld(args[0])) {
-            s.sendMessage("§c▪ §7" + args[0] + " doesn't exist!");
+            s.sendMessage("§c▪ §7" + args[0] + " não existe!");
             return true;
         }
         File yml1 = new File(BedWars.plugin.getDataFolder(), "/Arenas/" + args[0] + ".yml"), yml2 = new File(BedWars.plugin.getDataFolder(), "/Arenas/" + args[1] + ".yml");
         if (!yml1.exists()) {
-            s.sendMessage("§c▪ §7" + args[0] + " doesn't exist!");
+            s.sendMessage("§c▪ §7" + args[0] + " não existe!");
             return true;
         }
         if (BedWars.getAPI().getRestoreAdapter().isWorld(args[1]) && yml2.exists()) {
-            s.sendMessage("§c▪ §7" + args[1] + " already exist!");
+            s.sendMessage("§c▪ §7" + args[1] + " já existe!");
             return true;
         }
         if (args[1].contains("+")) {
-            s.sendMessage("§c▪ §7" + args[1] + " mustn't contain this symbol: " + ChatColor.RED + "+");
+            s.sendMessage("§c▪ §7" + args[1] + " não pode conter este símbolo: " + ChatColor.RED + "+");
             return true;
         }
         if (Arena.getArenaByName(args[0]) != null) {
-            s.sendMessage("§c▪ §7Please disable " + args[0] + " first!");
+            s.sendMessage("§c▪ §7Desative " + args[0] + " first!");
             return true;
         }
         BedWars.getAPI().getRestoreAdapter().cloneArena(args[0], args[1]);
@@ -88,7 +88,7 @@ public class CloneArena extends SubCommand {
                 FileUtils.copyFile(yml1, yml2, true);
             } catch (IOException e) {
                 e.printStackTrace();
-                s.sendMessage("§c▪ §7An error occurred while copying the map's config. Check the console.");
+                s.sendMessage("§c▪ §7Ocorreu um erro ao copiar a config do mapa. Verifique o console.");
             }
         }
         s.sendMessage("§6 ▪ §7Done :D.");

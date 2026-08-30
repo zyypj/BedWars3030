@@ -39,7 +39,7 @@ public final class ShopDataMigrator {
                 }
             } catch (Throwable ignored) {}
             if (!enabled) {
-                BedWars.plugin.getLogger().info("Shop migration is disabled in config (" + CFG_ENABLE + " = false)");
+                BedWars.plugin.getLogger().info("A migração da loja está desativada na config (" + CFG_ENABLE + " = false)");
                 return;
             }
 
@@ -52,15 +52,15 @@ public final class ShopDataMigrator {
                 latest = BedWars.config.getYml().getInt(CFG_VERSION, 0);
             } catch (Throwable ignored) {}
             if (latest >= EXPECTED_VERSION) {
-                BedWars.plugin.getLogger().info("Shop migration not needed. Current version: " + latest + ", Expected version: " + EXPECTED_VERSION);
+                BedWars.plugin.getLogger().info("Migração da loja não é necessária. Versão atual: " + latest + ", Expected version: " + EXPECTED_VERSION);
                 return;
             }
 
-            BedWars.plugin.getLogger().info("Starting legacy Quick Buy identifier migration...");
+            BedWars.plugin.getLogger().info("Iniciando a migração dos identificadores antigos do Quick Buy...");
 
             IDatabase db = BedWars.getRemoteDatabase();
             if (db == null) {
-                BedWars.plugin.getLogger().warning("Database is not initialized. Skipping Quick Buy migration.");
+                BedWars.plugin.getLogger().warning("O banco de dados não foi inicializado. Ignorando a migração do Quick Buy.");
                 return;
             }
 
@@ -69,12 +69,12 @@ public final class ShopDataMigrator {
             try {
                 uuids = db.listQuickBuyUUIDs();
             } catch (Throwable t) {
-                BedWars.plugin.getLogger().warning("Database adapter does not support listing Quick Buy UUIDs. Skipping migration.");
+                BedWars.plugin.getLogger().warning("O adaptador do banco de dados não suporta listar os UUIDs do Quick Buy. Ignorando a migração.");
                 return;
             }
 
             if (uuids == null || uuids.isEmpty()) {
-                BedWars.plugin.getLogger().info("No Quick Buy data found to migrate.");
+                BedWars.plugin.getLogger().info("Nenhum dado de Quick Buy encontrado para migrar.");
                 // still stamp version to avoid re-running
                 try {
                     BedWars.config.getYml().set(CFG_VERSION, EXPECTED_VERSION);
@@ -106,19 +106,19 @@ public final class ShopDataMigrator {
                         db.pushQuickBuyChanges(updates, uuid, Collections.emptyList());
                         migrated += updates.size();
                     } catch (Throwable t) {
-                        BedWars.plugin.getLogger().warning("Failed to persist Quick Buy migration for " + uuid + ": " + t.getMessage());
+                        BedWars.plugin.getLogger().warning("Falha ao persistir a migração do Quick Buy de " + uuid + ": " + t.getMessage());
                     }
                 }
             }
 
-            BedWars.plugin.getLogger().info("Migrated " + migrated + " of " + total + " Quick Buy identifiers to scoped format.");
+            BedWars.plugin.getLogger().info("Migrated " + migrated + " of " + total + " identificadores do Quick Buy para o formato com escopo.");
             BedWars.plugin.getLogger().info("Legacy Quick Buy identifier migration completed successfully.");
             try {
                 BedWars.config.getYml().set(CFG_VERSION, EXPECTED_VERSION);
                 BedWars.config.save();
             } catch (Throwable ignored) {}
         } catch (Throwable t) {
-            BedWars.plugin.getLogger().warning("Unexpected error during Quick Buy migration: " + t.getMessage());
+            BedWars.plugin.getLogger().warning("Erro inesperado durante a migração do Quick Buy: " + t.getMessage());
         }
     }
     /**
@@ -134,15 +134,15 @@ public final class ShopDataMigrator {
             } catch (Throwable ignored) {}
 
             if (alreadyMigrated) {
-                BedWars.plugin.getLogger().info("Quick Buy table migration not needed. Already migrated (" + CFG_TABLE_MIGRATION + " = true)");
+                BedWars.plugin.getLogger().info("Migração da tabela Quick Buy não é necessária. Já foi migrada (" + CFG_TABLE_MIGRATION + " = true)");
                 return;
             }
 
-            BedWars.plugin.getLogger().info("Checking for Quick Buy table migration (quick_buy_2 → quick_buy)...");
+            BedWars.plugin.getLogger().info("Verificando a migração da tabela Quick Buy (quick_buy_2 → quick_buy)...");
 
             IDatabase db = BedWars.getRemoteDatabase();
             if (db == null) {
-                BedWars.plugin.getLogger().warning("Database is not initialized. Skipping Quick Buy table migration.");
+                BedWars.plugin.getLogger().warning("O banco de dados não foi inicializado. Ignorando a migração da tabela Quick Buy.");
                 return;
             }
 
@@ -154,21 +154,21 @@ public final class ShopDataMigrator {
             } else if (db instanceof H2) {
                 migrated = ((H2) db).migrateQuickBuyTable();
             } else {
-                BedWars.plugin.getLogger().info("Quick Buy table migration not needed. Database type: " + db.getClass().getSimpleName() + " (no migration implemented)");
+                BedWars.plugin.getLogger().info("Migração da tabela Quick Buy não é necessária. Tipo do banco: " + db.getClass().getSimpleName() + " (nenhuma migração implementada)");
                 migrated = true;
             }
 
             if (migrated) {
-                BedWars.plugin.getLogger().info("Quick Buy table migration completed successfully.");
+                BedWars.plugin.getLogger().info("Migração da tabela Quick Buy concluída com sucesso.");
                 try {
                     BedWars.config.getYml().set(CFG_TABLE_MIGRATION, true);
                     BedWars.config.save();
                 } catch (Throwable ignored) {}
             } else {
-                BedWars.plugin.getLogger().warning("Quick Buy table migration failed. Check the logs for details.");
+                BedWars.plugin.getLogger().warning("A migração da tabela Quick Buy falhou. Verifique os logs para mais detalhes.");
             }
         } catch (Throwable t) {
-            BedWars.plugin.getLogger().warning("Error during Quick Buy table migration: " + t.getMessage());
+            BedWars.plugin.getLogger().warning("Erro durante a migração da tabela Quick Buy: " + t.getMessage());
             t.printStackTrace();
         }
     }

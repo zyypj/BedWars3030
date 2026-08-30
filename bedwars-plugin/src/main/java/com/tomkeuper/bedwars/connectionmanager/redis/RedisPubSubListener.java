@@ -46,9 +46,9 @@ public class RedisPubSubListener extends JedisPubSub {
             final JsonObject json;
             try {
                 json = new JsonParser().parse(message).getAsJsonObject();
-                BedWars.debug("incoming json message: " + json.toString());
+                BedWars.debug("mensagem json recebida: " + json.toString());
             } catch (JsonSyntaxException e) {
-                BedWars.plugin.getLogger().warning("Received bad data from redis message channel " + BW_CHANNEL);
+                BedWars.plugin.getLogger().warning("Dados inválidos recebidos do canal de mensagens do redis " + BW_CHANNEL);
                 return;
             }
             if (!json.has("type")) return;
@@ -87,11 +87,11 @@ public class RedisPubSubListener extends JedisPubSub {
                         Bukkit.getPluginManager().callEvent(new RedisMessageEvent(addonDataObject, json.get("addon_name").getAsString()));
                     } else {
                         // Handle other types if necessary
-                        BedWars.debug("Unexpected type for 'addon_data': " + addonDataElement.getClass().getSimpleName());
+                        BedWars.debug("Tipo inesperado para 'addon_data': " + addonDataElement.getClass().getSimpleName());
                     }
                     break;
                 default:
-                    BedWars.debug("Found unexpected data from redis in `" + BW_CHANNEL + "` with message: " + json);
+                    BedWars.debug("Dados inesperados do redis encontrados em `" + BW_CHANNEL + "` com a mensagem: " + json);
                     break;
             }
         }

@@ -46,7 +46,9 @@ public class ChunkLoad implements Listener {
                     if (!((ArmorStand)entity).isVisible()){
                         if (((ArmorStand)entity).isMarker()){
                             if (entity.isCustomNameVisible()){
-                                if (ChatColor.stripColor(entity.getCustomName()).contains(" SET") || ChatColor.stripColor(entity.getCustomName()).contains(" set")){
+                                String holoName = ChatColor.stripColor(entity.getCustomName());
+                                if (holoName.contains(" DEFINID") || holoName.contains(" definid")
+                                        || holoName.contains(" SET") || holoName.contains(" set")){
                                     Bukkit.getScheduler().runTask(BedWars.plugin, entity::remove);
                                 }
                             }

@@ -56,10 +56,12 @@ import com.tomkeuper.bedwars.arena.tasks.Refresh;
 import com.tomkeuper.bedwars.arena.upgrades.BaseListener;
 import com.tomkeuper.bedwars.arena.upgrades.HealPoolListener;
 import com.tomkeuper.bedwars.commands.bedwars.MainCommand;
+import com.tomkeuper.bedwars.commands.join.JoinCommand;
 import com.tomkeuper.bedwars.commands.leave.LeaveCommand;
 import com.tomkeuper.bedwars.commands.party.PartyCommand;
 import com.tomkeuper.bedwars.commands.rejoin.RejoinCommand;
 import com.tomkeuper.bedwars.commands.shout.ShoutCommand;
+import com.tomkeuper.bedwars.commands.start.StartCommand;
 import com.tomkeuper.bedwars.configuration.*;
 import com.tomkeuper.bedwars.database.H2;
 import com.tomkeuper.bedwars.database.MySQL;
@@ -111,6 +113,7 @@ import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import org.bstats.bukkit.Metrics;
 import org.bstats.charts.SimplePie;
 import org.bukkit.*;
+import org.bukkit.command.Command;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Monster;
 import org.bukkit.entity.Player;
@@ -134,6 +137,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.security.NoSuchAlgorithmException;
 import java.util.*;
+import java.util.function.BiFunction;
 
 @SuppressWarnings("WeakerAccess")
 public class BedWars extends JavaPlugin {
@@ -188,7 +192,7 @@ public class BedWars extends JavaPlugin {
         try {
             Class.forName("org.spigotmc.SpigotConfig");
         } catch (Exception ignored) {
-            this.getLogger().severe("I can't run on your server software. Please check:");
+            this.getLogger().severe("Não consigo rodar no software do seu servidor. Verifique:");
             this.getLogger().severe("https://wiki.tomkeuper.com/docs/BedWars2023/compatibility");
             serverSoftwareSupport = false;
             return;
@@ -257,7 +261,7 @@ public class BedWars extends JavaPlugin {
             supp = Class.forName("com.tomkeuper.bedwars.support.version." + nmsVersion + "." + nmsVersion);
         } catch (ClassNotFoundException e) {
             serverSoftwareSupport = false;
-            this.getLogger().severe("I can't run on your version: " + minecraftVersion);
+            this.getLogger().severe("Não consigo rodar na sua versão: " + minecraftVersion);
             return;
         }
 
@@ -271,11 +275,11 @@ public class BedWars extends JavaPlugin {
                  ClassNotFoundException e) {
             e.printStackTrace();
             serverSoftwareSupport = false;
-            this.getLogger().severe("Could not load support for server version: " + minecraftVersion);
+            this.getLogger().severe("Não foi possível carregar o suporte para a versão do servidor: " + minecraftVersion);
             return;
         }
 
-        this.getLogger().info("Loading support for paper/spigot: " + minecraftVersion);
+        this.getLogger().info("Carregando suporte para paper/spigot: " + minecraftVersion);
 
         // Setup languages
         new English();
@@ -315,11 +319,11 @@ public class BedWars extends JavaPlugin {
         nms.registerVersionListeners();
 
         if (Bukkit.getPluginManager().getPlugin("Multiverse-Core") != null) {
-            plugin.getLogger().warning("-=-=-=-=-=-=-=- Multiverse has been found! -=-=-=-=-=-=-=-");
+            plugin.getLogger().warning("-=-=-=-=-=-=-=- Multiverse foi encontrado! -=-=-=-=-=-=-=-");
             plugin.getLogger().warning("");
-            plugin.getLogger().warning(" Unless properly configured, multiverse will cause issues!");
+            plugin.getLogger().warning(" Se não for configurado corretamente, o Multiverse vai causar problemas!");
             plugin.getLogger().warning("");
-            plugin.getLogger().warning("      Make sure that MV does NOT touch any BW maps.");
+            plugin.getLogger().warning("      Garanta que o MV NÃO mexa em nenhum mapa do BW.");
             plugin.getLogger().warning("");
             plugin.getLogger().warning("_________________________________________________________");
         }
@@ -343,7 +347,7 @@ public class BedWars extends JavaPlugin {
 
         /* Check if lobby location is set. Required for non Bungee servers */
         if (config.getLobbyWorldName().isEmpty() && serverType != ServerType.BUNGEE) {
-            plugin.getLogger().log(java.util.logging.Level.WARNING, "Lobby location is not set!");
+            plugin.getLogger().log(java.util.logging.Level.WARNING, "A localização do lobby não está definida!");
         }
 
         /* Check if CloudNet support is requested (replaces server-id name the CloudNet service ID) */
@@ -392,7 +396,7 @@ public class BedWars extends JavaPlugin {
                 redisConnection = new RedisConnection();
                 registerEvents(new RedisArenaListeners(redisConnection));
                 if (!redisConnection.connect()) {
-                    getLogger().severe("Could not connect to redis server! Please check the redis configuration and make sure the redis server is running! Disabling the plugin...");
+                    getLogger().severe("Não foi possível conectar ao servidor redis! Verifique a configuração do redis e certifique-se de que o servidor redis está rodando! Desativando o plugin...");
                     setEnabled(false);
                     return;
                 }
@@ -428,13 +432,13 @@ public class BedWars extends JavaPlugin {
             if (config.getYml().getBoolean(ConfigPath.GENERAL_CONFIGURATION_ALLOW_PARTIES)) {
 
                 if (getServer().getPluginManager().isPluginEnabled("Parties")) {
-                    getLogger().info("Hook into Parties (by AlessioDP) support!");
+                    getLogger().info("Integração com o Parties (por AlessioDP) ativada!");
                     partyManager = new PartiesAdapter();
                 } else if (Bukkit.getServer().getPluginManager().isPluginEnabled("PartyAndFriends")) {
-                    getLogger().info("Hook into Party and Friends for Spigot (by Simonsator) support!");
+                    getLogger().info("Integração com o Party and Friends for Spigot (por Simonsator) ativada!");
                     partyManager = new PAF();
                 } else if (Bukkit.getServer().getPluginManager().isPluginEnabled("Spigot-Party-API-PAF")) {
-                    getLogger().info("Hook into Spigot Party API for Party and Friends Extended (by Simonsator) support!");
+                    getLogger().info("Integração com a Spigot Party API do Party and Friends Extended (por Simonsator) ativada!");
                     partyManager = new PAFBungeecordRedisApi();
                 }
 
@@ -469,14 +473,14 @@ public class BedWars extends JavaPlugin {
             MySQL mySQL = new MySQL();
             long time = System.currentTimeMillis();
             if (!mySQL.connect()) {
-                this.getLogger().severe("Could not connect to database! Please verify your credentials and make sure that the server IP is whitelisted in MySQL.");
+                this.getLogger().severe("Não foi possível conectar ao banco de dados! Verifique suas credenciais e certifique-se de que o IP do servidor está liberado no MySQL.");
                 remoteDatabase = new SQLite();
             } else {
                 remoteDatabase = mySQL;
             }
             if (System.currentTimeMillis() - time >= 5000) {
-                this.getLogger().severe("It took " + ((System.currentTimeMillis() - time) / 1000) + " ms to establish a database connection!\n" +
-                        "Using this remote connection is not recommended!");
+                this.getLogger().severe("It took " + ((System.currentTimeMillis() - time) / 1000) + " ms para estabelecer a conexão com o banco de dados!\n" +
+                        "Não é recomendável usar esta conexão remota!");
             }
             remoteDatabase.init();
         } else if (config.getString(ConfigPath.GENERAL_CONFIGURATION_DATABASE_TYPE).equalsIgnoreCase("sqlite")) {
@@ -491,7 +495,7 @@ public class BedWars extends JavaPlugin {
         Bukkit.getScheduler().runTaskLater(plugin, () -> {
             if (this.getServer().getPluginManager().getPlugin("Citizens") != null) {
                 JoinNPC.setCitizensSupport(true);
-                getLogger().info("Hook into Citizens support. /bw npc");
+                getLogger().info("Integração com o Citizens ativada. /bw npc");
                 registerEvents(new CitizensListener());
             }
 
@@ -499,7 +503,7 @@ public class BedWars extends JavaPlugin {
             try {
                 JoinNPC.spawnNPCs();
             } catch (Exception e) {
-                this.getLogger().severe("Could not spawn CmdJoin NPCs. Make sure you have right version of Citizens for your server!");
+                this.getLogger().severe("Não foi possível criar os NPCs de entrada. Certifique-se de ter a versão correta do Citizens para o seu servidor!");
                 JoinNPC.setCitizensSupport(false);
             }
         }, 40L);
@@ -529,7 +533,7 @@ public class BedWars extends JavaPlugin {
                         vaultChatLoaded = true;
                         chat = new WithChat();
                     } else {
-                        plugin.getLogger().info("Vault found, but no chat provider!");
+                        plugin.getLogger().info("Vault encontrado, mas nenhum provedor de chat!");
                         chat = new NoChat();
                     }
                 } catch (Exception var2_2) {
@@ -543,7 +547,7 @@ public class BedWars extends JavaPlugin {
                         vaultEconomyLoaded = true;
                         economy = new WithEconomy();
                     } else {
-                        plugin.getLogger().info("Vault found, but no economy provider!");
+                        plugin.getLogger().info("Vault encontrado, mas nenhum provedor de economia!");
                         economy = new NoEconomy();
                     }
                 } catch (Exception var2_2) {
@@ -568,7 +572,7 @@ public class BedWars extends JavaPlugin {
 
         /* Prevent issues on reload */
         for (Player p : Bukkit.getOnlinePlayers()) {
-            p.kickPlayer("BedWars2023 was RELOADED! (do not reload plugins)");
+            p.kickPlayer("O BedWars2023 foi RECARREGADO! (não recarregue plugins)");
         }
 
         /* Load sounds configuration */
@@ -617,9 +621,9 @@ public class BedWars extends JavaPlugin {
                 IVipFeatures vf = Bukkit.getServicesManager().getRegistration(IVipFeatures.class).getProvider();
                 vf.registerMiniGame(new VipFeatures(this));
                 registerEvents(new VipListeners(vf));
-                getLogger().log(java.util.logging.Level.INFO, "Hook into VipFeatures support.");
+                getLogger().log(java.util.logging.Level.INFO, "Integração com o VipFeatures ativada.");
             } catch (Exception e) {
-                getLogger().warning("Could not load support for VipFeatures.");
+                getLogger().warning("Não foi possível carregar o suporte ao VipFeatures.");
             } catch (MiniGameAlreadyRegistered miniGameAlreadyRegistered) {
                 miniGameAlreadyRegistered.printStackTrace();
             }
@@ -632,32 +636,32 @@ public class BedWars extends JavaPlugin {
         // Initialize sidebar manager
         Bukkit.getScheduler().runTask(this, () -> {
             if (Bukkit.getPluginManager().getPlugin("TAB") != null) {
-                getLogger().info("Hooking into TAB support!");
+                getLogger().info("Ativando a integração com o TAB!");
                 if (!checkTABVersion(Bukkit.getPluginManager().getPlugin("TAB").getDescription().getVersion())) {
-                    this.getLogger().severe("Invalid TAB version, you are using v" + Bukkit.getPluginManager().getPlugin("TAB").getDescription().getVersion() + " but v5.0.0 or higher is required!");
+                    this.getLogger().severe("Versão do TAB inválida, você está usando a v" + Bukkit.getPluginManager().getPlugin("TAB").getDescription().getVersion() + " mas é necessária a v5.0.0 ou superior!");
                     Bukkit.getPluginManager().disablePlugin(this);
                     return;
                 }
                 if (BoardManager.init()) {
-                    getLogger().info("TAB support has been loaded");
+                    getLogger().info("O suporte ao TAB foi carregado");
 
                     /* Load join signs. */
                     loadArenasAndSigns();
 
                 } else {
-                    this.getLogger().severe("Tab scoreboard is not enabled! Applying tab configuration automatically...");
+                    this.getLogger().severe("A scoreboard do TAB não está ativada! Aplicando a configuração do TAB automaticamente...");
 
                     // Execute the command programmatically
                     Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "bw applyTabConfig");
-                    getLogger().info("TAB configuration command has been executed.");
+                    getLogger().info("O comando de configuração do TAB foi executado.");
 
-                    this.getLogger().warning("\n\nRestarting the server to apply the changes...\n\n");
+                    this.getLogger().warning("\n\nReiniciando o servidor para aplicar as alterações...\n\n");
                     Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "restart");
 
 
                 }
             } else {
-                this.getLogger().severe("TAB by NEZNAMY could not be hooked!");
+                this.getLogger().severe("Não foi possível integrar com o TAB do NEZNAMY!");
                 Bukkit.getPluginManager().disablePlugin(this);
             }
         });
@@ -691,10 +695,10 @@ public class BedWars extends JavaPlugin {
         if (redisConnection != null) {
             Bukkit.getScheduler().runTaskLater(this, () -> {
                 if (redisConnection.checkSettings("default_rankup_cost", String.valueOf(LevelsConfig.getNextCost(1)))) {
-                    Bukkit.getConsoleSender().sendMessage(ChatColor.GREEN + "Redis settings match the default values.");
+                    Bukkit.getConsoleSender().sendMessage(ChatColor.GREEN + "As configurações do redis correspondem aos valores padrão.");
                 } else {
-                    Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "The network settings do not match the set values! Please check the configuration!");
-                    Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "Want to set value as default? Use '" + ChatColor.WHITE + "/bw redisUpdate default_rankup_cost" + ChatColor.RED + "' from the console!");
+                    Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "As configurações de rede não correspondem aos valores definidos! Verifique a configuração!");
+                    Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "Quer definir o valor como padrão? Use '" + ChatColor.WHITE + "/bw redisUpdate default_rankup_cost" + ChatColor.RED + "' pelo console!");
                 }
             }, 70L);
         }
@@ -702,9 +706,9 @@ public class BedWars extends JavaPlugin {
         // Send startup message, delayed to make sure everything is loaded and registered.
         Bukkit.getScheduler().runTaskLater(this, () -> {
             this.getLogger().info("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
-            this.getLogger().info("BedWars2023 v" + plugin.getDescription().getVersion() + " has been enabled!");
+            this.getLogger().info("BedWars2023 v" + plugin.getDescription().getVersion() + " foi ativado!");
             this.getLogger().info("");
-            this.getLogger().info("Server Type: " + getServerType().toString() + (getServerType() == ServerType.BUNGEE ? " (ServerID: " + config.getString(ConfigPath.GENERAL_CONFIGURATION_BUNGEE_OPTION_SERVER_ID) + ")" : ""));
+            this.getLogger().info("Tipo de servidor: " + getServerType().toString() + (getServerType() == ServerType.BUNGEE ? " (ServerID: " + config.getString(ConfigPath.GENERAL_CONFIGURATION_BUNGEE_OPTION_SERVER_ID) + ")" : ""));
             this.getLogger().info("Auto Scale: " + autoscale);
             this.getLogger().info("Datasource: " + remoteDatabase.getClass().getSimpleName());
             this.getLogger().info("Restore Adapter: " + api.getRestoreAdapter().getDisplayName());
@@ -751,9 +755,27 @@ public class BedWars extends JavaPlugin {
             nms.registerCommand("leave", new LeaveCommand("leave"));
         }
         if (getServerType() != ServerType.BUNGEE && config.getBoolean(ConfigPath.GENERAL_ENABLE_PARTY_CMD)) {
-            Bukkit.getLogger().info("Registering /party command..");
+            Bukkit.getLogger().info("Registrando o comando /party..");
             nms.registerCommand("party", new PartyCommand("party"));
         }
+        registerShortcut("iniciar", Collections.singletonList("start"), StartCommand::new);
+        registerShortcut("entrar", Arrays.asList("join", "jogar"), JoinCommand::new);
+    }
+
+    /**
+     * Register a standalone shortcut for a /{@link #mainCmd} sub command, skipping any
+     * alias another plugin already owns so we never steal an existing command.
+     */
+    private void registerShortcut(String name, List<String> aliases, BiFunction<String, List<String>, Command> factory) {
+        if (nms.isBukkitCommandRegistered(name)) {
+            getLogger().warning("O comando /" + name + " já está registrado por outro plugin, atalho ignorado.");
+            return;
+        }
+        List<String> free = new ArrayList<>(aliases.size());
+        for (String alias : aliases) {
+            if (!nms.isBukkitCommandRegistered(alias)) free.add(alias);
+        }
+        nms.registerCommand(name, factory.apply(name, free));
     }
 
     public void onDisable() {
@@ -795,7 +817,7 @@ public class BedWars extends JavaPlugin {
 
             if (serverType == ServerType.BUNGEE && !autoscale) {
                 if (files.isEmpty()) {
-                    this.getLogger().log(java.util.logging.Level.WARNING, "Could not find any arena!");
+                    this.getLogger().log(java.util.logging.Level.WARNING, "Nenhuma arena encontrada!");
                     return;
                 }
                 Random r = new Random();
@@ -967,14 +989,14 @@ public class BedWars extends JavaPlugin {
             } else if ((major > 2 || major == 2 && minor >= 10) && (nms.getVersion() >= 9 && nms.getVersion() <= 12)) {
                 adapterPath = "com.tomkeuper.bedwars.arena.mapreset.slime.SlimePaperAdapter";
             } else {
-                this.getLogger().warning("Could not find adapter path for SWM version, is it unsupported?");
+                this.getLogger().warning("Não foi possível encontrar o caminho do adaptador para a versão do SWM, ela não é suportada?");
                 return false;
             }
         } else {
             if (Bukkit.getServer().getName().equalsIgnoreCase("AdvancedSlimePaper")){
                 adapterPath = "com.tomkeuper.bedwars.arena.mapreset.slime.AdvancedSlimePaperAdapter";
             } else {
-                this.getLogger().warning("Could not find adapter path for ASP version, is it unsupported?");
+                this.getLogger().warning("Não foi possível encontrar o caminho do adaptador para a versão do ASP, ela não é suportada?");
                 return false;
             }
         }
@@ -985,11 +1007,11 @@ public class BedWars extends JavaPlugin {
 
             RestoreAdapter candidate = (RestoreAdapter) constructor.newInstance(this);
             api.setRestoreAdapter(candidate);
-            getLogger().info("Hook into " + candidate.getDisplayName() + " as restore adapter.");
+            getLogger().info("Hook into " + candidate.getDisplayName() + " como adaptador de restauração.");
             return true;
         } catch (Exception e) {
             e.printStackTrace();
-            this.getLogger().warning("Something went wrong! Using internal reset adapter...");
+            this.getLogger().warning("Algo deu errado! Usando o adaptador de reset interno...");
         }
         return false;
     }
@@ -1100,12 +1122,12 @@ public class BedWars extends JavaPlugin {
                         ConfigPath.GENERAL_CONFIGURATION_PRE_GAME_ITEMS_COMMAND.replace("%path%", item)) != null) {
                     preGameItem = new PreGameItem(itemHandlers.get("command"), finalItemStack, slot, item);
                 } else {
-                    this.getLogger().severe("No handler or command found for pre-game item: " + item);
+                    this.getLogger().severe("Nenhum handler ou comando encontrado para o item de pré-jogo: " + item);
                     continue;
                 }
             }
 
-            debug("Loaded pre-game item: " + preGameItem.getIdentifier());
+            debug("Item de pré-jogo carregado: " + preGameItem.getIdentifier());
             preGameItems.add(preGameItem);
         }
     }
@@ -1151,12 +1173,12 @@ public class BedWars extends JavaPlugin {
                         ConfigPath.GENERAL_CONFIGURATION_SPECTATOR_ITEMS_COMMAND.replace("%path%", item)) != null) {
                     spectatorItem = new SpectatorItem(itemHandlers.get("command"), finalItemStack, slot, item);
                 } else {
-                    this.getLogger().severe("No handler or command found for spectator item: " + item);
+                    this.getLogger().severe("Nenhum handler ou comando encontrado para o item de espectador: " + item);
                     continue;
                 }
             }
 
-            debug("Loaded spectator item: " + spectatorItem.getIdentifier());
+            debug("Item de espectador carregado: " + spectatorItem.getIdentifier());
             spectatorItems.add(spectatorItem);
         }
     }
@@ -1202,12 +1224,12 @@ public class BedWars extends JavaPlugin {
                         ConfigPath.GENERAL_CONFIGURATION_LOBBY_ITEMS_COMMAND.replace("%path%", item)) != null) {
                     lobbyItem = new LobbyItem(itemHandlers.get("command"), finalItemStack, slot, item);
                 } else {
-                    this.getLogger().severe("No handler or command found for lobby item: " + item);
+                    this.getLogger().severe("Nenhum handler ou comando encontrado para o item de lobby: " + item);
                     continue;
                 }
             }
 
-            debug("Loaded lobby item: " + lobbyItem.getIdentifier());
+            debug("Item de lobby carregado: " + lobbyItem.getIdentifier());
             lobbyItems.add(lobbyItem);
         }
     }
@@ -1216,7 +1238,7 @@ public class BedWars extends JavaPlugin {
         boolean valid = true;
         for (String path : paths) {
             if (config.getYml().get(path.replace("%path%", item)) == null) {
-                BedWars.plugin.getLogger().severe(path.replace("%path%", item) + " is not set!");
+                BedWars.plugin.getLogger().severe(path.replace("%path%", item) + " não está definido!");
                 valid = false;
             }
         }
@@ -1236,7 +1258,7 @@ public class BedWars extends JavaPlugin {
             if (registerItemHandler(handler)) {
                 getLogger().info("Registered item handler: " + handler.getId());
             } else {
-                getLogger().warning("Could not register item handler: " + handler.getId());
+                getLogger().warning("Não foi possível registrar o handler de item: " + handler.getId());
             }
         }
     }

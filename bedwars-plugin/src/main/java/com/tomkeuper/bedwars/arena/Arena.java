@@ -219,16 +219,16 @@ public class Arena implements IArena {
         if (!autoscale) {
             for (IArena mm : enableQueue) {
                 if (mm.getArenaName().equalsIgnoreCase(name)) {
-                    plugin.getLogger().severe("Tried to load arena " + name + " but it is already in the enable queue.");
+                    plugin.getLogger().severe("Tentativa de carregar a arena " + name + " mas ela já está na fila de ativação.");
                     if (p != null)
-                        p.sendMessage(ChatColor.RED + "Tried to load arena " + name + " but it is already in the enable queue.");
+                        p.sendMessage(ChatColor.RED + "Tentativa de carregar a arena " + name + " mas ela já está na fila de ativação.");
                     return;
                 }
             }
             if (getArenaByName(name) != null) {
-                plugin.getLogger().severe("Tried to load arena " + name + " but it is already enabled.");
+                plugin.getLogger().severe("Tentativa de carregar a arena " + name + " mas ela já está ativada.");
                 if (p != null)
-                    p.sendMessage(ChatColor.RED + "Tried to load arena " + name + " but it is already enabled.");
+                    p.sendMessage(ChatColor.RED + "Tentativa de carregar a arena " + name + " mas ela já está ativada.");
                 return;
             }
         }
@@ -248,13 +248,13 @@ public class Arena implements IArena {
         }
 
         if (yml.get("Team") == null) {
-            if (p != null) p.sendMessage("You didn't set any team for arena: " + name);
-            plugin.getLogger().severe("You didn't set any team for arena: " + name);
+            if (p != null) p.sendMessage("Você não definiu nenhum time para a arena: " + name);
+            plugin.getLogger().severe("Você não definiu nenhum time para a arena: " + name);
             return;
         }
         if (yml.getConfigurationSection("Team").getKeys(false).size() < 2) {
-            if (p != null) p.sendMessage("§cYou must set at least 2 teams on: " + name);
-            plugin.getLogger().severe("You must set at least 2 teams on: " + name);
+            if (p != null) p.sendMessage("§cVocê precisa definir pelo menos 2 times em: " + name);
+            plugin.getLogger().severe("Você precisa definir pelo menos 2 times em: " + name);
             return;
         }
         maxInTeam = yml.getInt("maxInTeam");
@@ -273,8 +273,8 @@ public class Arena implements IArena {
 
 
         if (!BedWars.getAPI().getRestoreAdapter().isWorld(this.mapName)) {
-            if (p != null) p.sendMessage(ChatColor.RED + "There isn't any map called " + this.mapName);
-            plugin.getLogger().log(Level.WARNING, "There isn't any map called " + this.mapName);
+            if (p != null) p.sendMessage(ChatColor.RED + "Não existe nenhum mapa chamado " + this.mapName);
+            plugin.getLogger().log(Level.WARNING, "Não existe nenhum mapa chamado " + this.mapName);
             return;
         }
 
@@ -286,29 +286,29 @@ public class Arena implements IArena {
             try {
                 TeamColor.valueOf(colorS);
             } catch (Exception e) {
-                if (p != null) p.sendMessage("§cInvalid color at team: " + team + " in arena: " + name);
-                plugin.getLogger().severe("Invalid color at team: " + team + " in arena: " + name);
+                if (p != null) p.sendMessage("§cCor inválida no time: " + team + " na arena: " + name);
+                plugin.getLogger().severe("Cor inválida no time: " + team + " na arena: " + name);
                 error = true;
             }
             for (String stuff : Arrays.asList("Color", "Spawn", "Bed", "Shop", "Upgrade", "Iron", "Gold")) {
                 if (yml.get("Team." + team + "." + stuff) == null) {
-                    if (p != null) p.sendMessage("§c" + stuff + " not set for " + team + " team on: " + name);
-                    plugin.getLogger().severe(stuff + " not set for " + team + " team on: " + name);
+                    if (p != null) p.sendMessage("§c" + stuff + " não definido para o time " + team + " em: " + name);
+                    plugin.getLogger().severe(stuff + " não definido para o time " + team + " em: " + name);
                     error = true;
                 }
             }
         }
         if (yml.get("generator.Diamond") == null) {
-            if (p != null) p.sendMessage("§cThere aren't any Diamond generators set on: " + name);
-            plugin.getLogger().severe("There aren't any Diamond generators set on: " + name);
+            if (p != null) p.sendMessage("§cNão há geradores de Diamante definidos em: " + name);
+            plugin.getLogger().severe("Não há geradores de Diamante definidos em: " + name);
         }
         if (yml.get("generator.Emerald") == null) {
-            if (p != null) p.sendMessage("§cThere aren't any Emerald generators set on: " + name);
-            plugin.getLogger().severe("There aren't any Emerald generators set on: " + name);
+            if (p != null) p.sendMessage("§cNão há geradores de Esmeralda definidos em: " + name);
+            plugin.getLogger().severe("Não há geradores de Esmeralda definidos em: " + name);
         }
         if (yml.get("waiting.Loc") == null) {
-            if (p != null) p.sendMessage("§cWaiting spawn not set on: " + name);
-            plugin.getLogger().severe("Waiting spawn not set on: " + name);
+            if (p != null) p.sendMessage("§cSpawn de espera não definido em: " + name);
+            plugin.getLogger().severe("Spawn de espera não definido em: " + name);
             return;
         }
         if (error) return;
@@ -331,7 +331,7 @@ public class Arena implements IArena {
             if (getArenaByName(arenaName) != null) return;
         }
         removeFromEnableQueue(this);
-        debug("Initialized arena " + getArenaName() + " with map " + world.getName());
+        debug("Arena inicializada " + getArenaName() + " com o mapa " + world.getName());
         this.world = world;
         this.worldName = world.getName();
         getConfig().setName(worldName);
@@ -366,7 +366,7 @@ public class Arena implements IArena {
         //Create teams
         for (String team : yml.getConfigurationSection("Team").getKeys(false)) {
             if (getTeam(team) != null) {
-                BedWars.plugin.getLogger().severe("A team with name: " + team + " was already loaded for arena: " + getArenaName());
+                BedWars.plugin.getLogger().severe("Um time com o nome: " + team + " já havia sido carregado para a arena: " + getArenaName());
                 continue;
             }
             BedWarsTeam bwt = new BedWarsTeam(team, TeamColor.valueOf(yml.getString("Team." + team + ".Color").toUpperCase()), cm.getArenaLoc("Team." + team + ".Spawn"),
@@ -382,7 +382,7 @@ public class Arena implements IArena {
                 for (String s : yml.getStringList("generator." + type)) {
                     location = cm.convertStringToArenaLocation(s);
                     if (location == null) {
-                        plugin.getLogger().severe("Invalid location for " + type + " generator: " + s);
+                        plugin.getLogger().severe("Localização inválida para o gerador de " + type + ": " + s);
                         continue;
                     }
                     oreGenerators.add(new OreGenerator(location, this, GeneratorType.valueOf(type.toUpperCase()), null, true));
@@ -398,10 +398,10 @@ public class Arena implements IArena {
 
         /* Check if lobby removal is set */
         if (!getConfig().getYml().isSet(ConfigPath.ARENA_WAITING_POS1) && getConfig().getYml().isSet(ConfigPath.ARENA_WAITING_POS2)) {
-            plugin.getLogger().severe("Lobby Pos1 isn't set! The arena's lobby won't be removed!");
+            plugin.getLogger().severe("Lobby Pos1 não está definida! O lobby da arena não será removido!");
         }
         if (getConfig().getYml().isSet(ConfigPath.ARENA_WAITING_POS1) && !getConfig().getYml().isSet(ConfigPath.ARENA_WAITING_POS2)) {
-            plugin.getLogger().severe("Lobby Pos2 isn't set! The arena's lobby won't be removed!");
+            plugin.getLogger().severe("Lobby Pos2 não está definida! O lobby da arena não será removido!");
         }
 
         /* Register arena signs */
@@ -447,7 +447,7 @@ public class Arena implements IArena {
                 "Default." + ConfigPath.GENERATOR_DIAMOND_TIER_II_START : getGroup() + "." + ConfigPath.GENERATOR_DIAMOND_TIER_II_START);
         upgradeEmeraldsCount = getGeneratorsCfg().getInt(getGeneratorsCfg().getYml().get(getGroup() + "." + ConfigPath.GENERATOR_EMERALD_TIER_II_START) == null ?
                 "Default." + ConfigPath.GENERATOR_EMERALD_TIER_II_START : getGroup() + "." + ConfigPath.GENERATOR_EMERALD_TIER_II_START);
-        plugin.getLogger().info("Load done: " + getArenaName());
+        plugin.getLogger().info("Carregamento concluído: " + getArenaName());
 
 
         // entity tracking range - player
@@ -476,7 +476,7 @@ public class Arena implements IArena {
                 getArenaByPlayer(p).removePlayer(p, false);
             }
         }
-        debug("Player added: " + p.getName() + " arena: " + getArenaName());
+        debug("Jogador adicionado: " + p.getName() + " arena: " + getArenaName());
 
 //        Used to check if a sidebar must be given or not
         boolean isStatusChange = false;
@@ -701,7 +701,7 @@ public class Arena implements IArena {
             Bukkit.getPluginManager().callEvent(spectateEvent);
             if (spectateEvent.isCancelled()) return false;
 
-            debug("Spectator added: " + p.getName() + " arena: " + getArenaName());
+            debug("Espectador adicionado: " + p.getName() + " arena: " + getArenaName());
 
             if (!playerBefore) {
                 PlayerJoinArenaEvent ev = new PlayerJoinArenaEvent(this, p, true);
@@ -839,7 +839,7 @@ public class Arena implements IArena {
         if (leaving.contains(p)) return;
         else leaving.add(p);
 
-        debug("Player removed: " + p.getName() + " arena: " + getArenaName());
+        debug("Jogador removido: " + p.getName() + " arena: " + getArenaName());
         respawnSessions.remove(p);
 
         ITeam team = null;
@@ -1123,7 +1123,7 @@ public class Arena implements IArena {
         } else {
             leaving.add(p);
         }
-        debug("Spectator removed: " + p.getName() + " arena: " + getArenaName());
+        debug("Espectador removido: " + p.getName() + " arena: " + getArenaName());
 
         Bukkit.getPluginManager().callEvent(new PlayerLeaveArenaEvent(p, this, null));
         spectators.remove(p);
@@ -1277,7 +1277,7 @@ public class Arena implements IArena {
             List<ShopHolo> holos = shopHolosIso.getOrDefault(iso, Collections.emptyList());
             for (ShopHolo holo : holos) {
                 if (holo == null) {
-                    debug("ShopHolo is null for iso " + iso);
+                    debug("ShopHolo é nulo para o idioma " + iso);
                     continue;
                 }
                 holo.getHologram().addPlayer(p);
@@ -1292,7 +1292,7 @@ public class Arena implements IArena {
                     holo.addPlayer(p);
                     holo.getHologram().getLines().forEach(l -> l.reveal(p));
                     holo.update(p);
-                } else debug("No gen holo for iso " + iso);
+                } else debug("Sem holograma de gerador para o idioma " + iso);
             }
         }, 10L);
 
@@ -1317,9 +1317,9 @@ public class Arena implements IArena {
         if (getStartingTask() != null) getStartingTask().cancel();
         if (getPlayingTask() != null) getPlayingTask().cancel();
         if (getAnnouncementTask() != null) getAnnouncementTask().cancel();
-        plugin.getLogger().log(Level.WARNING, "Disabling arena: " + getArenaName());
+        plugin.getLogger().log(Level.WARNING, "Desativando arena: " + getArenaName());
         for (Player inWorld : getWorld().getPlayers()) {
-            inWorld.kickPlayer("You're not supposed to be here.");
+            inWorld.kickPlayer("Você não deveria estar aqui.");
         }
         BedWars.getAPI().getRestoreAdapter().onDisable(this);
         Bukkit.getPluginManager().callEvent(new ArenaDisableEvent(getArenaName(), getWorldName()));
@@ -1340,10 +1340,10 @@ public class Arena implements IArena {
         if (null != perMinuteTask) {
             perMinuteTask.cancel();
         }
-        plugin.getLogger().log(Level.FINE, "Restarting arena: " + getArenaName());
+        plugin.getLogger().log(Level.FINE, "Reiniciando arena: " + getArenaName());
         Bukkit.getPluginManager().callEvent(new ArenaRestartEvent(getArenaName(), getWorldName()));
         for (Player inWorld : getWorld().getPlayers()) {
-            inWorld.kickPlayer("You're not supposed to be here.");
+            inWorld.kickPlayer("Você não deveria estar aqui.");
         }
         BedWars.getAPI().getRestoreAdapter().onRestart(this);
         destroyData();
@@ -2341,7 +2341,7 @@ public class Arena implements IArena {
                             l = new Location(Bukkit.getWorld(data[6]), Double.parseDouble(data[1]), Double.parseDouble(data[2]), Double.parseDouble(data[3]));
                         } catch (Exception e) {
                             //noinspection ImplicitArrayToString
-                            plugin.getLogger().severe("Could not load sign at: " + data.toString());
+                            plugin.getLogger().severe("Não foi possível carregar a placa em: " + data.toString());
                             continue;
                         }
                         addSign(l);
@@ -2678,16 +2678,16 @@ public class Arena implements IArena {
         enableQueue.remove(a);
         if (!enableQueue.isEmpty()) {
             BedWars.getAPI().getRestoreAdapter().onEnable(enableQueue.get(0));
-            plugin.getLogger().info("Loading arena: " + enableQueue.get(0).getWorldName());
+            plugin.getLogger().info("Carregando arena: " + enableQueue.get(0).getWorldName());
         }
     }
 
     public static void addToEnableQueue(IArena a) {
         enableQueue.add(a);
-        plugin.getLogger().info("Arena " + a.getWorldName() + " was added to the enable queue.");
+        plugin.getLogger().info("Arena " + a.getWorldName() + " foi adicionada à fila de ativação.");
         if (enableQueue.size() == 1) {
             BedWars.getAPI().getRestoreAdapter().onEnable(a);
-            plugin.getLogger().info("Loading arena: " + a.getWorldName());
+            plugin.getLogger().info("Carregando arena: " + a.getWorldName());
         }
     }
 
@@ -2739,7 +2739,7 @@ public class Arena implements IArena {
     @Override
     public @Nullable ITeam getBedsTeam(@NotNull Location location) {
         if (!location.getWorld().getName().equals(this.worldName)) {
-            throw new RuntimeException("Given location is not on this game world.");
+            throw new RuntimeException("A localização informada não está no mundo desta partida.");
         }
 
         if (!nms.isBed(location.getBlock().getType())) {
@@ -2916,10 +2916,10 @@ public class Arena implements IArena {
     public void setTeamAssigner(ITeamAssigner teamAssigner) {
         if (teamAssigner == null) {
             this.teamAssigner = new TeamAssigner();
-            plugin.getLogger().info("Using Default team assigner on arena: " + this.getArenaName());
+            plugin.getLogger().info("Usando o distribuidor de times padrão na arena: " + this.getArenaName());
         } else {
             this.teamAssigner = teamAssigner;
-            plugin.getLogger().warning("Using " + teamAssigner.getClass().getSimpleName() + " team assigner on arena: " + this.getArenaName());
+            plugin.getLogger().warning("Using " + teamAssigner.getClass().getSimpleName() + " como distribuidor de times na arena: " + this.getArenaName());
         }
     }
 
@@ -2941,12 +2941,12 @@ public class Arena implements IArena {
             Location loc = playerLocation.get(player);
             if (loc == null) {
                 PaperSupport.teleportC(player, Bukkit.getWorlds().get(0).getSpawnLocation(), PlayerTeleportEvent.TeleportCause.PLUGIN);
-                plugin.getLogger().log(Level.SEVERE, player.getName() + " was teleported to the main world because lobby location is not set!");
+                plugin.getLogger().log(Level.SEVERE, player.getName() + " foi teleportado para o mundo principal porque a localização do lobby não está definida!");
             } else player.teleport(loc, PlayerTeleportEvent.TeleportCause.PLUGIN);
         } else if (BedWars.getServerType() == ServerType.MULTIARENA) {
             if (BedWars.getLobbyWorld().isEmpty()) {
                 PaperSupport.teleportC(player, Bukkit.getWorlds().get(0).getSpawnLocation(), PlayerTeleportEvent.TeleportCause.PLUGIN);
-                plugin.getLogger().log(Level.SEVERE, player.getName() + " was teleported to the main world because lobby location is not set!");
+                plugin.getLogger().log(Level.SEVERE, player.getName() + " foi teleportado para o mundo principal porque a localização do lobby não está definida!");
             } else PaperSupport.teleportC(player, config.getConfigLoc("lobbyLoc"), PlayerTeleportEvent.TeleportCause.PLUGIN);
         }
         World w = player.getWorld();
@@ -2973,7 +2973,7 @@ public class Arena implements IArena {
      */
     public void createTABTeamDragonBossBar(ITeam team, int dragonNumber) {
         if (TabAPI.getInstance().getBossBarManager() == null) {
-            BedWars.plugin.getLogger().warning("BossBar is disabled in TAB config! Please enable it there.\n Make sure to remove the ServerInfo default config if you want to use dragon bossbars");
+            BedWars.plugin.getLogger().warning("A BossBar está desativada na config do TAB! Ative-a por lá.\n Lembre-se de remover a config padrão ServerInfo se quiser usar as bossbars de dragão");
             return;
         }
         String dragonPlaceholderName = "%bw_" + team.getArena().getWorldName() + "_" + team.getName() + "+" + dragonNumber + "%";

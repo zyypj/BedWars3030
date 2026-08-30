@@ -55,7 +55,7 @@ public class StatsManager implements IStatsManager {
     public @NotNull IPlayerStats get(UUID uuid) {
         IPlayerStats playerStats = stats.get(uuid);
         if (playerStats == null) {
-            throw new IllegalStateException("Trying to get stats data of an unloaded player!");
+            throw new IllegalStateException("Tentando obter as estatísticas de um jogador não carregado!");
         }
         return playerStats;
     }

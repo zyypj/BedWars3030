@@ -43,7 +43,7 @@ public class RedisArenaListeners implements Listener {
         if (e == null) return;
         final IArena a = e.getArena();
         Bukkit.getScheduler().runTaskAsynchronously(BedWars.plugin, ()-> {
-            if (!redisConnection.storeArenaInformation(a)) Bukkit.getLogger().severe("An error occurred while trying to store arena information!");
+            if (!redisConnection.storeArenaInformation(a)) Bukkit.getLogger().severe("Ocorreu um erro ao tentar salvar as informações da arena!");
         });
     }
 
@@ -52,7 +52,7 @@ public class RedisArenaListeners implements Listener {
         if (e == null) return;
         final IArena a = e.getArena();
         Bukkit.getScheduler().runTaskAsynchronously(BedWars.plugin, ()-> {
-            if (!redisConnection.storeArenaInformation(a)) Bukkit.getLogger().severe("An error occurred while trying to store arena information!");
+            if (!redisConnection.storeArenaInformation(a)) Bukkit.getLogger().severe("Ocorreu um erro ao tentar salvar as informações da arena!");
         });
     }
 
@@ -61,7 +61,7 @@ public class RedisArenaListeners implements Listener {
         if (e == null) return;
         final IArena a = e.getArena();
         Bukkit.getScheduler().runTaskAsynchronously(BedWars.plugin, ()-> {
-            if (!redisConnection.storeArenaInformation(a)) Bukkit.getLogger().severe("An error occurred while trying to store arena information!");
+            if (!redisConnection.storeArenaInformation(a)) Bukkit.getLogger().severe("Ocorreu um erro ao tentar salvar as informações da arena!");
         });
     }
 
@@ -70,7 +70,7 @@ public class RedisArenaListeners implements Listener {
         if (e == null) return;
         final IArena a = e.getArena();
         Bukkit.getScheduler().runTaskAsynchronously(BedWars.plugin, ()-> {
-            if (!redisConnection.storeArenaInformation(a)) Bukkit.getLogger().severe("An error occurred while trying to store arena information!");
+            if (!redisConnection.storeArenaInformation(a)) Bukkit.getLogger().severe("Ocorreu um erro ao tentar salvar as informações da arena!");
         });
     }
 }

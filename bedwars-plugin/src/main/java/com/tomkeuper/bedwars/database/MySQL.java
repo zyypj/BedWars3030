@@ -185,11 +185,11 @@ public class MySQL implements IDatabase {
 
             if (!hasQuickBuy2) {
                 // No migration needed - table doesn't exist
-                BedWars.plugin.getLogger().info("Quick Buy table migration not needed. Table 'quick_buy_2' does not exist.");
+                BedWars.plugin.getLogger().info("Migração da tabela Quick Buy não é necessária. A tabela 'quick_buy_2' não existe.");
                 return true;
             }
 
-            BedWars.plugin.getLogger().info("Found 'quick_buy_2' table. Starting migration...");
+            BedWars.plugin.getLogger().info("Tabela 'quick_buy_2' encontrada. Iniciando a migração...");
 
             try (Statement statement = connection.createStatement()) {
                 // Check if old quick_buy exists
@@ -199,19 +199,19 @@ public class MySQL implements IDatabase {
                 }
 
                 if (hasOldQuickBuy) {
-                    BedWars.plugin.getLogger().info("Dropping old 'quick_buy' table...");
+                    BedWars.plugin.getLogger().info("Removendo a tabela 'quick_buy' antiga...");
                     statement.executeUpdate("DROP TABLE IF EXISTS quick_buy;");
                 }
 
                 // Rename quick_buy_2 to quick_buy
-                BedWars.plugin.getLogger().info("Renaming 'quick_buy_2' to 'quick_buy'...");
+                BedWars.plugin.getLogger().info("Renomeando 'quick_buy_2' para 'quick_buy'...");
                 statement.executeUpdate("RENAME TABLE quick_buy_2 TO quick_buy;");
 
-                BedWars.plugin.getLogger().info("Successfully renamed 'quick_buy_2' to 'quick_buy'.");
+                BedWars.plugin.getLogger().info("'quick_buy_2' renomeada para 'quick_buy' com sucesso.");
                 return true;
             }
         } catch (SQLException e) {
-            BedWars.plugin.getLogger().severe("Failed to migrate Quick Buy table: " + e.getMessage());
+            BedWars.plugin.getLogger().severe("Falha ao migrar a tabela Quick Buy: " + e.getMessage());
             e.printStackTrace();
             return false;
         }

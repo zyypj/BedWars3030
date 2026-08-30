@@ -52,7 +52,7 @@ public class CmdList extends SubCommand {
         super(parent, name);
         setPriority(11);
         showInList(true);
-        setDisplayInfo(Misc.msgHoverClick("§6 ▪ §7/" + MainCommand.getInstance().getName() + " " + getSubCommandName() + "         §8 - §e view player cmds", "§fView player commands.", "/" + getParent().getName() + " " + getSubCommandName(), ClickEvent.Action.RUN_COMMAND));
+        setDisplayInfo(Misc.msgHoverClick("§6 ▪ §7/" + MainCommand.getInstance().getName() + " " + getSubCommandName() + "         §8 - §e ver cmds de jogador", "§fVer os comandos de jogador.", "/" + getParent().getName() + " " + getSubCommandName(), ClickEvent.Action.RUN_COMMAND));
     }
 
     @Override
@@ -110,15 +110,15 @@ public class CmdList extends SubCommand {
                 dmGen = ss.getConfig().getYml().getStringList("generator.Diamond").size();
             }
 
-            String posMsg, group = ChatColor.RED + "(NOT SET)";
+            String posMsg, group = ChatColor.RED + "(NÃO DEFINIDO)";
             if (pos1 && !pos2) {
-                posMsg = ChatColor.RED + "(POS 2 NOT SET)";
+                posMsg = ChatColor.RED + "(POS 2 NÃO DEFINIDA)";
             } else if (!pos1 && pos2) {
-                posMsg = ChatColor.RED + "(POS 1 NOT SET)";
+                posMsg = ChatColor.RED + "(POS 1 NÃO DEFINIDA)";
             } else if (pos1) {
                 posMsg = ChatColor.GREEN + "(SET)";
             } else {
-                posMsg = ChatColor.GRAY + "(NOT SET) " + ChatColor.ITALIC + "OPTIONAL";
+                posMsg = ChatColor.GRAY + "(NÃO DEFINIDO) " + ChatColor.ITALIC + "OPTIONAL";
             }
 
             String g2 = ss.getConfig().getYml().getString("group");
@@ -130,49 +130,49 @@ public class CmdList extends SubCommand {
 
             int maxInTeam = ss.getConfig().getInt("maxInTeam");
 
-            String setWaitingSpawn = ss.dot() + (waitingSpawn ? ChatColor.STRIKETHROUGH : "") + "setWaitingSpawn" + ChatColor.RESET + " " + (waitingSpawn ? ChatColor.GREEN + "(SET)" : ChatColor.RED + "(NOT SET)");
+            String setWaitingSpawn = ss.dot() + (waitingSpawn ? ChatColor.STRIKETHROUGH : "") + "setWaitingSpawn" + ChatColor.RESET + " " + (waitingSpawn ? ChatColor.GREEN + "(SET)" : ChatColor.RED + "(NÃO DEFINIDO)");
             String waitingPos = ss.dot() + (pos ? ChatColor.STRIKETHROUGH : "") + "waitingPos 1/2" + ChatColor.RESET + " " + posMsg;
-            String setSpawn = ss.dot() + ((spawnNotSet.length() == 0) ? ChatColor.STRIKETHROUGH : "") + "setSpawn <teamName>" + ChatColor.RESET + " " + ((spawnNotSet.length() == 0) ? ChatColor.GREEN + "(ALL SET)" : ChatColor.RED + "(Remaining: " + spawnNotSet + ChatColor.RED + ")");
-            String setBed = ss.dot() + ((bedNotSet.toString().length() == 0) ? ChatColor.STRIKETHROUGH : "") + "setBed" + ChatColor.RESET + " " + ((bedNotSet.length() == 0) ? ChatColor.GREEN + "(ALL SET)" : ChatColor.RED + "(Remaining: " + bedNotSet + ChatColor.RED + ")");
-            String setShop = ss.dot() + ((shopNotSet.toString().length() == 0) ? ChatColor.STRIKETHROUGH : "") + "setShop" + ChatColor.RESET + " " + ((shopNotSet.length() == 0) ? ChatColor.GREEN + "(ALL SET)" : ChatColor.RED + "(Remaining: " + shopNotSet + ChatColor.RED + ")");
-            String setKillDrops = ss.dot() + ((killDropsNotSet.toString().length() == 0) ? ChatColor.STRIKETHROUGH : "") + "setKillDrops" + ChatColor.RESET + " " + ((shopNotSet.length() == 0) ? ChatColor.GREEN + "(ALL SET)" : ChatColor.RED + "(Remaining: " + killDropsNotSet + ChatColor.RED + ")");
-            String setUpgrade = ss.dot() + ((upgradeNotSet.toString().length() == 0) ? ChatColor.STRIKETHROUGH : "") + "setUpgrade" + ChatColor.RESET + " " + ((upgradeNotSet.length() == 0) ? ChatColor.GREEN + "(ALL SET)" : ChatColor.RED + "(Remaining: " + upgradeNotSet + ChatColor.RED + ")");
-            String addGenerator = ss.dot() + "addGenerator " + ((generatorNotSet.toString().length() == 0) ? "" : ChatColor.RED + "(Remaining: " + generatorNotSet + ChatColor.RED + ") ") + ChatColor.YELLOW + "(" + ChatColor.DARK_GREEN + "E" + emGen + " " + ChatColor.AQUA + "D" + dmGen + ChatColor.YELLOW + ")";
-            String setSpectatorSpawn = ss.dot() + (ss.getConfig().getYml().get(ConfigPath.ARENA_SPEC_LOC) == null ? "" : ChatColor.STRIKETHROUGH) + "setSpectSpawn" + ChatColor.RESET + " " + (ss.getConfig().getYml().get(ConfigPath.ARENA_SPEC_LOC) == null ? ChatColor.RED + "(NOT SET)" : ChatColor.GRAY + "(SET)");
+            String setSpawn = ss.dot() + ((spawnNotSet.length() == 0) ? ChatColor.STRIKETHROUGH : "") + "setSpawn <teamName>" + ChatColor.RESET + " " + ((spawnNotSet.length() == 0) ? ChatColor.GREEN + "(TUDO DEFINIDO)" : ChatColor.RED + "(Restantes: " + spawnNotSet + ChatColor.RED + ")");
+            String setBed = ss.dot() + ((bedNotSet.toString().length() == 0) ? ChatColor.STRIKETHROUGH : "") + "setBed" + ChatColor.RESET + " " + ((bedNotSet.length() == 0) ? ChatColor.GREEN + "(TUDO DEFINIDO)" : ChatColor.RED + "(Restantes: " + bedNotSet + ChatColor.RED + ")");
+            String setShop = ss.dot() + ((shopNotSet.toString().length() == 0) ? ChatColor.STRIKETHROUGH : "") + "setShop" + ChatColor.RESET + " " + ((shopNotSet.length() == 0) ? ChatColor.GREEN + "(TUDO DEFINIDO)" : ChatColor.RED + "(Restantes: " + shopNotSet + ChatColor.RED + ")");
+            String setKillDrops = ss.dot() + ((killDropsNotSet.toString().length() == 0) ? ChatColor.STRIKETHROUGH : "") + "setKillDrops" + ChatColor.RESET + " " + ((shopNotSet.length() == 0) ? ChatColor.GREEN + "(TUDO DEFINIDO)" : ChatColor.RED + "(Restantes: " + killDropsNotSet + ChatColor.RED + ")");
+            String setUpgrade = ss.dot() + ((upgradeNotSet.toString().length() == 0) ? ChatColor.STRIKETHROUGH : "") + "setUpgrade" + ChatColor.RESET + " " + ((upgradeNotSet.length() == 0) ? ChatColor.GREEN + "(TUDO DEFINIDO)" : ChatColor.RED + "(Restantes: " + upgradeNotSet + ChatColor.RED + ")");
+            String addGenerator = ss.dot() + "addGenerator " + ((generatorNotSet.toString().length() == 0) ? "" : ChatColor.RED + "(Restantes: " + generatorNotSet + ChatColor.RED + ") ") + ChatColor.YELLOW + "(" + ChatColor.DARK_GREEN + "E" + emGen + " " + ChatColor.AQUA + "D" + dmGen + ChatColor.YELLOW + ")";
+            String setSpectatorSpawn = ss.dot() + (ss.getConfig().getYml().get(ConfigPath.ARENA_SPEC_LOC) == null ? "" : ChatColor.STRIKETHROUGH) + "setSpectSpawn" + ChatColor.RESET + " " + (ss.getConfig().getYml().get(ConfigPath.ARENA_SPEC_LOC) == null ? ChatColor.RED + "(NÃO DEFINIDO)" : ChatColor.GRAY + "(SET)");
 
             s.sendMessage("");
             s.sendMessage(ChatColor.GRAY + "" + ChatColor.BOLD + MainCommand.getDot() + ChatColor.GOLD + plugin.getDescription().getName() + " v" + plugin.getDescription().getVersion() + ChatColor.GRAY + '-' + " " + ChatColor.GREEN + ss.getWorldName() + " commands");
-            p.spigot().sendMessage(Misc.msgHoverClick(setWaitingSpawn, ChatColor.WHITE + "Set the place where players have\n" + ChatColor.WHITE + "to wait before the game starts.", "/" + getParent().getName() + " setWaitingSpawn", ss.getSetupType() == SetupType.ASSISTED ? ClickEvent.Action.RUN_COMMAND : ClickEvent.Action.SUGGEST_COMMAND));
-            p.spigot().sendMessage(Misc.msgHoverClick(waitingPos, ChatColor.WHITE + "Make it so the waiting lobby will disappear at start.\n" + ChatColor.WHITE + "Select it as a world edit region.", "/" + getParent().getName() + " waitingPos ", ClickEvent.Action.SUGGEST_COMMAND));
+            p.spigot().sendMessage(Misc.msgHoverClick(setWaitingSpawn, ChatColor.WHITE + "Define o local onde os jogadores vão\n" + ChatColor.WHITE + "esperar antes da partida começar.", "/" + getParent().getName() + " setWaitingSpawn", ss.getSetupType() == SetupType.ASSISTED ? ClickEvent.Action.RUN_COMMAND : ClickEvent.Action.SUGGEST_COMMAND));
+            p.spigot().sendMessage(Misc.msgHoverClick(waitingPos, ChatColor.WHITE + "Faz o lobby de espera sumir quando a partida começar.\n" + ChatColor.WHITE + "Selecione como uma região do world edit.", "/" + getParent().getName() + " waitingPos ", ClickEvent.Action.SUGGEST_COMMAND));
             if (ss.getSetupType() == SetupType.ADVANCED) {
-                p.spigot().sendMessage(Misc.msgHoverClick(setSpectatorSpawn, ChatColor.WHITE + "Set where to spawn spectators.", "/" + getParent().getName() + " setSpectSpawn", ClickEvent.Action.RUN_COMMAND));
+                p.spigot().sendMessage(Misc.msgHoverClick(setSpectatorSpawn, ChatColor.WHITE + "Define onde os espectadores vão nascer.", "/" + getParent().getName() + " setSpectSpawn", ClickEvent.Action.RUN_COMMAND));
             }
-            p.spigot().sendMessage(Misc.msgHoverClick(ss.dot() + "autoCreateTeams " + ChatColor.YELLOW + "(auto detect)", ChatColor.WHITE + "Create teams based on islands colors.", "/" + getParent().getName() + " autoCreateTeams", ClickEvent.Action.SUGGEST_COMMAND));
-            p.spigot().sendMessage(Misc.msgHoverClick(ss.dot() + "createTeam <name> <color> " + ChatColor.YELLOW + "(" + teams + " CREATED)", ChatColor.WHITE + "Create a team.", "/" + getParent().getName() + " createTeam ", ClickEvent.Action.SUGGEST_COMMAND));
-            p.spigot().sendMessage(Misc.msgHoverClick(ss.dot() + "removeTeam <name>", ChatColor.WHITE + "Remove a team by name.", "/" + mainCmd + " removeTeam ", ClickEvent.Action.SUGGEST_COMMAND));
+            p.spigot().sendMessage(Misc.msgHoverClick(ss.dot() + "autoCreateTeams " + ChatColor.YELLOW + "(detecção automática)", ChatColor.WHITE + "Cria os times com base nas cores das ilhas.", "/" + getParent().getName() + " autoCreateTeams", ClickEvent.Action.SUGGEST_COMMAND));
+            p.spigot().sendMessage(Misc.msgHoverClick(ss.dot() + "createTeam <nome> <cor> " + ChatColor.YELLOW + "(" + teams + " CREATED)", ChatColor.WHITE + "Cria um time.", "/" + getParent().getName() + " createTeam ", ClickEvent.Action.SUGGEST_COMMAND));
+            p.spigot().sendMessage(Misc.msgHoverClick(ss.dot() + "removeTeam <name>", ChatColor.WHITE + "Remove um time pelo nome.", "/" + mainCmd + " removeTeam ", ClickEvent.Action.SUGGEST_COMMAND));
 
 
-            p.spigot().sendMessage(Misc.msgHoverClick(setSpawn, ChatColor.WHITE + "Set a team spawn.\n" + ChatColor.WHITE + "Teams without a spawn set:\n" + spawnNotSetNames.toString(), "/" + getParent().getName() + " setSpawn ", ClickEvent.Action.SUGGEST_COMMAND));
-            p.spigot().sendMessage(Misc.msgHoverClick(setBed, ChatColor.WHITE + "Set a team's bed location.\n" + ChatColor.WHITE + "You don't have to specify the team name.", "/" + getParent().getName() + " setBed", ss.getSetupType() == SetupType.ASSISTED ? ClickEvent.Action.RUN_COMMAND : ClickEvent.Action.SUGGEST_COMMAND));
-            p.spigot().sendMessage(Misc.msgHoverClick(setShop, ChatColor.WHITE + "Set a team's NPC.\n" + ChatColor.WHITE + "You don't have to specify the team name.\n" + ChatColor.WHITE + "It will be spawned only when the game starts.", "/" + getParent().getName() + " setShop", ss.getSetupType() == SetupType.ASSISTED ? ClickEvent.Action.RUN_COMMAND : ClickEvent.Action.SUGGEST_COMMAND));
-            p.spigot().sendMessage(Misc.msgHoverClick(setUpgrade, ChatColor.WHITE + "Set a team's upgrade NPC.\n" + ChatColor.WHITE + "You don't have to specify the team name.\n" + ChatColor.WHITE + "It will be spawned only when the game starts.", "/" + getParent().getName() + " setUpgrade", ss.getSetupType() == SetupType.ASSISTED ? ClickEvent.Action.RUN_COMMAND : ClickEvent.Action.SUGGEST_COMMAND));
+            p.spigot().sendMessage(Misc.msgHoverClick(setSpawn, ChatColor.WHITE + "Define o spawn de um time.\n" + ChatColor.WHITE + "Times sem spawn definido:\n" + spawnNotSetNames.toString(), "/" + getParent().getName() + " setSpawn ", ClickEvent.Action.SUGGEST_COMMAND));
+            p.spigot().sendMessage(Misc.msgHoverClick(setBed, ChatColor.WHITE + "Define a localização da cama de um time.\n" + ChatColor.WHITE + "Você não precisa especificar o nome do time.", "/" + getParent().getName() + " setBed", ss.getSetupType() == SetupType.ASSISTED ? ClickEvent.Action.RUN_COMMAND : ClickEvent.Action.SUGGEST_COMMAND));
+            p.spigot().sendMessage(Misc.msgHoverClick(setShop, ChatColor.WHITE + "Define o NPC de um time.\n" + ChatColor.WHITE + "Você não precisa especificar o nome do time.\n" + ChatColor.WHITE + "Ele só será gerado quando a partida começar.", "/" + getParent().getName() + " setShop", ss.getSetupType() == SetupType.ASSISTED ? ClickEvent.Action.RUN_COMMAND : ClickEvent.Action.SUGGEST_COMMAND));
+            p.spigot().sendMessage(Misc.msgHoverClick(setUpgrade, ChatColor.WHITE + "Define o NPC de melhorias de um time.\n" + ChatColor.WHITE + "Você não precisa especificar o nome do time.\n" + ChatColor.WHITE + "Ele só será gerado quando a partida começar.", "/" + getParent().getName() + " setUpgrade", ss.getSetupType() == SetupType.ASSISTED ? ClickEvent.Action.RUN_COMMAND : ClickEvent.Action.SUGGEST_COMMAND));
             if (ss.getSetupType() == SetupType.ADVANCED) {
-                p.spigot().sendMessage(Misc.msgHoverClick(setKillDrops, ChatColor.WHITE + "Set a the location where to drop\n" + ChatColor.WHITE + "enemy items after you kill them.", "/" + getParent().getName() + " setKillDrops ", ClickEvent.Action.SUGGEST_COMMAND));
+                p.spigot().sendMessage(Misc.msgHoverClick(setKillDrops, ChatColor.WHITE + "Define o local onde serão dropados\n" + ChatColor.WHITE + "os itens do inimigo após você matá-lo.", "/" + getParent().getName() + " setKillDrops ", ClickEvent.Action.SUGGEST_COMMAND));
             }
-            String genHover = (ss.getSetupType() == SetupType.ADVANCED ? ChatColor.WHITE + "Add a generator spawn point.\n" + ChatColor.YELLOW + "/" + getParent().getName() + " addGenerator <Iron/ Gold/ Emerald, Diamond>" :
-                    ChatColor.WHITE + "Add a generator spawn point.\n" + ChatColor.YELLOW + "Stay in on a team island to set a team generator") + "\n" + ChatColor.WHITE + "Stay on a diamond block to set the diamond generator.\n" + ChatColor.WHITE + "Stay on a emerald block to set an emerald generator.";
+            String genHover = (ss.getSetupType() == SetupType.ADVANCED ? ChatColor.WHITE + "Adiciona um ponto de spawn de gerador.\n" + ChatColor.YELLOW + "/" + getParent().getName() + " addGenerator <Iron/ Gold/ Emerald, Diamond>" :
+                    ChatColor.WHITE + "Adiciona um ponto de spawn de gerador.\n" + ChatColor.YELLOW + "Fique na ilha de um time para definir um gerador de time") + "\n" + ChatColor.WHITE + "Fique sobre um bloco de diamante para definir o gerador de diamante.\n" + ChatColor.WHITE + "Fique sobre um bloco de esmeralda para definir um gerador de esmeralda.";
 
             p.spigot().sendMessage(Misc.msgHoverClick(addGenerator, genHover, "/" + getParent().getName() + " addGenerator ", ss.getSetupType() == SetupType.ASSISTED ? ClickEvent.Action.RUN_COMMAND : ClickEvent.Action.SUGGEST_COMMAND));
             p.spigot().sendMessage(Misc.msgHoverClick(ss.dot() + "removeGenerator", genHover, "/" + getParent().getName() + " removeGenerator", ss.getSetupType() == SetupType.ASSISTED ? ClickEvent.Action.RUN_COMMAND : ClickEvent.Action.SUGGEST_COMMAND));
 
             if (ss.getSetupType() == SetupType.ADVANCED) {
-                p.spigot().sendMessage(Misc.msgHoverClick(ss.dot() + "setMaxInTeam <int> (IS SET TO " + maxInTeam + ")", ChatColor.WHITE + "Set the max team size.", "/" + mainCmd + " setMaxInTeam ", ClickEvent.Action.SUGGEST_COMMAND));
-                p.spigot().sendMessage(Misc.msgHoverClick(ss.dot() + "arenaGroup " + group, ChatColor.WHITE + "Set the arena group.", "/" + mainCmd + " arenaGroup ", ClickEvent.Action.SUGGEST_COMMAND));
+                p.spigot().sendMessage(Misc.msgHoverClick(ss.dot() + "setMaxInTeam <int> (DEFINIDO COMO " + maxInTeam + ")", ChatColor.WHITE + "Define o tamanho máximo do time.", "/" + mainCmd + " setMaxInTeam ", ClickEvent.Action.SUGGEST_COMMAND));
+                p.spigot().sendMessage(Misc.msgHoverClick(ss.dot() + "arenaGroup " + group, ChatColor.WHITE + "Define o grupo da arena.", "/" + mainCmd + " arenaGroup ", ClickEvent.Action.SUGGEST_COMMAND));
             } else {
-                p.spigot().sendMessage(Misc.msgHoverClick(ss.dot() + "setType <type> " + group, ChatColor.WHITE + "Add the arena to a group.", "/" + getParent().getName() + " setType", ClickEvent.Action.RUN_COMMAND));
+                p.spigot().sendMessage(Misc.msgHoverClick(ss.dot() + "setType <type> " + group, ChatColor.WHITE + "Adiciona a arena a um grupo.", "/" + getParent().getName() + " setType", ClickEvent.Action.RUN_COMMAND));
             }
 
-            p.spigot().sendMessage(Misc.msgHoverClick(ss.dot() + "save", ChatColor.WHITE + "Save arena and go back to lobby", "/" + getParent().getName() + " save", ClickEvent.Action.SUGGEST_COMMAND));
+            p.spigot().sendMessage(Misc.msgHoverClick(ss.dot() + "save", ChatColor.WHITE + "Salva a arena e volta para o lobby", "/" + getParent().getName() + " save", ClickEvent.Action.SUGGEST_COMMAND));
         } else {
             TextComponent credits = new TextComponent(ChatColor.BLUE + "" + ChatColor.BOLD + MainCommand.getDot() + " " + ChatColor.GOLD + plugin.getName() + " " + ChatColor.GRAY + "v" + plugin.getDescription().getVersion() + " by MrCeasar");
             credits.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, link));

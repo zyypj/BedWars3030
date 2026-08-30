@@ -50,7 +50,7 @@ public class CommandItemHandler extends PermanentItemHandler {
             }
         }
         if (command == null) {
-            Bukkit.getLogger().warning("Command for item `" + lobbyItem.getIdentifier() + "` is not set.");
+            Bukkit.getLogger().warning("O comando do item `" + lobbyItem.getIdentifier() + "` não está definido.");
             return;
         }
         player.performCommand(command);

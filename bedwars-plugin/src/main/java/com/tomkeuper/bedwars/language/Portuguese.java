@@ -54,14 +54,14 @@ public class Portuguese extends Language {
         yml.addDefault(Messages.FORMATTING_SIDEBAR_TAB_FOOTER_RESTARTING, "&c%bw_server_ip%");
         yml.addDefault(Messages.FORMATTING_SIDEBAR_TAB_FOOTER_SPECTATOR, "&9%bw_server_ip%");
 
-        yml.addDefault(Messages.COMMAND_MAIN, Arrays.asList("", "&2▪ &7/" + BedWars.mainCmd + " stats", "&2▪ &7/" + BedWars.mainCmd + " join &o<arena/grupo>", "&2▪ &7/" + BedWars.mainCmd + " leave", "&2▪ &7/" + BedWars.mainCmd + " lang", "&2▪ &7/" + BedWars.mainCmd + " gui", "&2▪ &7/" + BedWars.mainCmd + " start &3(vip)"));
+        yml.addDefault(Messages.COMMAND_MAIN, Arrays.asList("", "&2▪ &7/" + BedWars.mainCmd + " stats", "&2▪ &7/entrar &o<arena/grupo>", "&2▪ &7/" + BedWars.mainCmd + " leave", "&2▪ &7/" + BedWars.mainCmd + " lang", "&2▪ &7/" + BedWars.mainCmd + " gui", "&2▪ &7/iniciar &3(vip)"));
         yml.addDefault(Messages.COMMAND_LANG_LIST_HEADER, "%bw_lang_prefix% &2Idiomas disponíveis:");
         yml.addDefault(Messages.COMMAND_LANG_LIST_FORMAT, "&a▪  &7%bw_lang_iso% - &f%bw_name%");
         yml.addDefault(Messages.COMMAND_LANG_USAGE, "%bw_lang_prefix%&7Use: /lang &f&o<linguagem>");
         yml.addDefault(Messages.COMMAND_LANG_SELECTED_NOT_EXIST, "%bw_lang_prefix%&cEsta linguagem não existe!");
         yml.addDefault(Messages.COMMAND_LANG_SELECTED_SUCCESSFULLY, "%bw_lang_prefix%&aIdioma alterado!");
         yml.addDefault(Messages.COMMAND_LANG_USAGE_DENIED, "%bw_lang_prefix%&cVocê não pode mudar o idioma durante a partida.");
-        yml.addDefault(Messages.COMMAND_JOIN_USAGE, "§a▪ §7Use: /" + BedWars.mainCmd + " join §o<arena/grupo>");
+        yml.addDefault(Messages.COMMAND_JOIN_USAGE, "§a▪ §7Use: /entrar §o<arena/grupo>");
         yml.addDefault(Messages.COMMAND_JOIN_GROUP_OR_ARENA_NOT_FOUND, "%bw_lang_prefix%&cNão existe nenhuma arena ou grupo de arena chamado: %bw_name%");
         yml.addDefault(Messages.COMMAND_JOIN_DENIED_IS_FULL, "%bw_lang_prefix%&cEsta arena está cheia!\n&aVocê pode adquirir vantagens doando. &7&o(clique)");
         yml.addDefault(Messages.COMMAND_JOIN_NO_EMPTY_FOUND, "%bw_lang_prefix%&cNão há nenhuma arena disponível no momento");
@@ -91,13 +91,13 @@ public class Portuguese extends Language {
         yml.addDefault(Messages.COMMAND_PARTY_HELP, Arrays.asList("&6▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬",
                 "&aComandos da Party:",
                 "&e/party help &7- &bIrá mostrar essa mensagem",
-                "&e/party invite <player> &7- &bConvida o jogador para sua party",
+                "&e/party invite <jogador> &7- &bConvida o jogador para sua party",
                 "&e/party leave &7- &bSaia da sua party",
-                "&e/party info &7- &bShow party members and owner",
-                "&e/party promote <jogador> &7- &bTransfer party ownership",
+                "&e/party info &7- &bMostra os membros e o dono da party",
+                "&e/party promote <jogador> &7- &bTransfere a posse da party",
                 "&e/party remove <jogador> &7- &bRemova o jogador da party",
                 "&e/party accept <jogador> &7- &bAceite um pedido de party",
-                "&e/party disband &7- &bRecuse um pedido de party")
+                "&e/party disband &7- &bDesfaz a party")
         );
         yml.addDefault(Messages.COMMAND_PARTY_INVITE_USAGE, "%bw_lang_prefix%&eUse: &7/party invite <jogador>");
         yml.addDefault(Messages.COMMAND_PARTY_INVITE_DENIED_PLAYER_OFFLINE, "%bw_lang_prefix%&7%bw_player% &enão está online.");
@@ -114,7 +114,7 @@ public class Portuguese extends Language {
         yml.addDefault(Messages.COMMAND_PARTY_LEAVE_DENIED_IS_OWNER_NEEDS_DISBAND, "%bw_lang_prefix%&cVocê não pode sair da sua party.\n&eTente usar: &b/party disband");
         yml.addDefault(Messages.COMMAND_PARTY_LEAVE_SUCCESS, "%bw_lang_prefix%&7%bw_player% &esaiu da party!");
         yml.addDefault(Messages.COMMAND_PARTY_DISBAND_SUCCESS, "%bw_lang_prefix%&eA party foi desfeita");
-        yml.addDefault(Messages.COMMAND_PARTY_REMOVE_USAGE, "%bw_lang_prefix%&7Use: &e/party remove <player>");
+        yml.addDefault(Messages.COMMAND_PARTY_REMOVE_USAGE, "%bw_lang_prefix%&7Use: &e/party remove <jogador>");
         yml.addDefault(Messages.COMMAND_PARTY_REMOVE_SUCCESS, "%bw_lang_prefix%&7%bw_player% &efoi removido da party.");
         yml.addDefault(Messages.COMMAND_PARTY_REMOVE_DENIED_TARGET_NOT_PARTY_MEMBER, "%bw_lang_prefix%&7%bw_player% &enão está na sua party!");
         yml.addDefault(Messages.COMMAND_PARTY_PROMOTE_SUCCESS, "%bw_lang_prefix%&eVocê promoveu com sucesso %bw_player% a dono");
@@ -247,14 +247,14 @@ public class Portuguese extends Language {
         yml.addDefault(Messages.INTERACT_CANNOT_BREAK_BLOCK, "%bw_lang_prefix%&cVocê só pode quebrar blocos colocados por um jogador!");
         yml.addDefault(Messages.INTERACT_FULL_CHEST, "%bw_lang_prefix%&cO baú está cheio!");
         yml.addDefault(Messages.INTERACT_CANNOT_BREAK_OWN_BED, "&cVocê não pode destruir sua própria cama!");
-        yml.addDefault(Messages.INTERACT_BED_DESTROY_CHAT_ANNOUNCEMENT, "\n&f&lCAMA DESTRUIDA > %bw_team_color%Cama do time %bw_team_name% &7foi destruida por %bw_player_color%%bw_player%&7!\n");
-        yml.addDefault(Messages.INTERACT_BED_DESTROY_TITLE_ANNOUNCEMENT, "&cCAMA DESTRUIDA !");
+        yml.addDefault(Messages.INTERACT_BED_DESTROY_CHAT_ANNOUNCEMENT, "\n&f&lCAMA DESTRUÍDA > %bw_team_color%Cama do time %bw_team_name% &7foi destruída por %bw_player_color%%bw_player%&7!\n");
+        yml.addDefault(Messages.INTERACT_BED_DESTROY_TITLE_ANNOUNCEMENT, "&cCAMA DESTRUÍDA!");
         yml.addDefault(Messages.INTERACT_BED_DESTROY_SUBTITLE_ANNOUNCEMENT, "&fVocê não vai mais renascer!");
-        yml.addDefault(Messages.INTERACT_BED_DESTROY_CHAT_ANNOUNCEMENT_TO_VICTIM, "&f&lCAMA DESTRUIDA > &7Sua cama foi destruida por %bw_player_color%%bw_player%&7!");
+        yml.addDefault(Messages.INTERACT_BED_DESTROY_CHAT_ANNOUNCEMENT_TO_VICTIM, "&f&lCAMA DESTRUÍDA > &7Sua cama foi destruída por %bw_player_color%%bw_player%&7!");
         yml.addDefault(Messages.INTERACT_CHEST_CANT_OPEN_TEAM_ELIMINATED, "&cVocê não pode abrir este baú porque esse time não foi eliminado!");
         yml.addDefault(Messages.INTERACT_INVISIBILITY_REMOVED_DAMGE_TAKEN, "&cSua invisibilidade foi removida pois você tomou dano!");
         yml.addDefault(Messages.INTERACT_MAGIC_MILK_REMOVED, "&cOs efeitos do seu leite acabaram!");
-        yml.addDefault(Messages.EGGBRIDGE_BUILD_LIMIT_WARNING, "&cYou are too close to the build limit!");
+        yml.addDefault(Messages.EGGBRIDGE_BUILD_LIMIT_WARNING, "&cVocê está muito perto do limite de construção!");
         yml.addDefault(Messages.PLAYER_DIE_VOID_FALL_REGULAR_KILL, "%bw_player_color%%bw_player% &7caiu no void.");
         yml.addDefault(Messages.PLAYER_DIE_VOID_FALL_FINAL_KILL, "%bw_player_color%%bw_player% &7caiu no void. &b&lKILL FINAL!");
         yml.addDefault(Messages.PLAYER_DIE_KNOCKED_IN_VOID_REGULAR_KILL, "%bw_player_color%%bw_player% &7foi jogado no void por %bw_killer_color%%bw_killer_name%&7.");
@@ -273,8 +273,8 @@ public class Portuguese extends Language {
         yml.addDefault(Messages.PLAYER_DIE_UNKNOWN_REASON_FINAL_KILL, "%bw_player_color%%bw_player% &7morreu. &b&lKILL FINAL!");
         yml.addDefault(Messages.PLAYER_DIE_SHOOT_REGULAR, "%bw_player_color%%bw_player% &7foi flechado por %bw_killer_color%%bw_killer_name%&7!");
         yml.addDefault(Messages.PLAYER_DIE_SHOOT_FINAL_KILL, "%bw_player_color%%bw_player% &7foi flechado por %bw_killer_color%%bw_killer_name%&7! &b&lKILL FINAL!");
-        yml.addDefault(Messages.PLAYER_DIE_DEBUG_REGULAR, "%bw_player_color%%bw_player% &7foi morto por pela Traça de %bw_killer_color%%bw_killer_team_name%&7!");
-        yml.addDefault(Messages.PLAYER_DIE_DEBUG_FINAL_KILL, "%bw_player_color%%bw_player% &7foi morto por pela Traça de %bw_killer_color%%bw_killer_team_name%&7! &b&lKILL FINAL!");
+        yml.addDefault(Messages.PLAYER_DIE_DEBUG_REGULAR, "%bw_player_color%%bw_player% &7foi morto pela Traça de %bw_killer_color%%bw_killer_team_name%&7!");
+        yml.addDefault(Messages.PLAYER_DIE_DEBUG_FINAL_KILL, "%bw_player_color%%bw_player% &7foi morto pela Traça de %bw_killer_color%%bw_killer_team_name%&7! &b&lKILL FINAL!");
         yml.addDefault(Messages.PLAYER_DIE_IRON_GOLEM_REGULAR, "%bw_player_color%%bw_player% &7foi morto pelo Golem do %bw_killer_color%%bw_killer_team_name%&7!");
         yml.addDefault(Messages.PLAYER_DIE_IRON_GOLEM_FINAL_KILL, "%bw_player_color%%bw_player% &7foi morto pelo Golem do %bw_killer_color%%bw_killer_team_name%&7! &b&lKILL FINAL!");
         yml.addDefault(Messages.PLAYER_DIE_REWARD_DIAMOND, "%bw_lang_prefix%&b+%bw_amount% %bw_meaning%");
@@ -330,18 +330,18 @@ public class Portuguese extends Language {
         yml.addDefault(Messages.XP_REWARD_PER_MINUTE, "%bw_lang_prefix%&6+%bw_xp% XP (Tempo de jogo).");
         yml.addDefault(Messages.XP_REWARD_WIN, "%bw_lang_prefix%&6+%bw_xp% XP (Vencer o jogo).");
         yml.addDefault(Messages.XP_REWARD_PER_TEAMMATE, "%bw_lang_prefix%&6+%bw_xp% XP (Suporte da equipe).");
-        yml.addDefault(Messages.XP_REWARD_BED_DESTROY, "%bw_lang_prefix%&6+%bw_xp% XP (Bed Destroyed).");
-        yml.addDefault(Messages.XP_REWARD_REGULAR_KILL, "%bw_lang_prefix%&6+%bw_xp% XP (Regular Kill).");
-        yml.addDefault(Messages.XP_REWARD_FINAL_KILL, "%bw_lang_prefix%&6+%bw_xp% XP (Final Kill).");
+        yml.addDefault(Messages.XP_REWARD_BED_DESTROY, "%bw_lang_prefix%&6+%bw_xp% XP (Cama destruída).");
+        yml.addDefault(Messages.XP_REWARD_REGULAR_KILL, "%bw_lang_prefix%&6+%bw_xp% XP (Abate).");
+        yml.addDefault(Messages.XP_REWARD_FINAL_KILL, "%bw_lang_prefix%&6+%bw_xp% XP (Abate final).");
         yml.addDefault(Messages.XP_REWARD_HALLOWEEN, "%bw_lang_prefix%&6+5 XP (Halloween).");
         yml.addDefault(Messages.PLAYER_LEVEL_UP, Collections.singletonList("&aParabéns! Você evoluiu seu nível para %bw_level%."));
 
         yml.addDefault(Messages.MONEY_REWARD_PER_MINUTE, "%bw_lang_prefix%&6+%bw_money% Moedas (Tempo de jogo).");
         yml.addDefault(Messages.MONEY_REWARD_WIN, "%bw_lang_prefix%&6+%bw_money% Moedas (Vencer o jogo).");
         yml.addDefault(Messages.MONEY_REWARD_PER_TEAMMATE, "%bw_lang_prefix%&6+%bw_money% Moedas (Suporte da equipe).");
-        yml.addDefault(Messages.MONEY_REWARD_BED_DESTROYED, "%bw_lang_prefix%&6+%bw_money% Moedas (Bed Destroyed).");
-        yml.addDefault(Messages.MONEY_REWARD_FINAL_KILL, "%bw_lang_prefix%&6+%bw_money% Moedas (Final Kill).");
-        yml.addDefault(Messages.MONEY_REWARD_REGULAR_KILL, "%bw_lang_prefix%&6+%bw_money% Moedas (Regular Kill).");
+        yml.addDefault(Messages.MONEY_REWARD_BED_DESTROYED, "%bw_lang_prefix%&6+%bw_money% Moedas (Cama destruída).");
+        yml.addDefault(Messages.MONEY_REWARD_FINAL_KILL, "%bw_lang_prefix%&6+%bw_money% Moedas (Abate final).");
+        yml.addDefault(Messages.MONEY_REWARD_REGULAR_KILL, "%bw_lang_prefix%&6+%bw_money% Moedas (Abate).");
 
         yml.addDefault(Messages.HALLOWEEN_ITEM_NAME, "&6&lFeliz Halloween");
 
@@ -370,13 +370,13 @@ public class Portuguese extends Language {
         addDefaultStatsMsg(yml, "deaths", "&6Mortes", "&f%bw_deaths%");
         addDefaultStatsMsg(yml, "final-kills", "&6Abates Finais", "&f%bw_final_kills%");
         addDefaultStatsMsg(yml, "final-deaths", "&6Mortes Finais", "&f%bw_final_deaths%");
-        addDefaultStatsMsg(yml, "beds-destroyed", "&6Camas Destruidas", "&f%bw_beds%");
+        addDefaultStatsMsg(yml, "beds-destroyed", "&6Camas Destruídas", "&f%bw_beds%");
         addDefaultStatsMsg(yml, "first-play", "&6Primeira Partida", "&f%bw_play_first%");
         addDefaultStatsMsg(yml, "last-play", "&6Última Partida", "&f%bw_play_last%");
         addDefaultStatsMsg(yml, "games-played", "&6Partidas", "&f%bw_games_played%");
 
         yml.addDefault(Messages.SCOREBOARD_DEFAULT_WAITING, Arrays.asList("&f&lBED WARS", "&7%bw_date% &8%bw_server_id%", "", "&fMapa: &a%bw_map%", "", "&fJogadores: &a%bw_on%/%bw_max%", "", "&fEsperando...", "", "§fModo: &a%bw_group%", "&fVersão: &7%bw_version%", "", "&e%bw_server_ip%"));
-        yml.addDefault(Messages.SCOREBOARD_DEFAULT_STARTING, Arrays.asList("&f&lBED WARS", "&7%bw_date% &8%bw_server_id%", "", "&fMapa: &a%bw_map%", "", "&fJogadores: &a%bw_on%/%bw_max%", "", "&fInicio em &a%bw_time%s", "", "§fModo: &a%bw_group%", "&fVersão: &7%bw_version%", "", "&e%bw_server_ip%"));
+        yml.addDefault(Messages.SCOREBOARD_DEFAULT_STARTING, Arrays.asList("&f&lBED WARS", "&7%bw_date% &8%bw_server_id%", "", "&fMapa: &a%bw_map%", "", "&fJogadores: &a%bw_on%/%bw_max%", "", "&fInício em &a%bw_time%s", "", "§fModo: &a%bw_group%", "&fVersão: &7%bw_version%", "", "&e%bw_server_ip%"));
         yml.addDefault(Messages.SCOREBOARD_DEFAULT_PLAYING, Arrays.asList("&e&lBED WARS", "&7%bw_date%", "", "&f%bw_next_event% em &a%bw_time%", "",
                 "%bw_team_1%", "%bw_team_2%", "%bw_team_3%", "%bw_team_4%", "%bw_team_5%", "%bw_team_6%", "%bw_team_7%", "%bw_team_8%", "", "&e%bw_server_ip%"));
 
@@ -384,20 +384,20 @@ public class Portuguese extends Language {
                 "%bw_team_1%", "%bw_team_2%", "%bw_team_3%", "%bw_team_4%", "%bw_team_5%", "%bw_team_6%", "%bw_team_7%", "%bw_team_8%", "", "&e%bw_server_ip%"));
 
         yml.addDefault("scoreboard.3v3v3v3.playing", Arrays.asList("&e&lBED WARS", "&7%bw_date%", "", "&f%bw_next_event% em &a%bw_time%", "",
-                "%bw_team_1%", "%bw_team_2%", "%bw_team_3%", "%bw_team_4%", "", "&fKills: &a%bw_kills%", "&fFinal Kills: &a%bw_final_kills%", "&fBeds Broken: &a%bw_beds%", "", "&e%bw_server_ip%"));
+                "%bw_team_1%", "%bw_team_2%", "%bw_team_3%", "%bw_team_4%", "", "&fAbates: &a%bw_kills%", "&fAbates finais: &a%bw_final_kills%", "&fCamas quebradas: &a%bw_beds%", "", "&e%bw_server_ip%"));
 
         yml.addDefault("scoreboard.4v4v4v4.playing", Arrays.asList("&e&lBED WARS", "&7%bw_date%", "", "&f%bw_next_event% em &a%bw_time%", "",
-                "%bw_team_1%", "%bw_team_2%", "%bw_team_3%", "%bw_team_4%", "", "&fKills: &a%bw_kills%", "&fFinal Kills: &a%bw_final_kills%", "&fBeds Broken: &a%bw_beds%", "", "&e%bw_server_ip%"));
+                "%bw_team_1%", "%bw_team_2%", "%bw_team_3%", "%bw_team_4%", "", "&fAbates: &a%bw_kills%", "&fAbates finais: &a%bw_final_kills%", "&fCamas quebradas: &a%bw_beds%", "", "&e%bw_server_ip%"));
 
         yml.addDefault(Messages.SCOREBOARD_LOBBY, Arrays.asList("&6&lBedWars,&4&lB&6&ledWars,&c&lB&4&le&6&ldWars,&6&lB&c&le&4&ld&6&lWars,&6&lBe&c&ld&4&lW&6&lars,&6&lBed&c&lW&4&la&6&lrs,&6&lBedW&c&la&4&lr&6&ls,&6&lBedWa&c&lr&4&ls,&6&lBedWar&c&ls,&6&lBedWars",
-                "&fSeu nivel: %bw_level%", "", "&fProgresso: &a%bw_current_xp%&7/&b%bw_required_xp%", "%bw_progress%", "", "&7%bw_player%", "", "&fMoedas: &a%bw_money%", "", "&fTotal de vitórias: &a%bw_wins%", "&fTotal de abates: &a%bw_kills%", "", "&e%bw_server_ip%"));
+                "&fSeu nível: %bw_level%", "", "&fProgresso: &a%bw_current_xp%&7/&b%bw_required_xp%", "%bw_progress%", "", "&7%bw_player%", "", "&fMoedas: &a%bw_money%", "", "&fTotal de vitórias: &a%bw_wins%", "&fTotal de abates: &a%bw_kills%", "", "&e%bw_server_ip%"));
 
         yml.addDefault(Messages.SHOP_INDEX_NAME, "&8Compra rápida");
         yml.addDefault(Messages.SHOP_QUICK_ADD_NAME, "&8Adicionando à compra rápida...");
         yml.addDefault(Messages.SHOP_INSUFFICIENT_MONEY, "%bw_lang_prefix%&cVocê não tem %bw_currency% suficiente! Precisa de mais %bw_amount%!");
         yml.addDefault(Messages.SHOP_NEW_PURCHASE, "%bw_lang_prefix%&aVocê comprou &6%bw_item%");
         yml.addDefault(Messages.SHOP_ALREADY_BOUGHT, "%bw_lang_prefix%&cVocê já comprou isso!");
-        yml.addDefault(Messages.SHOP_ALREADY_HIGHER_TIER, "%bw_lang_prefix%&cYou already have a higher tier item.");
+        yml.addDefault(Messages.SHOP_ALREADY_HIGHER_TIER, "%bw_lang_prefix%&cVocê já possui um item de nível superior.");
         yml.addDefault(Messages.SHOP_UTILITY_NPC_SILVERFISH_NAME, "%bw_team_color%&l%bw_team_name% &r%bw_team_color%Traça");
         yml.addDefault(Messages.SHOP_UTILITY_NPC_IRON_GOLEM_NAME, "%bw_team_color%%bw_despawn_time%s &8[ %bw_team_color%%bw_health%&8]");
         yml.addDefault(Messages.SHOP_SEPARATOR_NAME, "&8⇧ Categorias");
@@ -417,8 +417,7 @@ public class Portuguese extends Language {
 
         addCategoryMessages(yml, ConfigPath.SHOP_PATH_CATEGORY_BLOCKS, "&8Blocos", "&aBlocos", Collections.singletonList("&eClique para ver!"));
 
-        addContentMessages(yml, "wool", ConfigPath.SHOP_PATH_CATEGORY_BLOCKS, "%bw_color%Lã", Arrays.asList("&7Preço: &f%bw_cost% %bw_currency%", "", "&7Ótimo para atravessar ilhas.", "&7Transforma-se na cor do seu time.",
-                "&7color.", "", "%bw_quick_buy%", "%bw_buy_status%"));
+        addContentMessages(yml, "wool", ConfigPath.SHOP_PATH_CATEGORY_BLOCKS, "%bw_color%Lã", Arrays.asList("&7Preço: &f%bw_cost% %bw_currency%", "", "&7Ótimo para atravessar ilhas.", "&7Transforma-se na cor do seu time.", "", "%bw_quick_buy%", "%bw_buy_status%"));
         addContentMessages(yml, "clay", ConfigPath.SHOP_PATH_CATEGORY_BLOCKS, "%bw_color%Argila Endurecida", Arrays.asList("&7Preço: %bw_cost% %bw_currency%", "", "&7Bloco básico para defender sua cama.", "", "%bw_quick_buy%", "%bw_buy_status%"));
         addContentMessages(yml, "glass", ConfigPath.SHOP_PATH_CATEGORY_BLOCKS, "%bw_color%Vidro à prova de explosão", Arrays.asList("&7Preço: %bw_cost% %bw_currency%", "", "&7Imune a explosões.", "", "%bw_quick_buy%", "%bw_buy_status%"));
         addContentMessages(yml, "stone", ConfigPath.SHOP_PATH_CATEGORY_BLOCKS, "%bw_color%Pedra do Fim", Arrays.asList("&7Preço: %bw_cost% %bw_currency%", "", "&7Bloco sólido para defender sua cama.", "", "%bw_quick_buy%", "%bw_buy_status%"));
@@ -447,9 +446,9 @@ public class Portuguese extends Language {
         addContentMessages(yml, "shears", ConfigPath.SHOP_PATH_CATEGORY_TOOLS, "%bw_color%Tesouras Permanentes", Arrays.asList("&7Preço: %bw_cost% %bw_currency%",
                 "", "&7Ótimo para se livrar da lã. Você", "&7sempre irá nascer com as tesouras.", "", "%bw_quick_buy%", "%bw_buy_status%"));
         addContentMessages(yml, "pickaxe", ConfigPath.SHOP_PATH_CATEGORY_TOOLS, "%bw_color%Picareta %bw_tier%", Arrays.asList("&7Preço: %bw_cost% %bw_currency%", "&7Nível: &e%bw_tier%",
-                "", "&7Este é um item melhorável.", "&7Ele perderá 1 nível após.", "&7você morer!", "", "&7Você vai permanentemente", "&7renascer com pelo menos o", "&7nível mais baixo.", "", "%bw_quick_buy%", "%bw_buy_status%"));
+                "", "&7Este é um item melhorável.", "&7Ele perderá 1 nível", "&7depois que você morrer!", "", "&7Você vai permanentemente", "&7renascer com pelo menos o", "&7nível mais baixo.", "", "%bw_quick_buy%", "%bw_buy_status%"));
         addContentMessages(yml, "axe", ConfigPath.SHOP_PATH_CATEGORY_TOOLS, "%bw_color%Machado %bw_tier%", Arrays.asList("&7Preço: %bw_cost% %bw_currency%", "&7Nível: &e%bw_tier%",
-                "", "&7Este é um item melhorável.", "&7Ele perderá 1 nível após.", "&7você morer!", "", "&7Você vai permanentemente", "&7renascer com pelo menos o", "&7nível mais baixo.", "", "%bw_quick_buy%", "%bw_buy_status%"));
+                "", "&7Este é um item melhorável.", "&7Ele perderá 1 nível", "&7depois que você morrer!", "", "&7Você vai permanentemente", "&7renascer com pelo menos o", "&7nível mais baixo.", "", "%bw_quick_buy%", "%bw_buy_status%"));
 
         addCategoryMessages(yml, ConfigPath.SHOP_PATH_CATEGORY_RANGED, "&8Arcos", "&aArcos", Collections.singletonList("&eClique para ver!"));
 
@@ -499,10 +498,10 @@ public class Portuguese extends Language {
         yml.addDefault(Messages.UPGRADES_LORE_REPLACEMENT_INSUFFICIENT_SPACE, "&cVocê não tem espaço livre no inventário!");
         yml.addDefault(Messages.UPGRADES_LORE_REPLACEMENT_LOCKED, "&cBLOQUEADO");
         yml.addDefault(Messages.UPGRADES_LORE_REPLACEMENT_UNLOCKED, "%bw_color%DESBLOQUEADO");
-        yml.addDefault(Messages.UPGRADES_UPGRADE_BOUGHT_CHAT, "&a%bw_player% compro &6%bw_item%");
+        yml.addDefault(Messages.UPGRADES_UPGRADE_BOUGHT_CHAT, "&a%bw_player% comprou &6%bw_item%");
         yml.addDefault(Messages.UPGRADES_UPGRADE_TIER_ITEM_NAME.replace("%bw_name%", "forge").replace("%bw_tier%", "tier-1"), "%bw_color%Forja de Ferro");
         yml.addDefault(Messages.UPGRADES_UPGRADE_TIER_ITEM_LORE.replace("%bw_name%", "forge"),
-                Arrays.asList("&Melhore a geração de recursos", "&7na sua base.", "", "{tier_1_color}Nível 1: +50% de recursos, &b{tier_1_cost} {tier_1_currency}",
+                Arrays.asList("&7Melhore a geração de recursos", "&7na sua base.", "", "{tier_1_color}Nível 1: +50% de recursos, &b{tier_1_cost} {tier_1_currency}",
                         "{tier_2_color}Nível 2: +100% de recursos, &b{tier_2_cost} {tier_2_currency}",
                         "{tier_3_color}Nível 3: Gerar esmeraldas, &b{tier_3_cost} {tier_3_currency}",
                         "{tier_4_color}Nível 4: +200% de recursos, &b{tier_4_cost} {tier_4_currency}", ""));
@@ -557,7 +556,7 @@ public class Portuguese extends Language {
         yml.addDefault(Messages.UPGRADES_BASE_TRAP_ITEM_NAME_PATH + "4", "%bw_color%Cansaço");
         yml.addDefault(Messages.UPGRADES_BASE_TRAP_ITEM_LORE_PATH + "4", Arrays.asList("&7Os inimigos irão receber fadiga I ao entrar", "&7na sua base com duração de 10 segundos.", ""));
         yml.addDefault(Messages.UPGRADES_SEPARATOR_ITEM_NAME_PATH + "back", "&aVoltar");
-        yml.addDefault(Messages.UPGRADES_SEPARATOR_ITEM_LORE_PATH + "back", Collections.singletonList("&7Para Melhorias & Traps"));
+        yml.addDefault(Messages.UPGRADES_SEPARATOR_ITEM_LORE_PATH + "back", Collections.singletonList("&7Para Melhorias & Armadilhas"));
         yml.addDefault(Messages.UPGRADES_CATEGORY_GUI_NAME_PATH + "traps", "&8Enfileirar uma armadilha");
         yml.addDefault(Messages.UPGRADES_TRAP_QUEUE_LIMIT, "&cFila de armadilhas cheia!");
         yml.addDefault(Messages.UPGRADES_TRAP_DEFAULT_MSG, "&c&lA armadilha %bw_trap% foi acionada!");

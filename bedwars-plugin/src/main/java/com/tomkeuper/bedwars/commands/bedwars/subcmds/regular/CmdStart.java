@@ -45,8 +45,8 @@ public class CmdStart extends SubCommand {
         super(parent, name);
         setPriority(15);
         showInList(true);
-        setDisplayInfo(MainCommand.createTC("§6 ▪ §7/"+ MainCommand.getInstance().getName()+" "+getSubCommandName()+" §8 - §eforce start an arena",
-                "/"+getParent().getName()+" "+getSubCommandName(), "§fForcestart an arena.\n§fPermission: §c"+ Permissions.PERMISSION_FORCESTART));
+        setDisplayInfo(MainCommand.createTC("§6 ▪ §7/iniciar §8 - §eforçar o início de uma arena",
+                "/iniciar", "§fForça o início de uma arena.\n§f/iniciar debug - inicia a contagem sozinho (op).\n§fPermissão: §c"+ Permissions.PERMISSION_FORCESTART));
     }
 
     @Override

@@ -68,7 +68,7 @@ public class ReJoin {
         this.player = player.getUniqueId();
         this.arena = arena;
         reJoinList.add(this);
-        BedWars.debug("Created ReJoin for " + player.getName() + " " + player.getUniqueId() + " at " + arena.getArenaName());
+        BedWars.debug("ReJoin criado para " + player.getName() + " " + player.getUniqueId() + " at " + arena.getArenaName());
         if (bwt.getMembers().isEmpty()) task = new ReJoinTask(arena, bwt);
         this.permanentsAndNonDowngradables.addAll(cachedArmor);
 
@@ -87,9 +87,9 @@ public class ReJoin {
      * Check if a player has stored data
      */
     public static boolean exists(@NotNull Player pl) {
-        BedWars.debug("ReJoin exists check " + pl.getUniqueId());
+        BedWars.debug("Verificação de existência do ReJoin " + pl.getUniqueId());
         for (ReJoin rj : getReJoinList()) {
-            BedWars.debug("ReJoin exists check list scroll: " + rj.getPl().toString());
+            BedWars.debug("Verificação de existência do ReJoin, varredura da lista: " + rj.getPl().toString());
             if (rj.getPl().equals(pl.getUniqueId())) {
                 return true;
             }
@@ -117,22 +117,22 @@ public class ReJoin {
     public boolean canReJoin() {
         BedWars.debug("ReJoin canReJoin  check.");
         if (arena == null) {
-            BedWars.debug("ReJoin canReJoin arena is null " + player.toString());
+            BedWars.debug("ReJoin canReJoin: a arena é nula " + player.toString());
             destroy(true);
             return false;
         }
         if (arena.getStatus() == GameState.restarting) {
-            BedWars.debug("ReJoin canReJoin status is restarting " + player.toString());
+            BedWars.debug("ReJoin canReJoin: o status é reiniciando " + player.toString());
             destroy(true);
             return false;
         }
         if (bwt == null) {
-            BedWars.debug("ReJoin canReJoin bwt is null " + player.toString());
+            BedWars.debug("ReJoin canReJoin: bwt é nulo " + player.toString());
             destroy(true);
             return false;
         }
         if (bwt.isBedDestroyed()) {
-            BedWars.debug("ReJoin canReJoin bed is destroyed " + player.toString());
+            BedWars.debug("ReJoin canReJoin: a cama foi destruída " + player.toString());
             destroy(false);
             return false;
         }
@@ -157,7 +157,7 @@ public class ReJoin {
      * Destroy data and rejoin possibility
      */
     public void destroy(boolean destroyTeam) {
-        BedWars.debug("ReJoin destroy for " + player.toString());
+        BedWars.debug("ReJoin destruído para " + player.toString());
         reJoinList.remove(this);
         if (BedWars.getRedisConnection() != null){
             JsonObject json = new JsonObject();

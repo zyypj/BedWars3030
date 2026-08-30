@@ -86,7 +86,7 @@ public class InternalAdapter extends RestoreAdapter {
                     wc.generator(new VoidChunkGenerator());
                     World w = Bukkit.createWorld(wc);
                     if (w == null){
-                        throw new IllegalStateException("World should be null");
+                        throw new IllegalStateException("O mundo deveria ser nulo");
                     }
                     w.setKeepSpawnInMemory(true);
                     w.setAutoSave(false);
@@ -110,7 +110,7 @@ public class InternalAdapter extends RestoreAdapter {
                     }
                     boolean success = Bukkit.unloadWorld(a.getWorldName(), false);
                     if (!success) {
-                        plugin.getLogger().warning("Failed to unload world: " + a.getWorldName());
+                        plugin.getLogger().warning("Falha ao descarregar o mundo: " + a.getWorldName());
                     }                    if (Arena.canAutoScale(a.getArenaName())) {
                         Bukkit.getScheduler().runTaskLater(plugin, () -> new Arena(a.getArenaName(), null), 80L);
                     }
@@ -118,7 +118,7 @@ public class InternalAdapter extends RestoreAdapter {
             } else {
                 boolean success = Bukkit.unloadWorld(a.getWorldName(), false);
                 if (!success) {
-                    plugin.getLogger().warning("Failed to unload world: " + a.getWorldName());
+                    plugin.getLogger().warning("Falha ao descarregar o mundo: " + a.getWorldName());
                 }
                 Bukkit.getScheduler().runTaskLater(plugin, () -> new Arena(a.getArenaName(), null), 80L);
             }
@@ -133,14 +133,14 @@ public class InternalAdapter extends RestoreAdapter {
         if(BedWars.isShuttingDown()) {
             boolean success = Bukkit.unloadWorld(a.getWorldName(), false);
             if (!success) {
-                plugin.getLogger().warning("Failed to unload world: " + a.getWorldName());
+                plugin.getLogger().warning("Falha ao descarregar o mundo: " + a.getWorldName());
             }
             return;
         }
         Bukkit.getScheduler().runTask(getOwner(), () -> {
             boolean success = Bukkit.unloadWorld(a.getWorldName(), false);
             if (!success) {
-                plugin.getLogger().warning("Failed to unload world: " + a.getWorldName());
+                plugin.getLogger().warning("Falha ao descarregar o mundo: " + a.getWorldName());
             }
         });
     }
@@ -164,13 +164,13 @@ public class InternalAdapter extends RestoreAdapter {
                 try {
                     File level = new File(Bukkit.getWorldContainer(), s.getWorldName() + "/region");
                     if (level.exists()) {
-                        s.getPlayer().sendMessage(ChatColor.GREEN + "Loading " + s.getWorldName() + " from Bukkit worlds container.");
+                        s.getPlayer().sendMessage(ChatColor.GREEN + "Loading " + s.getWorldName() + " do container de mundos do Bukkit.");
                         deleteWorldTrash(s.getWorldName());
                         World w = Bukkit.createWorld(wc);
                         w.setKeepSpawnInMemory(true);
                     } else {
                         try {
-                            s.getPlayer().sendMessage(ChatColor.GREEN + "Creating a new void map: " + s.getWorldName());
+                            s.getPlayer().sendMessage(ChatColor.GREEN + "Criando um novo mapa vazio: " + s.getWorldName());
                             World w = Bukkit.createWorld(wc);
                             w.setKeepSpawnInMemory(true);
                             Bukkit.getScheduler().runTaskLater(plugin, s::teleportPlayer, 20L);
@@ -268,7 +268,7 @@ public class InternalAdapter extends RestoreAdapter {
                     newName = new File(dir.getPath() + "/" + file.getName().toLowerCase());
                     if (!file.renameTo(newName)) {
                         toRemove.add(file);
-                        BedWars.plugin.getLogger().severe("Could not rename " + file.getName() + " to " + file.getName().toLowerCase() + "! Please do it manually!");
+                        BedWars.plugin.getLogger().severe("Não foi possível renomear " + file.getName() + " to " + file.getName().toLowerCase() + "! Faça isso manualmente!");
                     } else {
                         toAdd.add(newName);
                         toRemove.add(file);
@@ -277,7 +277,7 @@ public class InternalAdapter extends RestoreAdapter {
                     if (folder.exists()) {
                         if (!folder.getName().equals(folder.getName().toLowerCase())) {
                             if (!folder.renameTo(new File(plugin.getServer().getWorldContainer().getPath() + "/" + folder.getName().toLowerCase()))) {
-                                BedWars.plugin.getLogger().severe("Could not rename " + folder.getName() + " folder to " + folder.getName().toLowerCase() + "! Please do it manually!");
+                                BedWars.plugin.getLogger().severe("Não foi possível renomear " + folder.getName() + " folder to " + folder.getName().toLowerCase() + "! Faça isso manualmente!");
                                 toRemove.add(file);
                                 return;
                             }
@@ -319,8 +319,8 @@ public class InternalAdapter extends RestoreAdapter {
                 new File(Bukkit.getWorldContainer(), world + "/uid.dat")}) {
             if (f.exists()) {
                 if (!f.delete()) {
-                    getOwner().getLogger().warning("Could not delete: " + f.getPath());
-                    getOwner().getLogger().warning("This may cause issues!");
+                    getOwner().getLogger().warning("Não foi possível deletar: " + f.getPath());
+                    getOwner().getLogger().warning("Isso pode causar problemas!");
                 }
             }
         }

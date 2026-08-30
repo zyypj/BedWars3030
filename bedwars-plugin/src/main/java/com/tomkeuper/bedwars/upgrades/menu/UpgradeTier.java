@@ -50,8 +50,8 @@ public class UpgradeTier {
     public UpgradeTier(String parentName, String name, ItemStack displayItem, int cost, Material currency) {
         this.displayItem = BedWars.nms.addCustomData(displayItem, "MCONT_" + parentName);
         this.name = name;
-        Language.saveIfNotExists(Messages.UPGRADES_UPGRADE_TIER_ITEM_NAME.replace("%bw_name%", parentName.replace("upgrade-", "")).replace("{tier}", name), "&cName not set");
-        Language.saveIfNotExists(Messages.UPGRADES_UPGRADE_TIER_ITEM_LORE.replace("%bw_name%", parentName.replace("upgrade-", "")).replace("{tier}", name), Collections.singletonList("&cLore not set"));
+        Language.saveIfNotExists(Messages.UPGRADES_UPGRADE_TIER_ITEM_NAME.replace("%bw_name%", parentName.replace("upgrade-", "")).replace("{tier}", name), "&cNome não definido");
+        Language.saveIfNotExists(Messages.UPGRADES_UPGRADE_TIER_ITEM_LORE.replace("%bw_name%", parentName.replace("upgrade-", "")).replace("{tier}", name), Collections.singletonList("&cLore não definida"));
         this.cost = cost;
         this.currency = currency;
 
@@ -64,12 +64,12 @@ public class UpgradeTier {
             switch (type[0].trim().toLowerCase()) {
                 case "enchant-item":
                     if (data.length < 3) {
-                        BedWars.plugin.getLogger().warning("Invalid " + type[0] + " at upgrades2: " + parentName + "." + name);
+                        BedWars.plugin.getLogger().warning("Invalid " + type[0] + " em upgrades2: " + parentName + "." + name);
                         continue;
                     }
                     Enchantment e = Enchantment.getByName(data[0].toUpperCase());
                     if (e == null) {
-                        BedWars.plugin.getLogger().warning("Invalid enchantment " + data[0].toUpperCase() + " at upgrades2: " + parentName + "." + name);
+                        BedWars.plugin.getLogger().warning("Invalid enchantment " + data[0].toUpperCase() + " em upgrades2: " + parentName + "." + name);
                         continue;
                     }
                     EnchantItemAction.ApplyType apply = null;
@@ -85,7 +85,7 @@ public class UpgradeTier {
                             break;
                     }
                     if (apply == null) {
-                        BedWars.plugin.getLogger().warning("Invalid apply type " + data[2] + " at upgrades2: " + parentName + "." + name);
+                        BedWars.plugin.getLogger().warning("Tipo de aplicação inválido " + data[2] + " em upgrades2: " + parentName + "." + name);
                         continue;
                     }
                     int amplifier = 1;
@@ -97,12 +97,12 @@ public class UpgradeTier {
                     break;
                 case "player-effect":
                     if (data.length < 4) {
-                        BedWars.plugin.getLogger().warning("Invalid " + type[0] + " at upgrades2: " + parentName + "." + name);
+                        BedWars.plugin.getLogger().warning("Invalid " + type[0] + " em upgrades2: " + parentName + "." + name);
                         continue;
                     }
                     PotionEffectType pe = PotionEffectType.getByName(data[0].toUpperCase());
                     if (pe == null) {
-                        BedWars.plugin.getLogger().warning("Invalid potion effect " + data[0] + " at upgrades2: " + parentName + "." + name);
+                        BedWars.plugin.getLogger().warning("Invalid potion effect " + data[0] + " em upgrades2: " + parentName + "." + name);
                         continue;
                     }
                     PlayerEffectAction.ApplyType applyType = null;
@@ -115,7 +115,7 @@ public class UpgradeTier {
                             break;
                     }
                     if (applyType == null) {
-                        BedWars.plugin.getLogger().warning("Invalid apply type " + data[3] + " at upgrades2: " + parentName + "." + name);
+                        BedWars.plugin.getLogger().warning("Tipo de aplicação inválido " + data[3] + " em upgrades2: " + parentName + "." + name);
                         continue;
                     }
                     int amp = 1, time = 0;
@@ -128,7 +128,7 @@ public class UpgradeTier {
                     break;
                 case "generator-edit":
                     if (data.length < 4) {
-                        BedWars.plugin.getLogger().warning("Invalid " + type[0] + " at upgrades2: " + parentName + "." + name);
+                        BedWars.plugin.getLogger().warning("Invalid " + type[0] + " em upgrades2: " + parentName + "." + name);
                         continue;
                     }
                     GeneratorEditAction.ApplyType genType = null;
@@ -147,7 +147,7 @@ public class UpgradeTier {
                             break;
                     }
                     if (genType == null) {
-                        BedWars.plugin.getLogger().warning("Invalid generator type " + data[0] + " at upgrades2: " + parentName + "." + name);
+                        BedWars.plugin.getLogger().warning("Tipo de gerador inválido " + data[0] + " em upgrades2: " + parentName + "." + name);
                     }
                     double spawn;
                     int amount, limit;
@@ -156,21 +156,21 @@ public class UpgradeTier {
                         amount = Integer.parseInt(data[2]);
                         limit = Integer.parseInt(data[3]);
                     } catch (Exception ex) {
-                        BedWars.plugin.getLogger().warning("Invalid generator configuration " + data[0] + " at upgrades2: " + parentName + "." + name);
+                        BedWars.plugin.getLogger().warning("Configuração de gerador inválida " + data[0] + " em upgrades2: " + parentName + "." + name);
                         continue;
                     }
                     ua = new GeneratorEditAction(genType, amount, spawn, limit);
                     break;
                 case "dragon":
                     if (data.length < 1) {
-                        BedWars.plugin.getLogger().warning("Invalid " + type[0] + " at upgrades2: " + parentName + "." + name);
+                        BedWars.plugin.getLogger().warning("Invalid " + type[0] + " em upgrades2: " + parentName + "." + name);
                         continue;
                     }
                     int dragons;
                     try {
                         dragons = Integer.parseInt(data[0]);
                     } catch (Exception exc) {
-                        BedWars.plugin.getLogger().warning("Invalid dragon amount at upgrades2: " + parentName + "." + name);
+                        BedWars.plugin.getLogger().warning("Quantidade de dragões inválida em upgrades2: " + parentName + "." + name);
                         continue;
                     }
                     ua = new DragonAction(dragons);
@@ -178,14 +178,14 @@ public class UpgradeTier {
                 case "command":
                     // once-as-console,command
                     if (data.length < 2) {
-                        BedWars.plugin.getLogger().warning("Invalid " + type[0] + " at upgrades2: " + parentName + "." + name);
+                        BedWars.plugin.getLogger().warning("Invalid " + type[0] + " em upgrades2: " + parentName + "." + name);
                         continue;
                     }
                     DispatchCommand.CommandType cmdType;
                     try {
                         cmdType = DispatchCommand.CommandType.valueOf(data[0].toUpperCase());
                     } catch (Exception exception) {
-                        BedWars.plugin.getLogger().warning("Invalid command type " + data[0] + " at upgrades2: " + parentName + "." + name);
+                        BedWars.plugin.getLogger().warning("Tipo de comando inválido " + data[0] + " em upgrades2: " + parentName + "." + name);
                         continue;
                     }
                     // re-do here because the first one does a trim on data

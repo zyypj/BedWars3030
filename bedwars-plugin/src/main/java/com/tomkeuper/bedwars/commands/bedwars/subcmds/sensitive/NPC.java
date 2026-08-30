@@ -53,17 +53,17 @@ import java.util.List;
 public class NPC extends SubCommand {
 
     //main usage
-    private final List<BaseComponent> MAIN_USAGE = Arrays.asList(Misc.msgHoverClick("§f\n§c▪ §7Usage: §e/" + BedWars.mainCmd + " " + getSubCommandName() + " add", "§fUse this command to create a join NPC.\n§fClick to see the syntax.", "/"+getParent().getName()+" "+getSubCommandName()+" add", ClickEvent.Action.RUN_COMMAND),
-            Misc.msgHoverClick("§c▪ §7Usage: §e/" + BedWars.mainCmd + " " + getSubCommandName() + " remove", "§fStay in front of a NPC in order to remove it.", "/"+getParent().getName()+" "+getSubCommandName()+" remove", ClickEvent.Action.SUGGEST_COMMAND));
+    private final List<BaseComponent> MAIN_USAGE = Arrays.asList(Misc.msgHoverClick("§f\n§c▪ §7Uso: §e/" + BedWars.mainCmd + " " + getSubCommandName() + " add", "§fUse este comando para criar um NPC de entrada.\n§fClique para ver a sintaxe.", "/"+getParent().getName()+" "+getSubCommandName()+" add", ClickEvent.Action.RUN_COMMAND),
+            Misc.msgHoverClick("§c▪ §7Uso: §e/" + BedWars.mainCmd + " " + getSubCommandName() + " remove", "§fFique em frente a um NPC para removê-lo.", "/"+getParent().getName()+" "+getSubCommandName()+" remove", ClickEvent.Action.SUGGEST_COMMAND));
     @SuppressWarnings("ArraysAsListWithZeroOrOneArgument")
-    private final List<BaseComponent> ADD_USAGE = Arrays.asList(Misc.msgHoverClick("f\n§c▪ §7Usage: §e§o/" + getParent().getName() + " " + getSubCommandName() + " add <skin> <arenaGroup> <§7line1§9\\n§7line2§e>\n§7You can use §e%bw_players% §7for the players count in this arena §7group.", "Click to use.", "/"+getParent().getName()+" "+getSubCommandName()+" add", ClickEvent.Action.SUGGEST_COMMAND));
+    private final List<BaseComponent> ADD_USAGE = Arrays.asList(Misc.msgHoverClick("f\n§c▪ §7Uso: §e§o/" + getParent().getName() + " " + getSubCommandName() + " add <skin> <grupoDaArena> <§7linha1§9\\n§7linha2§e>\n§7Você pode usar §e%bw_players% §7para a contagem de jogadores deste §7grupo de arenas.", "Clique para usar.", "/"+getParent().getName()+" "+getSubCommandName()+" add", ClickEvent.Action.SUGGEST_COMMAND));
 
     public NPC(ParentCommand parent, String name) {
         super(parent, name);
         showInList(true);
         setPriority(12);
         setPermission(Permissions.PERMISSION_NPC);
-        setDisplayInfo(Misc.msgHoverClick("§6 ▪ §7/" + getParent().getName() + " " + getSubCommandName() + "         §8   - §ecreate a join NPC", "§fCreate a join NPC  \n§fClick for more details.",
+        setDisplayInfo(Misc.msgHoverClick("§6 ▪ §7/" + getParent().getName() + " " + getSubCommandName() + "         §8   - §ecriar um NPC de entrada", "§fCria um NPC de entrada  \n§fClique para mais detalhes.",
                 "/" + getParent().getName() + " " + getSubCommandName(), ClickEvent.Action.RUN_COMMAND));
     }
 
@@ -96,21 +96,21 @@ public class NPC extends SubCommand {
             net.citizensnpcs.api.npc.NPC npc = JoinNPC.spawnNPC(p.getLocation(), name, args[2], args[1], null);
             assert npc != null;
             npcs.add(BedWars.config.stringLocationConfigFormat(p.getLocation()) + "," + args[1] + "," + name + "," + args[2] + "," + npc.getId());
-            String NPC_SET = "§a§c▪ §bNPC: %name% §bwas set!";
+            String NPC_SET = "§a§c▪ §bNPC: %name% §bfoi definido!";
             p.sendMessage(NPC_SET.replace("%name%", name.replace("&", "§").replace("\\\\n", " ")));
-            p.sendMessage("§a§c▪ §bTarget groups: " + ChatColor.GOLD + args[2]);
+            p.sendMessage("§a§c▪ §bGrupos alvo: " + ChatColor.GOLD + args[2]);
             BedWars.config.set(ConfigPath.GENERAL_CONFIGURATION_NPC_LOC_STORAGE, npcs);
 
         } else if (args[0].equalsIgnoreCase("remove")) {
 
             List<Entity> e = p.getNearbyEntities(4, 4, 4);
-            String NO_NPCS = "§c▪ §bThere isn't any NPC nearby.";
+            String NO_NPCS = "§c▪ §bNão há nenhum NPC por perto.";
             if (e.isEmpty()) {
                 p.sendMessage(NO_NPCS);
                 return true;
             }
             if (BedWars.config.getYml().get(ConfigPath.GENERAL_CONFIGURATION_NPC_LOC_STORAGE) == null) {
-                String NO_SET = "§c▪ §bThere isn't any NPC set yet!";
+                String NO_SET = "§c▪ §bAinda não há nenhum NPC definido!";
                 p.sendMessage(NO_SET);
                 return true;
             }
@@ -137,7 +137,7 @@ public class NPC extends SubCommand {
             }
             BedWars.config.set(ConfigPath.GENERAL_CONFIGURATION_NPC_LOC_STORAGE, locations);
             npc.destroy();
-            String NPC_REMOVED = "§c▪ §bThe target NPC was removed!";
+            String NPC_REMOVED = "§c▪ §bO NPC alvo foi removido!";
             p.sendMessage(NPC_REMOVED);
         } else {
             for (BaseComponent bc : MAIN_USAGE){

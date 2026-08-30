@@ -54,8 +54,8 @@ public class MenuSeparator implements MenuContent {
         if (name == null) return;
         this.displayItem = BedWars.nms.addCustomData(displayItem, "MCONT_" + name);
         this.name = name;
-        Language.saveIfNotExists(Messages.UPGRADES_SEPARATOR_ITEM_NAME_PATH + name.replace("separator-", ""), "&cName not set");
-        Language.saveIfNotExists(Messages.UPGRADES_SEPARATOR_ITEM_LORE_PATH + name.replace("separator-", ""), Collections.singletonList("&cLore not set"));
+        Language.saveIfNotExists(Messages.UPGRADES_SEPARATOR_ITEM_NAME_PATH + name.replace("separator-", ""), "&cNome não definido");
+        Language.saveIfNotExists(Messages.UPGRADES_SEPARATOR_ITEM_LORE_PATH + name.replace("separator-", ""), Collections.singletonList("&cLore não definida"));
 
         if (name.equalsIgnoreCase("separator-back")) {
             backButton = true;

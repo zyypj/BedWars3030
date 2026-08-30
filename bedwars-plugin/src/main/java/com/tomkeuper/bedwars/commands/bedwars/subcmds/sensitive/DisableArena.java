@@ -43,7 +43,7 @@ public class DisableArena extends SubCommand {
         super(parent, name);
         setPriority(6);
         showInList(true);
-        setDisplayInfo(Misc.msgHoverClick("§6 ▪ §7/" + getParent().getName() + " "+getSubCommandName()+" §6<worldName>", "§fDisable an arena.\nThis will remove the players \n§ffrom the arena before disabling.",
+        setDisplayInfo(Misc.msgHoverClick("§6 ▪ §7/" + getParent().getName() + " "+getSubCommandName()+" §6<worldName>", "§fDesativa uma arena.\nIsso vai remover os jogadores \n§fda arena antes de desativar.",
                 "/" + getParent().getName() + " "+getSubCommandName()+" ", ClickEvent.Action.SUGGEST_COMMAND));
         setPermission(Permissions.PERMISSION_ARENA_DISABLE);
     }
@@ -51,27 +51,27 @@ public class DisableArena extends SubCommand {
     @Override
     public boolean execute(String[] args, CommandSender s) {
         if (!MainCommand.isLobbySet()) {
-            s.sendMessage("§c▪ §7You have to set the lobby location first!");
+            s.sendMessage("§c▪ §7Você precisa definir a localização do lobby primeiro!");
             return true;
         }
         if (args.length != 1) {
-            s.sendMessage("§c▪ §7Usage: §o/" + getParent().getName() + " "+getSubCommandName()+" <mapName>");
+            s.sendMessage("§c▪ §7Uso: §o/" + getParent().getName() + " "+getSubCommandName()+" <mapName>");
             return true;
         }
         if (!BedWars.getAPI().getRestoreAdapter().isWorld(args[0])) {
-            s.sendMessage("§c▪ §7" + args[0] + " is a world and not an arena!");
+            s.sendMessage("§c▪ §7" + args[0] + " é um mundo e não uma arena!");
             return true;
         }
         IArena a = Arena.getArenaByName(args[0]);
         if (a == null) {
-            s.sendMessage("§c▪ §7This has already been disabled or doesnt exist!");
+            s.sendMessage("§c▪ §7Isso já foi desativado ou não existe!");
             return true;
         }
         if (a.getStatus() == GameState.playing) {
-            s.sendMessage("§6 ▪ §7There is a game running on this Arena, please disable after the game!");
+            s.sendMessage("§6 ▪ §7Há uma partida em andamento nesta arena, desative-a após a partida!");
             return true;
         }
-        s.sendMessage("§6 ▪ §7Disabling arena...");
+        s.sendMessage("§6 ▪ §7Desativando arena...");
         a.disable();
         return true;
     }

@@ -72,7 +72,7 @@ public class Misc {
                     try{
                         p.teleport(loc);
                     } catch (Exception ignored){
-                        Bukkit.getLogger().severe("Could not teleport player to lobby! Try setting the lobby again with /bw setLobby");
+                        Bukkit.getLogger().severe("Não foi possível teleportar o jogador para o lobby! Tente definir o lobby novamente com /bw setLobby");
                     }
                 } else {
                     forceKick(p, arena, notAbandon);
@@ -92,7 +92,7 @@ public class Misc {
                                         if (arena.isPlayer(partyMember)) arena.removePlayer(partyMember, false, true);
                                         else if (arena.isSpectator(partyMember)) arena.removeSpectator(partyMember, false, true);
                                         else {
-                                            BedWars.debug("Cannot remove " + partyMember.getName() + " from " + arena.getDisplayName() + " because member is not a player nor a spectator.");
+                                            BedWars.debug("Não é possível remover " + partyMember.getName() + " from " + arena.getDisplayName() + " porque o membro não é jogador nem espectador.");
                                         }
                                     }
                                 }
@@ -405,7 +405,7 @@ public class Misc {
      * @return a new Location instance.
      */
     public static Location minLoc(Location loc1, Location loc2) {
-        if (loc1.getWorld() != loc2.getWorld()) throw new IllegalStateException("Locations are not in the same world!");
+        if (loc1.getWorld() != loc2.getWorld()) throw new IllegalStateException("As localizações não estão no mesmo mundo!");
         double x = Math.min(loc1.getX(), loc2.getX());
         double y = Math.min(loc1.getY(), loc2.getY());
         double z = Math.min(loc1.getZ(), loc2.getZ());
@@ -418,7 +418,7 @@ public class Misc {
      * @return a new Location instance.
      */
     public static Location maxLoc(Location loc1, Location loc2) {
-        if (loc1.getWorld() != loc2.getWorld()) throw new IllegalStateException("Locations are not in the same world!");
+        if (loc1.getWorld() != loc2.getWorld()) throw new IllegalStateException("As localizações não estão no mesmo mundo!");
         double x = Math.max(loc1.getX(), loc2.getX());
         double y = Math.max(loc1.getY(), loc2.getY());
         double z = Math.max(loc1.getZ(), loc2.getZ());

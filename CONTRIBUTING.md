@@ -1,91 +1,91 @@
-# Contributing to BedWars2023
-👍 First off, thanks for taking the time to contribute!
+# Contribuindo com o BedWars2023
+👍 Antes de mais nada, obrigado por reservar um tempo para contribuir!
 
-The following is a set of guidelines for contributing to BedWars2023. 
-These are mostly guidelines, not rules. Use your best judgment, and feel free 
-to propose changes to this document in a pull request.
+A seguir está um conjunto de diretrizes para contribuir com o BedWars2023.
+São, na maior parte, diretrizes e não regras. Use o seu bom senso e fique à vontade
+para propor mudanças neste documento em um pull request.
 
-### What should I know before I get started?
-#### BedWars2023 and its structure
+### O que eu devo saber antes de começar?
+#### O BedWars2023 e a sua estrutura
 
 ![Structure](.github/assets/contributing/structure.png)  
-We have a module for the public API called `bedwars-api` where we expose 
-some parts of the mini-game. The magic happens in the `bedwars-plugin`
-module and the others starting by `versionsupport_` are used to handle specific
-version-based code. Since BedWars2023 has multi-version support and it does not
-rely on Reflection we need to create a new module for each new MC version.
-`versionsupport_common` defines what needs to be handled differently 
-by each MC version support.
+Temos um módulo para a API pública chamado `bedwars-api`, onde expomos
+algumas partes do mini-game. A mágica acontece no módulo `bedwars-plugin`,
+e os que começam com `versionsupport_` são usados para tratar o código
+específico de cada versão. Como o BedWars2023 tem suporte a múltiplas versões e não
+depende de Reflection, precisamos criar um novo módulo para cada nova versão do MC.
+O `versionsupport_common` define o que precisa ser tratado de forma diferente
+por cada suporte de versão do MC.
 
-## How Can I Contribute?
-#### Reporting Bugs
+## Como eu posso contribuir?
+#### Reportando bugs
 
-When you are [creating a bug report](https://github.com/tomkeuper/BedWars2023/issues/new), please include as many details as possible.
-Fill out the required template, the information it asks for helps us resolve issues faster.
+Ao [criar um relatório de bug](https://github.com/tomkeuper/BedWars2023/issues/new), inclua o máximo de detalhes possível.
+Preencha o template obrigatório; as informações pedidas nos ajudam a resolver os problemas mais rápido.
 
-> **Note:** If you find a **Closed** issue that seems like it is the same thing that you're experiencing, open a new issue and include a link to the original issue in the body of your new one.
+> **Nota:** Se você encontrar uma issue **Closed** que pareça ser exatamente o que você está enfrentando, abra uma nova issue e inclua um link para a issue original no corpo da nova.
 
-### Suggesting Enhancements
-Enhancement suggestions are tracked as GitHub issues, so you need to 
-[open a new issue](https://github.com/tomkeuper/BedWars2023/issues/new) 
-and provide the following information:  
-- Use a clear and descriptive title for the issue to identify the suggestion.
-- Provide a step-by-step description of the suggested enhancement in as many details as possible.
-- Describe the current behavior and explain which behavior you expected to see instead and why.
-- Explain why this enhancement would be useful.
-- Specify which version of BedWars you're using.
+### Sugerindo melhorias
+Sugestões de melhoria são acompanhadas como issues do GitHub, então você precisa
+[abrir uma nova issue](https://github.com/tomkeuper/BedWars2023/issues/new)
+e fornecer as seguintes informações:
+- Use um título claro e descritivo para a issue, que identifique a sugestão.
+- Forneça uma descrição passo a passo da melhoria sugerida, com o máximo de detalhes possível.
+- Descreva o comportamento atual e explique qual comportamento você esperava ver no lugar, e por quê.
+- Explique por que essa melhoria seria útil.
+- Informe qual versão do BedWars você está usando.
 
 
-### Your First Code Contribution
-Unsure where to begin contributing to BedWars2023? 
-You can start by looking through these `beginner` and `help-wanted` issues:
-- [Beginner issues](beginner) - issues which should only require a few lines of code, and a test or two.
-- [Help wanted issues](help-wanted) - issues which should be a bit more involved than beginner issues.
+### A sua primeira contribuição de código
+Não sabe por onde começar a contribuir com o BedWars2023?
+Você pode começar olhando estas issues `beginner` e `help-wanted`:
+- [Issues para iniciantes](beginner) - issues que devem exigir apenas algumas linhas de código e um ou dois testes.
+- [Issues com ajuda desejada](help-wanted) - issues um pouco mais complexas que as de iniciante.
   
   
-#### Local development
-Before starting make sure you have `git`, `java` and `maven` installed.
-The plugin can be developed locally by cloning this repository, applying your
-changes and building the jar running `mvn clean install`.
+#### Desenvolvimento local
+Antes de começar, certifique-se de ter `git`, `java` e `maven` instalados.
+O plugin pode ser desenvolvido localmente clonando este repositório, aplicando as suas
+alterações e compilando o jar com `mvn clean install`.
 
 
 ## Pull Requests
-Please follow all instructions in the template to have your contribution
-considered by the maintainers:
-1. Copy the correct template for your contribution:
-  - 🐛 Are you fixing a bug? Copy the template [from here](.github/templates/contributing/bug_fix.md).
-  - 📈 Are you improving performance? Copy the template [from here](.github/templates/contributing/performance_improvement.md).
-  - 📝 Are you updating documentation? Copy the template [from here](.github/templates/contributing/documentation.md).
-  - 💻 Are you changing functionality? Copy the template [from here](.github/templates/contributing/feature_change.md).
-2. Replace this text with the contents of the template
-3. Fill in all sections of the template
-4. Click "Create pull request"
+Siga todas as instruções do template para que a sua contribuição seja
+considerada pelos mantenedores:
+1. Copie o template correto para a sua contribuição:
+  - 🐛 Está corrigindo um bug? Copie o template [daqui](.github/templates/contributing/bug_fix.md).
+  - 📈 Está melhorando a performance? Copie o template [daqui](.github/templates/contributing/performance_improvement.md).
+  - 📝 Está atualizando a documentação? Copie o template [daqui](.github/templates/contributing/documentation.md).
+  - 💻 Está mudando alguma funcionalidade? Copie o template [daqui](.github/templates/contributing/feature_change.md).
+2. Substitua este texto pelo conteúdo do template
+3. Preencha todas as seções do template
+4. Clique em "Create pull request"
 
-# Additional Notes
+# Notas adicionais
 
-### Issue and Pull Request Labels
-| Label name                | Description                                                                                                                |  
-|---------------------------|----------------------------------------------------------------------------------------------------------------------------|
-| `enhancement`             | Feature requests.                                                                                                          |
-| `bug`                     | Confirmed bugs or reports that are very likely to be bugs.                                                                 |
-| `question`                | Questions more than bug reports or feature requests (e.g. how do I do X).                                                  |
-| `feedback`                | General feedback more than bug reports or feature requests.                                                                |
-| `help-wanted`             | The team would appreciate help from the community in resolving these issues.                                               |
-| `beginner`                | Less complex issues which would be good first issues to work on for users who want to contribute.                          |
-| `more-information-needed` | More information needs to be collected about these problems or feature requests (e.g. steps to reproduce).                 |
-| `needs-reproduction`      | Likely bugs, but haven't been reliably reproduced.                                                                         |
-| `duplicate`               | Issues which are duplicates of other issues, i.e. they have been reported before.                                          |
-| `wontfix`                 | The team has decided not to fix these issues for now, either because they're working as intended or for some other reason. |
-| `invalid`                 | Issues which aren't valid (e.g. user errors).                                                                              |
+### Labels de issues e pull requests
+| Nome da label             | Descrição                                                                                                                    |  
+|---------------------------|------------------------------------------------------------------------------------------------------------------------------|
+| `enhancement`             | Pedidos de novos recursos.                                                                                                   |
+| `bug`                     | Bugs confirmados ou relatos com grande chance de serem bugs.                                                                 |
+| `question`                | Perguntas, mais do que relatos de bug ou pedidos de recurso (ex.: como eu faço X).                                           |
+| `feedback`                | Feedback geral, mais do que relatos de bug ou pedidos de recurso.                                                            |
+| `help-wanted`             | O time agradeceria a ajuda da comunidade para resolver estas issues.                                                         |
+| `beginner`                | Issues menos complexas, boas como primeira contribuição para quem quer começar a colaborar.                                  |
+| `more-information-needed` | É preciso reunir mais informações sobre estes problemas ou pedidos de recurso (ex.: passos para reproduzir).                  |
+| `needs-reproduction`      | Provavelmente bugs, mas que ainda não foram reproduzidos de forma confiável.                                                 |
+| `duplicate`               | Issues que são duplicatas de outras, ou seja, já foram reportadas antes.                                                     |
+| `wontfix`                 | O time decidiu não corrigir estas issues por enquanto, seja porque funcionam como esperado, seja por algum outro motivo.      |
+| `invalid`                 | Issues que não são válidas (ex.: erros do usuário).                                                                          |
 
-### Pull Request Labels
+### Labels de pull request
 
 
-| Label name         | Description                                                                              |
-|--------------------|------------------------------------------------------------------------------------------|
-| `work-in-progress` | Pull requests which are still being worked on, more changes will follow.                 |
-| `needs-review`     | Pull requests which need code review, and approval from maintainers or                   |
-| core team.         |                                                                                          |
-| `under-review`     | Pull requests being reviewed by maintainers.                                             |
-| `requires-changes` | Pull requests which need to be updated based on review comments and then reviewed again. |
-| `needs-testing`    | Pull requests which need manual testing.                                                 |
+| Nome da label      | Descrição                                                                                  |
+|--------------------|--------------------------------------------------------------------------------------------|
+| `work-in-progress` | Pull requests que ainda estão em andamento; mais mudanças virão.                           |
+| `needs-review`     | Pull requests que precisam de revisão de código e aprovação dos mantenedores ou            |
+| core team.         |                                                                                            |
+| `under-review`     | Pull requests em revisão pelos mantenedores.                                                |
+| `requires-changes` | Pull requests que precisam ser atualizados com base nos comentários da revisão e revisados novamente. |
+| `needs-testing`    | Pull requests que precisam de teste manual.                                                |

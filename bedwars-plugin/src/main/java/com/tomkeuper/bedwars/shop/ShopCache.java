@@ -94,7 +94,7 @@ public class ShopCache implements IShopCache {
      * Used to give items on player respawn
      */
     public void managePermanentsAndDowngradables(Arena arena) {
-        BedWars.debug("Restore permanents on death for: " + player);
+        BedWars.debug("Restaurando itens permanentes na morte de: " + player);
         for (CachedItem ci : cachedItems){
             ci.manageDeath(arena);
         }
@@ -112,7 +112,7 @@ public class ShopCache implements IShopCache {
         public CachedItem(ICategoryContent cc) {
             this.cc = cc;
             cachedItems.add(this);
-            BedWars.debug("New Cached item " + cc.getIdentifier() + " for player " + player);
+            BedWars.debug("Novo item em cache " + cc.getIdentifier() + " para o jogador " + player);
         }
 
         @Override
@@ -200,7 +200,7 @@ public class ShopCache implements IShopCache {
             ci.updateItem(slot, Bukkit.getPlayer(player));
         } else {
             if (cc.getContentTiers().size() > ci.getTier()) {
-                BedWars.debug("Cached item upgrade for " + cc.getIdentifier() + " player " + player);
+                BedWars.debug("Melhoria de item em cache para " + cc.getIdentifier() + " player " + player);
                 ci.upgrade(slot);
             }
         }

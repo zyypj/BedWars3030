@@ -61,21 +61,21 @@ public class SetUseBedHologram extends SubCommand {
         SetupSession ss = SetupSession.getSession(p.getUniqueId());
 
         if (ss == null){
-            s.sendMessage("§c ▪ §7You're not in a setup session!");
+            s.sendMessage("§c ▪ §7Você não está em uma sessão de setup!");
             return true;
         }
 
         if (args.length == 0) {
-            p.sendMessage("§c▪ §7Usage: /" + com.tomkeuper.bedwars.BedWars.mainCmd + " setUseBedHologram <boolean>");
+            p.sendMessage("§c▪ §7Uso: /" + com.tomkeuper.bedwars.BedWars.mainCmd + " setUseBedHologram <boolean>");
         } else {
             try {
                 Boolean.valueOf(args[0]);
             } catch (Exception ex) {
-                p.sendMessage("§c▪ §7Usage: /" + com.tomkeuper.bedwars.BedWars.mainCmd + " setUseBedHologram <boolean>");
+                p.sendMessage("§c▪ §7Uso: /" + com.tomkeuper.bedwars.BedWars.mainCmd + " setUseBedHologram <boolean>");
                 return true;
             }
             ss.getConfig().set("use-bed-hologram", Boolean.valueOf(args[0]));
-            p.sendMessage("§6 ▪ §7Use bed hologram set to §e" + args[0] + "§7!");
+            p.sendMessage("§6 ▪ §7Uso do holograma da cama definido como §e" + args[0] + "§7!");
         }
         return true;
     }

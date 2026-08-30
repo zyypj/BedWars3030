@@ -44,7 +44,7 @@ public class CmdStats extends SubCommand {
         super(parent, name);
         setPriority(16);
         showInList(false);
-        setDisplayInfo(MainCommand.createTC("§6 ▪ §7/"+ MainCommand.getInstance().getName()+" "+getSubCommandName(), "/"+getParent().getName()+" "+getSubCommandName(), "§fOpens the stats GUI."));
+        setDisplayInfo(MainCommand.createTC("§6 ▪ §7/"+ MainCommand.getInstance().getName()+" "+getSubCommandName(), "/"+getParent().getName()+" "+getSubCommandName(), "§fAbre a GUI de estatísticas."));
     }
 
     private static ConcurrentHashMap<UUID, Long> statsCoolDown = new ConcurrentHashMap<>();

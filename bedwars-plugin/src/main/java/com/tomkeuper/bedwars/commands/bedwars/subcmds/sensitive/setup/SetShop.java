@@ -55,29 +55,29 @@ public class SetShop extends SubCommand {
         Player p = (Player) s;
         SetupSession ss = SetupSession.getSession(p.getUniqueId());
         if (ss == null) {
-            //s.sendMessage("§c ▪ §7You're not in a setup session!");
+            //s.sendMessage("§c ▪ §7Você não está em uma sessão de setup!");
             return false;
         }
         if (args.length == 0) {
             String foundTeam = ss.getNearestTeam();
             if (foundTeam.isEmpty()) {
                 p.sendMessage("");
-                p.sendMessage(ss.getPrefix() + ChatColor.RED + "Could not find any nearby team.");
-                p.spigot().sendMessage(Misc.msgHoverClick(ss.getPrefix() + "Make sure you set the team's spawn first!", ChatColor.WHITE + "Set a team spawn.", "/" + getParent().getName() + " " + getSubCommandName() + " ", ClickEvent.Action.SUGGEST_COMMAND));
-                p.spigot().sendMessage(Misc.msgHoverClick(ss.getPrefix() + "Or if you set the spawn and it wasn't found automatically try using: /bw " + getSubCommandName() + " <team>", "Set a team shop.", "/" + getParent().getName() + " " + getSubCommandName() + " ", ClickEvent.Action.SUGGEST_COMMAND));
-                p.spigot().sendMessage(Misc.msgHoverClick(ss.getPrefix() + "Other use: /bw setShop <teamName>", "Set a team shop.", "/" + getParent().getName() + " " + getSubCommandName() + " ", ClickEvent.Action.SUGGEST_COMMAND));
-                com.tomkeuper.bedwars.BedWars.nms.sendTitle(p, " ", ChatColor.RED + "Could not find any nearby team.", 0, 60, 10);
+                p.sendMessage(ss.getPrefix() + ChatColor.RED + "Nenhum time encontrado por perto.");
+                p.spigot().sendMessage(Misc.msgHoverClick(ss.getPrefix() + "Certifique-se de definir o spawn do time primeiro!", ChatColor.WHITE + "Define o spawn de um time.", "/" + getParent().getName() + " " + getSubCommandName() + " ", ClickEvent.Action.SUGGEST_COMMAND));
+                p.spigot().sendMessage(Misc.msgHoverClick(ss.getPrefix() + "Ou, se você definiu o spawn e ele não foi encontrado automaticamente, tente usar: /bw " + getSubCommandName() + " <team>", "Define a loja de um time.", "/" + getParent().getName() + " " + getSubCommandName() + " ", ClickEvent.Action.SUGGEST_COMMAND));
+                p.spigot().sendMessage(Misc.msgHoverClick(ss.getPrefix() + "Outro uso: /bw setShop <nomeDoTime>", "Define a loja de um time.", "/" + getParent().getName() + " " + getSubCommandName() + " ", ClickEvent.Action.SUGGEST_COMMAND));
+                com.tomkeuper.bedwars.BedWars.nms.sendTitle(p, " ", ChatColor.RED + "Nenhum time encontrado por perto.", 0, 60, 10);
                 Sounds.playSound(ConfigPath.SOUNDS_INSUFF_MONEY, p);
             } else {
                 Bukkit.dispatchCommand(s, getParent().getName() + " " + getSubCommandName() + " " + foundTeam);
             }
         } else {
             if (ss.getConfig().getYml().get("Team." + args[0]) == null) {
-                p.sendMessage(ss.getPrefix() + ChatColor.RED + "This team doesn't exist!");
+                p.sendMessage(ss.getPrefix() + ChatColor.RED + "Este time não existe!");
                 if (ss.getConfig().getYml().get("Team") != null) {
-                    p.sendMessage(ss.getPrefix() + "Available teams: ");
+                    p.sendMessage(ss.getPrefix() + "Times disponíveis: ");
                     for (String team : Objects.requireNonNull(ss.getConfig().getYml().getConfigurationSection("Team")).getKeys(false)) {
-                        p.spigot().sendMessage(Misc.msgHoverClick(ChatColor.GOLD + " " + '▪' + " " + ss.getTeamColor(team) + team + ChatColor.GRAY + " (click to set)", ChatColor.GRAY + "Set shop for " + TeamColor.getChatColor(Objects.requireNonNull(ss.getConfig().getYml().getString("Team." + team + ".Color"))) + team, "/" + com.tomkeuper.bedwars.BedWars.mainCmd + " setShop " + team, ClickEvent.Action.RUN_COMMAND));
+                        p.spigot().sendMessage(Misc.msgHoverClick(ChatColor.GOLD + " " + '▪' + " " + ss.getTeamColor(team) + team + ChatColor.GRAY + " (clique para definir)", ChatColor.GRAY + "Loja definida para " + TeamColor.getChatColor(Objects.requireNonNull(ss.getConfig().getYml().getString("Team." + team + ".Color"))) + team, "/" + com.tomkeuper.bedwars.BedWars.mainCmd + " setShop " + team, ClickEvent.Action.RUN_COMMAND));
                     }
                 }
             } else {
@@ -87,7 +87,7 @@ public class SetShop extends SubCommand {
                 }
                 ss.createShopHologram(p, p.getLocation(), team);
                 ss.getConfig().saveArenaLoc("Team." + args[0] + ".Shop", p.getLocation());
-                p.sendMessage(ss.getPrefix() + "Shop set for: " + team);
+                p.sendMessage(ss.getPrefix() + "Loja definida para: " + team);
                 if (ss.getSetupType() == SetupType.ASSISTED) {
                     Bukkit.dispatchCommand(p, getParent().getName());
                 }

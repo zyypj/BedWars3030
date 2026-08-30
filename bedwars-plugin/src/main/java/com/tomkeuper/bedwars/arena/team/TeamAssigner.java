@@ -103,7 +103,7 @@ public class TeamAssigner implements ITeamAssigner {
         }
         if (remainingPlayers.isEmpty()) return;
 
-        BedWars.debug("Assigning teams for arena: " + arena.getArenaName() + " with; max in team: " + arena.getMaxInTeam() + " size: " + arena.getPlayers().size() + " teams: " + arena.getTeams().size());
+        BedWars.debug("Distribuindo times para a arena: " + arena.getArenaName() + " com; máximo por time: " + arena.getMaxInTeam() + " size: " + arena.getPlayers().size() + " teams: " + arena.getTeams().size());
         for (Player player: remainingPlayers) {
             player.closeInventory();
             findTargetTeam(arena.getTeams(),arena.getMaxInTeam(), arena.getPlayers().size()).addPlayers(player);
@@ -137,7 +137,7 @@ public class TeamAssigner implements ITeamAssigner {
 
             // Group players together if 1 player in team. Only if playerAmount > 2 and team size is not bigger than maxPlayersPerTeam
             if (numPlayers == 1 && (playerAmount > 2) && (maxPlayersPerTeam > numPlayers)){
-                BedWars.debug("found team with 1 player (" + team.getName() + ")");
+                BedWars.debug("time encontrado com 1 jogador (" + team.getName() + ")");
                 return team;
             }
         }

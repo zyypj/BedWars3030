@@ -55,7 +55,7 @@ public class BuyItem implements IBuyItem {
         this.upgradeIdentifier = upgradeIdentifier;
 
         if (yml.get(path + ".material") == null) {
-            BedWars.plugin.getLogger().severe("BuyItem: Material not set at " + path);
+            BedWars.plugin.getLogger().severe("BuyItem: material não definido em " + path);
             return;
         }
 
@@ -184,7 +184,7 @@ public class BuyItem implements IBuyItem {
 
             ItemMeta im = i.getItemMeta();
             if (arena.getTeam(player) == null) {
-                BedWars.debug("Could not give BuyItem to " + player.getName() + " - TEAM IS NULL");
+                BedWars.debug("Não foi possível dar o BuyItem para " + player.getName() + " - O TIME É NULO");
                 return;
             }
             if (im != null) {
@@ -231,15 +231,15 @@ public class BuyItem implements IBuyItem {
                 if (arena.getTeam(player) != null) {
                     coloured = BedWars.nms.colourItem(i, arena.getTeam(player));
                 } else {
-                    BedWars.debug("Skipping colourItem for " + player.getName() + ": team is null");
+                    BedWars.debug("Ignorando colourItem para " + player.getName() + ": o time é nulo");
                 }
             } catch (Throwable t) {
-                BedWars.debug("colourItem error for " + player.getName() + ": " + t.getMessage());
+                BedWars.debug("erro de colourItem para " + player.getName() + ": " + t.getMessage());
             }
             if (coloured != null && coloured.getType() != Material.AIR) {
                 i = coloured;
             } else {
-                BedWars.debug("colourItem returned null/AIR for " + player.getName() + ". Using original item: " + original.getType());
+                BedWars.debug("colourItem retornou null/AIR para " + player.getName() + ". Usando o item original: " + original.getType());
                 i = original;
             }
             if (im != null) {
@@ -268,7 +268,7 @@ public class BuyItem implements IBuyItem {
 
         // Extra debug info before adding to inventory
         try {
-            BedWars.debug ("About to add item: type=" + i.getType() + ", amount=" + i.getAmount() + ", firstEmpty=" + player.getInventory().firstEmpty());
+            BedWars.debug ("Prestes a adicionar o item: type=" + i.getType() + ", amount=" + i.getAmount() + ", firstEmpty=" + player.getInventory().firstEmpty());
         } catch (Throwable ignored) {}
 
         //Remove swords with lower damage
@@ -290,7 +290,7 @@ public class BuyItem implements IBuyItem {
             player.getInventory().addItem(i);
             player.updateInventory();
         } else {
-            BedWars.debug("Attempted to give AIR/null item to " + player.getName() + " for upgrade: " + getUpgradeIdentifier());
+            BedWars.debug("Tentativa de dar um item AIR/nulo para " + player.getName() + " para a melhoria: " + getUpgradeIdentifier());
         }
     }
 

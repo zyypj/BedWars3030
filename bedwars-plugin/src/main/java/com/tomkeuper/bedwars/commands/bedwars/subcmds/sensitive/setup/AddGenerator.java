@@ -74,11 +74,11 @@ public class AddGenerator extends SubCommand {
                 }
 
                 // else send usage message
-                p.sendMessage(ss.getPrefix() + ChatColor.RED + "Could not find any nearby team.");
-                p.spigot().sendMessage(Misc.msgHoverClick(ss.getPrefix() + "Make sure you set the team's spawn first!", ChatColor.WHITE + "Set a team spawn.", "/" + getParent().getName() + " " + getSubCommandName() + " ", ClickEvent.Action.SUGGEST_COMMAND));
-                p.spigot().sendMessage(Misc.msgHoverClick(ss.getPrefix() + "Or if you set the spawn and it wasn't found automatically try using: /bw addGenerator <team>", "Add a team generator.", "/" + getParent().getName() + " " + getSubCommandName() + " ", ClickEvent.Action.SUGGEST_COMMAND));
-                p.spigot().sendMessage(Misc.msgHoverClick(ss.getPrefix() + "Other use: /bw addGenerator <emerald/ diamond>", "Add an emerald/ diamond generator.", "/" + getParent().getName() + " " + getSubCommandName() + " ", ClickEvent.Action.SUGGEST_COMMAND));
-                com.tomkeuper.bedwars.BedWars.nms.sendTitle(p, " ", ChatColor.RED + "Could not find any nearby team.", 5, 60, 5);
+                p.sendMessage(ss.getPrefix() + ChatColor.RED + "Nenhum time encontrado por perto.");
+                p.spigot().sendMessage(Misc.msgHoverClick(ss.getPrefix() + "Certifique-se de definir o spawn do time primeiro!", ChatColor.WHITE + "Define o spawn de um time.", "/" + getParent().getName() + " " + getSubCommandName() + " ", ClickEvent.Action.SUGGEST_COMMAND));
+                p.spigot().sendMessage(Misc.msgHoverClick(ss.getPrefix() + "Ou, se você definiu o spawn e ele não foi encontrado automaticamente, tente usar: /bw addGenerator <team>", "Adiciona um gerador de time.", "/" + getParent().getName() + " " + getSubCommandName() + " ", ClickEvent.Action.SUGGEST_COMMAND));
+                p.spigot().sendMessage(Misc.msgHoverClick(ss.getPrefix() + "Outro uso: /bw addGenerator <emerald/ diamond>", "Adiciona um gerador de esmeralda/ diamante.", "/" + getParent().getName() + " " + getSubCommandName() + " ", ClickEvent.Action.SUGGEST_COMMAND));
+                com.tomkeuper.bedwars.BedWars.nms.sendTitle(p, " ", ChatColor.RED + "Nenhum time encontrado por perto.", 5, 60, 5);
                 Sounds.playSound(ConfigPath.SOUNDS_INSUFF_MONEY, p);
                 return true;
             }
@@ -87,12 +87,12 @@ public class AddGenerator extends SubCommand {
             saveTeamGen(p.getLocation(), team, ss, "Gold");
             saveTeamGen(p.getLocation(), team, ss, "Emerald");
 
-            com.tomkeuper.bedwars.BedWars.nms.createHologram(p, p.getLocation(), ChatColor.GOLD + "Generator set for team: " + ss.getTeamColor(team) + team);
-            p.sendMessage(ss.getPrefix() + "Generator set for team: " + ss.getTeamColor(team) + team);
+            com.tomkeuper.bedwars.BedWars.nms.createHologram(p, p.getLocation(), ChatColor.GOLD + "Gerador definido para o time: " + ss.getTeamColor(team) + team);
+            p.sendMessage(ss.getPrefix() + "Gerador definido para o time: " + ss.getTeamColor(team) + team);
 
             Bukkit.dispatchCommand(p, getParent().getName());
 
-            com.tomkeuper.bedwars.BedWars.nms.sendTitle(p, " ", ChatColor.GREEN + "Generator set for team: " + ss.getTeamColor(team) + team, 5, 60, 5);
+            com.tomkeuper.bedwars.BedWars.nms.sendTitle(p, " ", ChatColor.GREEN + "Gerador definido para o time: " + ss.getTeamColor(team) + team, 5, 60, 5);
             Sounds.playSound(ConfigPath.SOUNDS_BOUGHT, p);
             return true;
         } else if (args.length == 1 && (args[0].equalsIgnoreCase("diamond") || args[0].equalsIgnoreCase("emerald"))) {
@@ -100,8 +100,8 @@ public class AddGenerator extends SubCommand {
             List<Location> locations = ss.getConfig().getArenaLocations("generator." + args[0].substring(0, 1).toUpperCase() + args[0].substring(1).toLowerCase());
             for (Location l : locations) {
                 if (ss.getConfig().compareArenaLoc(l, p.getLocation())) {
-                    p.sendMessage(ss.getPrefix() + ChatColor.RED + "This generator was already set!");
-                    com.tomkeuper.bedwars.BedWars.nms.sendTitle(p, " ", ChatColor.RED + "This generator was already set!", 5, 30, 5);
+                    p.sendMessage(ss.getPrefix() + ChatColor.RED + "Este gerador já foi definido!");
+                    com.tomkeuper.bedwars.BedWars.nms.sendTitle(p, " ", ChatColor.RED + "Este gerador já foi definido!", 5, 30, 5);
                     Sounds.playSound(ConfigPath.SOUNDS_INSUFF_MONEY, p);
                     return true;
                 }
@@ -117,12 +117,12 @@ public class AddGenerator extends SubCommand {
             saved.add(ss.getConfig().stringLocationArenaFormat(p.getLocation()));
 
             ss.getConfig().set("generator." + gen, saved);
-            p.sendMessage(ss.getPrefix() + gen + " generator was added!");
+            p.sendMessage(ss.getPrefix() + "Gerador de " + gen + " adicionado!");
             com.tomkeuper.bedwars.BedWars.nms.createHologram(p, p.getLocation(), ChatColor.GOLD + gen + " SET");
             if (ss.getSetupType() == SetupType.ASSISTED) {
                 Bukkit.dispatchCommand(p, getParent().getName());
             }
-            com.tomkeuper.bedwars.BedWars.nms.sendTitle(p, " ", ChatColor.GOLD + gen + ChatColor.GREEN + " generator added!", 5, 60, 5);
+            com.tomkeuper.bedwars.BedWars.nms.sendTitle(p, " ", ChatColor.GREEN + "Gerador de " + ChatColor.GOLD + gen + ChatColor.GREEN + " adicionado!", 5, 60, 5);
             Sounds.playSound(ConfigPath.SOUNDS_BOUGHT, p);
             return true;
         } else if (args.length >= 1 && (args[0].equalsIgnoreCase("iron") || args[0].equalsIgnoreCase("gold") || args[0].equalsIgnoreCase("upgrade")) && ss.getSetupType() == SetupType.ADVANCED) {
@@ -132,18 +132,18 @@ public class AddGenerator extends SubCommand {
             } else {
                 team = args[1];
                 if (ss.getConfig().getYml().get("Team." + team + ".Color") == null) {
-                    p.sendMessage(ss.getPrefix() + ChatColor.RED + "Could not find team: " + team);
-                    p.sendMessage(ss.getPrefix() + "Use: /bw createTeam if you want to create one.");
+                    p.sendMessage(ss.getPrefix() + ChatColor.RED + "Time não encontrado: " + team);
+                    p.sendMessage(ss.getPrefix() + "Use: /bw createTeam se quiser criar um.");
                     ss.displayAvailableTeams();
-                    com.tomkeuper.bedwars.BedWars.nms.sendTitle(p, " ", ChatColor.RED + "Could not find any nearby team.", 5, 60, 5);
+                    com.tomkeuper.bedwars.BedWars.nms.sendTitle(p, " ", ChatColor.RED + "Nenhum time encontrado por perto.", 5, 60, 5);
                     Sounds.playSound(ConfigPath.SOUNDS_INSUFF_MONEY, p);
                     return true;
                 }
             }
             // find nearest team to set the generator else send usage msg
             if (team.isEmpty()) {
-                p.sendMessage(ss.getPrefix() + ChatColor.RED + "Could not find any nearby team.");
-                p.sendMessage(ss.getPrefix() + "Try using: /bw addGenerator <iron/ gold/ upgrade> <team>");
+                p.sendMessage(ss.getPrefix() + ChatColor.RED + "Nenhum time encontrado por perto.");
+                p.sendMessage(ss.getPrefix() + "Tente usar: /bw addGenerator <iron/ gold/ upgrade> <team>");
                 return true;
             }
 
@@ -153,18 +153,18 @@ public class AddGenerator extends SubCommand {
             }
 
             ss.createGeneratorHologram(p, p.getLocation(), team, gen);
-            p.sendMessage(ss.getPrefix() + gen + " generator added for team: " + ss.getTeamColor(team) + team);
+            p.sendMessage(ss.getPrefix() + "Gerador de " + gen + " adicionado para o time: " + ss.getTeamColor(team) + team);
             saveTeamGen(p.getLocation(), team, ss, gen);
-            com.tomkeuper.bedwars.BedWars.nms.sendTitle(p, " ", ChatColor.GOLD + gen + ChatColor.GREEN + " generator for " + ss.getTeamColor(team) + team + ChatColor.GREEN + " was added!", 5, 60, 5);
+            com.tomkeuper.bedwars.BedWars.nms.sendTitle(p, " ", ChatColor.GREEN + "Gerador de " + ChatColor.GOLD + gen + ChatColor.GREEN + " adicionado para " + ss.getTeamColor(team) + team, 5, 60, 5);
             Sounds.playSound(ConfigPath.SOUNDS_BOUGHT, p);
             return true;
         } else if (args.length == 1 && ss.getSetupType() == SetupType.ASSISTED) {
             String team = args[0];
             if (ss.getConfig().getYml().get("Team." + team + ".Color") == null) {
-                p.sendMessage(ss.getPrefix() + "Could not find team: " + ChatColor.RED + team);
-                p.sendMessage(ss.getPrefix() + "Use: /bw createTeam if you want to create one.");
+                p.sendMessage(ss.getPrefix() + "Time não encontrado: " + ChatColor.RED + team);
+                p.sendMessage(ss.getPrefix() + "Use: /bw createTeam se quiser criar um.");
                 ss.displayAvailableTeams();
-                com.tomkeuper.bedwars.BedWars.nms.sendTitle(p, " ", "Could not find team: " + ChatColor.RED + team, 5, 40, 5);
+                com.tomkeuper.bedwars.BedWars.nms.sendTitle(p, " ", "Time não encontrado: " + ChatColor.RED + team, 5, 40, 5);
                 Sounds.playSound(ConfigPath.SOUNDS_INSUFF_MONEY, p);
                 return true;
             }
@@ -172,25 +172,25 @@ public class AddGenerator extends SubCommand {
             saveTeamGen(p.getLocation(), team, ss, "Iron");
             saveTeamGen(p.getLocation(), team, ss, "Gold");
             saveTeamGen(p.getLocation(), team, ss, "Emerald");
-            com.tomkeuper.bedwars.BedWars.nms.createHologram(p, p.getLocation(), ChatColor.GOLD + "Generator set for team: " + ss.getTeamColor(team) + team);
-            p.sendMessage(ss.getPrefix() + "Generator set for team: " + ss.getTeamColor(team) + team);
+            com.tomkeuper.bedwars.BedWars.nms.createHologram(p, p.getLocation(), ChatColor.GOLD + "Gerador definido para o time: " + ss.getTeamColor(team) + team);
+            p.sendMessage(ss.getPrefix() + "Gerador definido para o time: " + ss.getTeamColor(team) + team);
             Bukkit.dispatchCommand(p, getParent().getName());
 
-            com.tomkeuper.bedwars.BedWars.nms.sendTitle(p, " ", ChatColor.GREEN + "Generator set for team: " + ss.getTeamColor(team) + team, 5, 60, 5);
+            com.tomkeuper.bedwars.BedWars.nms.sendTitle(p, " ", ChatColor.GREEN + "Gerador definido para o time: " + ss.getTeamColor(team) + team, 5, 60, 5);
             Sounds.playSound(ConfigPath.SOUNDS_BOUGHT, p);
             return true;
         }
         if (ss.getSetupType() == SetupType.ASSISTED) {
-            p.spigot().sendMessage(Misc.msgHoverClick(ss.getPrefix() + "/bw addGenerator (detect team automatically)", "Add a team generator.", "/" + getParent().getName() + " " + getSubCommandName() + " ", ClickEvent.Action.SUGGEST_COMMAND));
-            p.spigot().sendMessage(Misc.msgHoverClick(ss.getPrefix() + "/bw addGenerator <team>", "Add a team generator.", "/" + getParent().getName() + " " + getSubCommandName() + " ", ClickEvent.Action.SUGGEST_COMMAND));
+            p.spigot().sendMessage(Misc.msgHoverClick(ss.getPrefix() + "/bw addGenerator (detectar time automaticamente)", "Adiciona um gerador de time.", "/" + getParent().getName() + " " + getSubCommandName() + " ", ClickEvent.Action.SUGGEST_COMMAND));
+            p.spigot().sendMessage(Misc.msgHoverClick(ss.getPrefix() + "/bw addGenerator <team>", "Adiciona um gerador de time.", "/" + getParent().getName() + " " + getSubCommandName() + " ", ClickEvent.Action.SUGGEST_COMMAND));
 
         }
         if (ss.getSetupType() == SetupType.ADVANCED) {
-            p.spigot().sendMessage(Misc.msgHoverClick(ss.getPrefix() + "/bw addGenerator <iron/ gold/ upgrade>", "Add a team generator.\nThe team will be detected automatically.", "/" + getParent().getName() + " " + getSubCommandName() + " ", ClickEvent.Action.SUGGEST_COMMAND));
+            p.spigot().sendMessage(Misc.msgHoverClick(ss.getPrefix() + "/bw addGenerator <iron/ gold/ upgrade>", "Adiciona um gerador de time.\nO time será detectado automaticamente.", "/" + getParent().getName() + " " + getSubCommandName() + " ", ClickEvent.Action.SUGGEST_COMMAND));
 
-            p.spigot().sendMessage(Misc.msgHoverClick(ss.getPrefix() + "/bw addGenerator <iron/ gold/ upgrade> <team>", "Add a team generator.", "/" + getParent().getName() + " " + getSubCommandName() + " ", ClickEvent.Action.SUGGEST_COMMAND));
+            p.spigot().sendMessage(Misc.msgHoverClick(ss.getPrefix() + "/bw addGenerator <iron/ gold/ upgrade> <team>", "Adiciona um gerador de time.", "/" + getParent().getName() + " " + getSubCommandName() + " ", ClickEvent.Action.SUGGEST_COMMAND));
         }
-        p.spigot().sendMessage(Misc.msgHoverClick(ss.getPrefix() + "/bw addGenerator <emerald/ diamond>", "Add an emerald/ diamond generator.", "/" + getParent().getName() + " " + getSubCommandName() + " ", ClickEvent.Action.SUGGEST_COMMAND));
+        p.spigot().sendMessage(Misc.msgHoverClick(ss.getPrefix() + "/bw addGenerator <emerald/ diamond>", "Adiciona um gerador de esmeralda/ diamante.", "/" + getParent().getName() + " " + getSubCommandName() + " ", ClickEvent.Action.SUGGEST_COMMAND));
         return true;
     }
 

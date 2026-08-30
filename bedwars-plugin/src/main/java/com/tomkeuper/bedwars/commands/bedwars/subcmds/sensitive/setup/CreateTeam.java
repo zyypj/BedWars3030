@@ -48,17 +48,17 @@ public class CreateTeam extends SubCommand {
         Player p = (Player) s;
         SetupSession ss = SetupSession.getSession(p.getUniqueId());
         if (ss == null) {
-            s.sendMessage("§c ▪ §7You're not in a setup session!");
+            s.sendMessage("§c ▪ §7Você não está em uma sessão de setup!");
             return true;
         }
         if (args.length < 2) {
-            p.sendMessage("§c▪ §7Usage: /" + com.tomkeuper.bedwars.BedWars.mainCmd + " createTeam §o<name> §o<color>");
+            p.sendMessage("§c▪ §7Uso: /" + com.tomkeuper.bedwars.BedWars.mainCmd + " createTeam §o<nome> §o<cor>");
             StringBuilder colors = new StringBuilder("§7");
             for (TeamColor t : TeamColor.values()) {
                 colors.append(t.chat()).append(t).append(ChatColor.GRAY).append(", ");
             }
             colors = new StringBuilder(colors.substring(0, colors.toString().length() - 2) + ChatColor.GRAY + ".");
-            p.sendMessage("§6 ▪ §7Available colors: " + colors);
+            p.sendMessage("§6 ▪ §7Cores disponíveis: " + colors);
         } else {
             boolean y = true;
             for (TeamColor t : TeamColor.values()) {
@@ -67,16 +67,16 @@ public class CreateTeam extends SubCommand {
                 }
             }
             if (y) {
-                p.sendMessage("§c▪ §7Invalid color!");
+                p.sendMessage("§c▪ §7Cor inválida!");
                 StringBuilder colors = new StringBuilder("§7");
                 for (TeamColor t : TeamColor.values()) {
                     colors.append(t.chat()).append(t).append(ChatColor.GRAY).append(", ");
                 }
                 colors = new StringBuilder(colors.substring(0, colors.toString().length() - 2) + ChatColor.GRAY + ".");
-                p.sendMessage("§6 ▪ §7Available colors: " + colors);
+                p.sendMessage("§6 ▪ §7Cores disponíveis: " + colors);
             } else {
                 if (ss.getConfig().getYml().get("Team." + args[0] + ".Color") != null) {
-                    p.sendMessage("§c▪ §7" + args[0] + " team already exists!");
+                    p.sendMessage("§c▪ §7O time " + args[0] + " já existe!");
                     return true;
                 }
                 ss.getConfig().set("Team." + args[0] + ".Color", args[1].toUpperCase());

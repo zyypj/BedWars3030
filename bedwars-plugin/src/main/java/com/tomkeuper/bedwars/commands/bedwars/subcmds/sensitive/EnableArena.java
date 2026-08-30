@@ -42,7 +42,7 @@ public class EnableArena extends SubCommand {
 
     public EnableArena(ParentCommand parent, String name) {
         super(parent, name);
-        setDisplayInfo(Misc.msgHoverClick("§6 ▪ §7/" + getParent().getName() + " "+getSubCommandName()+" §6<worldName>","§fEnable an arena.",
+        setDisplayInfo(Misc.msgHoverClick("§6 ▪ §7/" + getParent().getName() + " "+getSubCommandName()+" §6<worldName>","§fAtiva uma arena.",
                 "/" + getParent().getName() + " "+getSubCommandName()+ " ", ClickEvent.Action.SUGGEST_COMMAND));
         showInList(true);
         setPriority(5);
@@ -52,31 +52,31 @@ public class EnableArena extends SubCommand {
     @Override
     public boolean execute(String[] args, CommandSender s) {
         if (!MainCommand.isLobbySet()) {
-            s.sendMessage("§c▪ §7You have to set the lobby location first!");
+            s.sendMessage("§c▪ §7Você precisa definir a localização do lobby primeiro!");
             return true;
         }
         if (args.length != 1) {
-            s.sendMessage("§c▪ §7Usage: §o/" + getParent().getName() + " enableRotation <mapName>");
+            s.sendMessage("§c▪ §7Uso: §o/" + getParent().getName() + " enableRotation <mapName>");
             return true;
         }
         if (!BedWars.getAPI().getRestoreAdapter().isWorld(args[0])) {
-            s.sendMessage("§c▪ §7" + args[0] + " doesn't exist!");
+            s.sendMessage("§c▪ §7" + args[0] + " não existe!");
             return true;
         }
 
         for (IArena mm : Arena.getEnableQueue()){
             if (mm.getArenaName().equalsIgnoreCase(args[0])){
-                s.sendMessage("§c▪ §7This arena is already in the enable queue!");
+                s.sendMessage("§c▪ §7Esta arena já está na fila de ativação!");
                 return true;
             }
         }
 
         IArena aa = Arena.getArenaByName(args[0]);
         if (aa != null) {
-            s.sendMessage("§c▪ §7This arena is already enabled!");
+            s.sendMessage("§c▪ §7Esta arena já está ativada!");
             return true;
         }
-        s.sendMessage("§6 ▪ §7Enabling arena...");
+        s.sendMessage("§6 ▪ §7Ativando arena...");
         new Arena(args[0], s);
         return true;
     }

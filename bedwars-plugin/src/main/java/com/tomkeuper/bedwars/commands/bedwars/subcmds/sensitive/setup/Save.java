@@ -53,7 +53,7 @@ public class Save extends SubCommand {
         Player p = (Player) s;
         SetupSession ss = SetupSession.getSession(p.getUniqueId());
         if (ss == null) {
-            //s.sendMessage("§c ▪ §7You're not in a setup session!");
+            //s.sendMessage("§c ▪ §7Você não está em uma sessão de setup!");
             return false;
         }
 
@@ -70,9 +70,9 @@ public class Save extends SubCommand {
             PaperSupport.teleportC(p, Bukkit.getWorlds().get(0).getSpawnLocation(), PlayerTeleportEvent.TeleportCause.COMMAND);
         }
         ss.done();
-        p.sendMessage(ss.getPrefix() + "Arena changes saved!");
-        p.sendMessage(ss.getPrefix() + "You can now enable it using:");
-        p.spigot().sendMessage(Misc.msgHoverClick(ChatColor.GOLD + "/" + getParent().getName() + " enableArena " + ss.getWorldName() + ChatColor.GRAY +" (click to enable)", ChatColor.GREEN + "Enable this arena.", "/" + getParent().getName() + " enableArena " + ss.getWorldName(), ClickEvent.Action.RUN_COMMAND));
+        p.sendMessage(ss.getPrefix() + "Alterações da arena salvas!");
+        p.sendMessage(ss.getPrefix() + "Agora você pode ativá-la usando:");
+        p.spigot().sendMessage(Misc.msgHoverClick(ChatColor.GOLD + "/" + getParent().getName() + " enableArena " + ss.getWorldName() + ChatColor.GRAY +" (clique para ativar)", ChatColor.GREEN + "Ativa esta arena.", "/" + getParent().getName() + " enableArena " + ss.getWorldName(), ClickEvent.Action.RUN_COMMAND));
         return true;
     }
 

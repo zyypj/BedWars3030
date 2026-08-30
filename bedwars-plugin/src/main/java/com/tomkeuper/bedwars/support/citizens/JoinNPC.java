@@ -172,7 +172,7 @@ public class JoinNPC {
                 int id = Integer.parseInt(data[9]);
                 net.citizensnpcs.api.npc.NPC npc = CitizensAPI.getNPCRegistry().getById(id);
                 if (npc == null) {
-                    BedWars.plugin.getLogger().severe("Invalid npc id: " + id);
+                    BedWars.plugin.getLogger().severe("ID de NPC inválido: " + id);
                     continue;
                 }
                 spawnNPC(l, name, group, skin, npc);

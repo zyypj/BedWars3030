@@ -46,8 +46,8 @@ public class CmdJoin extends SubCommand {
         super(parent, name);
         setPriority(19);
         showInList(false);
-        setDisplayInfo(MainCommand.createTC("§6 ▪ §7/"+ MainCommand.getInstance().getName()+" join §e<random/ arena/ groupName>",
-                "/"+getParent().getName()+" "+getSubCommandName(), "§fJoin an arena by name or by group.\n§f/bw join random - join random arena."));
+        setDisplayInfo(MainCommand.createTC("§6 ▪ §7/entrar §e<random/ arena/ nomeDoGrupo>",
+                "/entrar", "§fEntra em uma arena pelo nome ou pelo grupo.\n§f/entrar random - entra em uma arena aleatória."));
     }
 
     @Override

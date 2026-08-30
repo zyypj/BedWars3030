@@ -46,7 +46,7 @@ public class GeneratorHolder {
     public GeneratorHolder(Location loc, ItemStack helmet) {
         api = Objects.requireNonNull(Bukkit.getServicesManager().getRegistration(BedWars.class)).getProvider();
         this.world = loc.getWorld();
-        if (world == null) throw new IllegalArgumentException("Location world cannot be null");
+        if (world == null) throw new IllegalArgumentException("O mundo da localização não pode ser nulo");
         this.armorStand = api.getVersionSupport().createPacketArmorStand(loc, world.getPlayers());
         this.helmet = helmet;
         if (helmet != null) setHelmet(helmet, true);

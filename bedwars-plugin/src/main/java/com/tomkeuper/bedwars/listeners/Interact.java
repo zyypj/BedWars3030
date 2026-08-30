@@ -101,7 +101,7 @@ public class Interact implements Listener {
                 }
             };
 
-            Bukkit.getLogger().warning("Could not find a handler for item: " + action);
+            Bukkit.getLogger().warning("Nenhum handler encontrado para o item: " + action);
         }
     }
 

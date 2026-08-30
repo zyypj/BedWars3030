@@ -91,7 +91,7 @@ public class OreGenerator implements IGenerator {
         this.type = type;
         this.hologramEnabled = hologram;
         loadDefaults();
-        BedWars.debug("Initializing new generator at: " + location + " - " + type + " - " + (bwt == null ? "NOTEAM" : bwt.getName()));
+        BedWars.debug("Inicializando novo gerador em: " + location + " - " + type + " - " + (bwt == null ? "NOTEAM" : bwt.getName()));
 
         Cuboid c = new Cuboid(location, arena.getConfig().getInt(ConfigPath.ARENA_GENERATOR_PROTECTION), true);
         c.setMaxY(c.getMaxY() + 5);
@@ -223,7 +223,7 @@ public class OreGenerator implements IGenerator {
 
     @Override
     public void setOre(ItemStack ore) {
-        BedWars.debug("Changing ore for generator at " + location.toString() + " from " + this.ore + " to " + ore);
+        BedWars.debug("Trocando o minério do gerador em " + location.toString() + " from " + this.ore + " to " + ore);
         this.ore = ore;
     }
 

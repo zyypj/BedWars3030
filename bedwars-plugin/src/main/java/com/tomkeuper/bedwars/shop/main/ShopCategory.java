@@ -58,22 +58,22 @@ public class ShopCategory implements IShopCategory {
      * Load a shop category from the given path
      */
     public ShopCategory(String path, YamlConfiguration yml, String name) {
-        BedWars.debug("Loading shop category: " + path);
+        BedWars.debug("Carregando categoria da loja: " + path);
         this.name = name;
 
         if (yml.get(path + ConfigPath.SHOP_CATEGORY_ITEM_MATERIAL) == null) {
-            BedWars.plugin.getLogger().severe("Category material not set at: " + path);
+            BedWars.plugin.getLogger().severe("Material da categoria não definido em: " + path);
             return;
         }
 
         if (yml.get(path + ConfigPath.SHOP_CATEGORY_SLOT) == null) {
-            BedWars.plugin.getLogger().severe("Category slot not set at: " + path);
+            BedWars.plugin.getLogger().severe("Slot da categoria não definido em: " + path);
             return;
         }
         slot = yml.getInt(path + ConfigPath.SHOP_CATEGORY_SLOT);
 
         if (slot < 1 || slot > 8) {
-            BedWars.plugin.getLogger().severe("Slot must be n > 1 and n < 9 at: " + path);
+            BedWars.plugin.getLogger().severe("O slot precisa ser n > 1 e n < 9 em: " + path);
             return;
         }
 
@@ -82,7 +82,7 @@ public class ShopCategory implements IShopCategory {
         if (this.name != null && this.name.toLowerCase().startsWith("default-")) {
             for (IShopCategory sc : ShopManager.shop.getCategoryList()){
                 if (sc.getSlot() == slot){
-                    BedWars.plugin.getLogger().severe("Slot is already in use at: " + path);
+                    BedWars.plugin.getLogger().severe("O slot já está em uso em: " + path);
                     return;
                 }
             }
@@ -127,7 +127,7 @@ public class ShopCategory implements IShopCategory {
             }
             if (cc.isLoaded()) {
                 categoryContentList.add(cc);
-                BedWars.debug("Adding CategoryContent: " + s + " to Shop Category: " + path);
+                BedWars.debug("Adding CategoryContent: " + s + " na categoria da loja: " + path);
             }
         }
     }
@@ -146,7 +146,7 @@ public class ShopCategory implements IShopCategory {
      * Deprecated: prefer {@link #open(Player, IShopCache)} which resolves the shop from the arena.
      */
     public void open(Player player, IShopIndex index, IShopCache shopCache){
-        BedWars.debug("opening ShopCategory: " + name + " for player: " + player.getName());
+        BedWars.debug("opening ShopCategory: " + name + " para o jogador: " + player.getName());
         if (player.getOpenInventory().getTopInventory() == null) return;
         ShopIndex.indexViewers.remove(player.getUniqueId());
 

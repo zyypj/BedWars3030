@@ -133,7 +133,7 @@ public interface Party {
      * @param target The player to promote.
      */
     default void promote(@NotNull Player owner, @NotNull Player target) {
-        String msg = ChatColor.RED + "Not implemented! Contact an administrator";
+        String msg = ChatColor.RED + "Não implementado! Contate um administrador";
         owner.sendMessage(msg);
         target.sendMessage(msg);
     }

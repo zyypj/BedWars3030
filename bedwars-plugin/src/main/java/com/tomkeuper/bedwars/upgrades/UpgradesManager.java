@@ -70,25 +70,25 @@ public class UpgradesManager {
             name = index;
             if (index.startsWith("upgrade-")) {
                 if (getMenuContent(name) == null && !loadUpgrade(name)) {
-                    Bukkit.getLogger().log(Level.WARNING, "Could not load upgrade: " + name);
+                    Bukkit.getLogger().log(Level.WARNING, "Não foi possível carregar a melhoria: " + name);
                 }
             } else if (index.startsWith("separator-")) {
                 if (getMenuContent(name) == null && !loadSeparator(name)) {
-                    Bukkit.getLogger().log(Level.WARNING, "Could not load separator: " + name);
+                    Bukkit.getLogger().log(Level.WARNING, "Não foi possível carregar o separador: " + name);
                 }
             } else if (index.startsWith("category-")) {
                 if (getMenuContent(name) == null && !loadCategory(name)) {
-                    Bukkit.getLogger().log(Level.WARNING, "Could not load category: " + name);
+                    Bukkit.getLogger().log(Level.WARNING, "Não foi possível carregar a categoria: " + name);
                 }
             } else if (index.startsWith("base-trap-")) {
                 if (getMenuContent(name) == null && !loadBaseTrap(name)) {
-                    Bukkit.getLogger().log(Level.WARNING, "Could not base trap: " + name);
+                    Bukkit.getLogger().log(Level.WARNING, "Não foi possível carregar a armadilha base: " + name);
                 }
             } else if (index.endsWith("-upgrades-settings")) {
                 name = index.replace("-upgrades-settings", "");
                 if (!name.isEmpty()) {
                     if (!loadMenu(name)) {
-                        Bukkit.getLogger().log(Level.WARNING, "Could not load menu: " + name);
+                        Bukkit.getLogger().log(Level.WARNING, "Não foi possível carregar o menu: " + name);
                     }
                 }
             }
@@ -160,7 +160,7 @@ public class UpgradesManager {
             }
         }
         menuByName.put(groupName.toLowerCase(), um);
-        BedWars.debug("Registering upgrade menu: " + groupName);
+        BedWars.debug("Registrando o menu de melhorias: " + groupName);
         return true;
     }
 
@@ -234,24 +234,24 @@ public class UpgradesManager {
         for (String s : upgrades.getYml().getConfigurationSection(name).getKeys(false)) {
             if (!s.startsWith("tier-")) continue;
             if (upgrades.getYml().get(name + "." + s + ".receive") == null) {
-                BedWars.debug("Could not load Upgrade " + name + " tier: " + s + ". Receive not set.");
+                BedWars.debug("Não foi possível carregar a melhoria " + name + " tier: " + s + ". Receive não definido.");
                 continue;
             }
             if (upgrades.getYml().get(name + "." + s + ".display-item") == null) {
-                BedWars.debug("Could not load Upgrade " + name + " tier: " + s + ". Display item not set.");
+                BedWars.debug("Não foi possível carregar a melhoria " + name + " tier: " + s + ". Item de exibição não definido.");
                 continue;
             }
             if (upgrades.getYml().get(name + "." + s + ".cost") == null) {
-                BedWars.debug("Could not load Upgrade " + name + " tier: " + s + ". Cost not set.");
+                BedWars.debug("Não foi possível carregar a melhoria " + name + " tier: " + s + ". Preço não definido.");
                 continue;
             }
             if (upgrades.getYml().get(name + "." + s + ".currency") == null) {
-                BedWars.debug("Could not load Upgrade " + name + " tier: " + s + ". Currency not set.");
+                BedWars.debug("Não foi possível carregar a melhoria " + name + " tier: " + s + ". Moeda não definida.");
                 continue;
             }
             UpgradeTier ut = new UpgradeTier(name, s, createDisplayItem(name + "." + s), upgrades.getYml().getInt(name + "." + s + ".cost"), getCurrency(upgrades.getYml().getString(name + "." + s + ".currency")));
             if (!mu.addTier(ut)) {
-                Bukkit.getLogger().log(Level.WARNING, "Could not load tier: " + s + " at upgrade: " + name);
+                Bukkit.getLogger().log(Level.WARNING, "Não foi possível carregar o nível: " + s + " na melhoria: " + name);
             }
         }
         BedWars.debug("Registering upgrade: " + name);
@@ -298,11 +298,11 @@ public class UpgradesManager {
         if (!name.startsWith("base-trap-")) return false;
         if (upgrades.getYml().get(name) == null) return false;
         if (upgrades.getYml().get(name + ".receive") == null) {
-            BedWars.debug("Could not load BaseTrap. Receive not set.");
+            BedWars.debug("Não foi possível carregar a BaseTrap. Receive não definido.");
             return false;
         }
         if (upgrades.getYml().get(name + ".display-item") == null) {
-            BedWars.debug("Could not load BaseTrap. Display item not set.");
+            BedWars.debug("Não foi possível carregar a BaseTrap. Item de exibição não definido.");
             return false;
         }
 
@@ -373,9 +373,9 @@ public class UpgradesManager {
     public void setCustomMenuForArena(IArena arena, UpgradesIndex menu) {
         if (!customMenuForArena.containsKey(arena)) {
             customMenuForArena.put(arena, menu);
-            BedWars.debug("Registering custom menu for arena: " + arena.getArenaName() + ". Using index: " + menu.getName());
+            BedWars.debug("Registrando o menu customizado da arena: " + arena.getArenaName() + ". Using index: " + menu.getName());
         } else {
-            BedWars.debug("Overriding custom menu for arena: " + arena.getArenaName() + ". Using index: " + menu.getName() + " Old index: " + customMenuForArena.get(arena).getName());
+            BedWars.debug("Substituindo o menu customizado da arena: " + arena.getArenaName() + ". Using index: " + menu.getName() + " Old index: " + customMenuForArena.get(arena).getName());
             customMenuForArena.replace(arena, menu);
         }
     }

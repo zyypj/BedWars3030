@@ -49,7 +49,7 @@ public class ArenaGroup extends SubCommand {
         setPriority(8);
         showInList(true);
         setPermission(Permissions.PERMISSION_ARENA_GROUP);
-        setDisplayInfo(Misc.msgHoverClick("§6 ▪ §7/" + getParent().getName() + " " + getSubCommandName()+" §8- §eclick for details", "§fManage arena groups.",
+        setDisplayInfo(Misc.msgHoverClick("§6 ▪ §7/" + getParent().getName() + " " + getSubCommandName()+" §8- §eclique para detalhes", "§fGerencia os grupos de arena.",
                 "/" + getParent().getName() + " " + getSubCommandName(), ClickEvent.Action.RUN_COMMAND));
     }
 
@@ -58,14 +58,14 @@ public class ArenaGroup extends SubCommand {
         if (s instanceof ConsoleCommandSender) return false;
         Player p = (Player) s;
         if (!MainCommand.isLobbySet() && p != null) {
-            p.sendMessage("§c▪ §7You have to set the lobby location first!");
+            p.sendMessage("§c▪ §7Você precisa definir a localização do lobby primeiro!");
             return true;
         }
         if (args.length < 2 && (args.length < 1 || !args[0].equalsIgnoreCase("list"))) {
             sendArenaGroupCmdList(p);
         } else if (args[0].equalsIgnoreCase("create")) {
             if (args[0].contains("+")) {
-                p.sendMessage("§c▪ §7" + args[0] + " mustn't contain this symbol: " + ChatColor.RED + "+");
+                p.sendMessage("§c▪ §7" + args[0] + " não pode conter este símbolo: " + ChatColor.RED + "+");
                 return true;
             }
             java.util.List<String> groups;
@@ -75,12 +75,12 @@ public class ArenaGroup extends SubCommand {
                 groups = BedWars.config.getYml().getStringList(ConfigPath.GENERAL_CONFIGURATION_ARENA_GROUPS);
             }
             if (groups.contains(args[1])) {
-                p.sendMessage("§c▪ §7This group already exists!");
+                p.sendMessage("§c▪ §7Este grupo já existe!");
                 return true;
             }
             groups.add(args[1]);
             BedWars.config.set(ConfigPath.GENERAL_CONFIGURATION_ARENA_GROUPS, groups);
-            p.sendMessage("§6 ▪ §7Group created!");
+            p.sendMessage("§6 ▪ §7Grupo criado!");
         } else if (args[0].equalsIgnoreCase("remove")) {
             List<String> groups;
             if (BedWars.config.getYml().getStringList(ConfigPath.GENERAL_CONFIGURATION_ARENA_GROUPS) == null) {
@@ -89,12 +89,12 @@ public class ArenaGroup extends SubCommand {
                 groups = BedWars.config.getYml().getStringList(ConfigPath.GENERAL_CONFIGURATION_ARENA_GROUPS);
             }
             if (!groups.contains(args[1])) {
-                p.sendMessage("§c▪ §7This group doesn't exist!");
+                p.sendMessage("§c▪ §7Este grupo não existe!");
                 return true;
             }
             groups.remove(args[1]);
             BedWars.config.set(ConfigPath.GENERAL_CONFIGURATION_ARENA_GROUPS, groups);
-            p.sendMessage("§6 ▪ §7Group deleted!");
+            p.sendMessage("§6 ▪ §7Grupo removido!");
         } else if (args[0].equalsIgnoreCase("list")) {
             List<String> groups;
             if (BedWars.config.getYml().getStringList(ConfigPath.GENERAL_CONFIGURATION_ARENA_GROUPS) == null) {
@@ -102,7 +102,7 @@ public class ArenaGroup extends SubCommand {
             } else {
                 groups = BedWars.config.getYml().getStringList(ConfigPath.GENERAL_CONFIGURATION_ARENA_GROUPS);
             }
-            p.sendMessage("§7Available arena groups:");
+            p.sendMessage("§7Grupos de arena disponíveis:");
             p.sendMessage("§6 ▪ §fDefault");
             for (String gs : groups) {
                 p.sendMessage("§6 ▪ §f" + gs);
@@ -116,7 +116,7 @@ public class ArenaGroup extends SubCommand {
                 if (BedWars.config.getYml().getStringList(ConfigPath.GENERAL_CONFIGURATION_ARENA_GROUPS).contains(args[2])) {
                     File arena = new File(BedWars.plugin.getDataFolder(), "/Arenas/" + args[1] + ".yml");
                     if (!arena.exists()) {
-                        p.sendMessage("§c▪ §7Arena " + args[1] + " doesn't exist!");
+                        p.sendMessage("§c▪ §7Arena " + args[1] + " não existe!");
                         return true;
                     }
                     ArenaConfig cm = new ArenaConfig(BedWars.plugin, args[1], BedWars.plugin.getDataFolder().getPath() + "/Arenas");
@@ -124,13 +124,13 @@ public class ArenaGroup extends SubCommand {
                     if (Arena.getArenaByName(args[1]) != null) {
                         Arena.getArenaByName(args[1]).setGroup(args[2]);
                     }
-                    p.sendMessage("§6 ▪ §7" + args[1] + " was added to the group: " + args[2]);
+                    p.sendMessage("§6 ▪ §7" + args[1] + " foi adicionada ao grupo: " + args[2]);
                 } else {
-                    p.sendMessage("§6 ▪ §7There isn't any group called: " + args[2]);
+                    p.sendMessage("§6 ▪ §7Não existe nenhum grupo chamado: " + args[2]);
                     Bukkit.dispatchCommand(p, "/bw list");
                 }
             } else {
-                p.sendMessage("§6 ▪ §7There isn't any group called: " + args[2]);
+                p.sendMessage("§6 ▪ §7Não existe nenhum grupo chamado: " + args[2]);
                 Bukkit.dispatchCommand(p, "/bw list");
             }
         } else {
@@ -146,16 +146,16 @@ public class ArenaGroup extends SubCommand {
 
     private void sendArenaGroupCmdList(Player p) {
         p.spigot().sendMessage(Misc.msgHoverClick("§6 ▪ §7/" + getParent().getName() + " " + getSubCommandName() + " create §o<groupName>",
-                "Create an arena group. More details on our wiki.", "/" + getParent().getName() + " " + getSubCommandName() + " create",
+                "Cria um grupo de arena. Mais detalhes na nossa wiki.", "/" + getParent().getName() + " " + getSubCommandName() + " create",
                 ClickEvent.Action.SUGGEST_COMMAND));
         p.spigot().sendMessage(Misc.msgHoverClick("§6 ▪ §7/" + getParent().getName() + " " + getSubCommandName() + " list",
-                "View available groups.", "/" + getParent().getName() + " " + getSubCommandName() + " list",
+                "Ver os grupos disponíveis.", "/" + getParent().getName() + " " + getSubCommandName() + " list",
                 ClickEvent.Action.RUN_COMMAND));
         p.spigot().sendMessage(Misc.msgHoverClick("§6 ▪ §7/" + getParent().getName() + " " + getSubCommandName() + " remove §o<groupName>",
-                "Remove an arena group. More details on our wiki.", "/" + getParent().getName() + " " + getSubCommandName() + " remove",
+                "Remove um grupo de arena. Mais detalhes na nossa wiki.", "/" + getParent().getName() + " " + getSubCommandName() + " remove",
                 ClickEvent.Action.SUGGEST_COMMAND));
-        p.spigot().sendMessage(Misc.msgHoverClick("§6 ▪ §7/" + getParent().getName() + " " + getSubCommandName() + " §r§7set §o<arenaName> <groupName>",
-                "Set the arena group. More details on our wiki.", "/" + getParent().getName() + " " + getSubCommandName() + " set",
+        p.spigot().sendMessage(Misc.msgHoverClick("§6 ▪ §7/" + getParent().getName() + " " + getSubCommandName() + " §r§7set §o<nomeDaArena> <nomeDoGrupo>",
+                "Define o grupo da arena. Mais detalhes na nossa wiki.", "/" + getParent().getName() + " " + getSubCommandName() + " set",
                 ClickEvent.Action.SUGGEST_COMMAND));
     }
 

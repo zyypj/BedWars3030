@@ -51,7 +51,7 @@ public class ArenaList extends SubCommand {
         setPriority(3);
         showInList(true);
         setDisplayInfo(Misc.msgHoverClick("§6 ▪ §7/" + MainCommand.getInstance().getName() + " " + getSubCommandName() + ((getArenas().size() == 0) ? " §c(0 set)" : " §a(" + getArenas().size() + " set)"),
-                "§fShow available arenas", "/" + MainCommand.getInstance().getName() + " " + getSubCommandName(), ClickEvent.Action.RUN_COMMAND));
+                "§fMostra as arenas disponíveis", "/" + MainCommand.getInstance().getName() + " " + getSubCommandName(), ClickEvent.Action.RUN_COMMAND));
     }
 
     @Override
@@ -76,7 +76,7 @@ public class ArenaList extends SubCommand {
         s.sendMessage(color(" &c|| &6" + com.tomkeuper.bedwars.BedWars.plugin.getName() + " &cConfigs found: &f" + getArenas().size() + "&7 Instantiated games:"));
 
         if (arenas.isEmpty()) {
-            s.sendMessage(ChatColor.RED + "No arenas to display.");
+            s.sendMessage(ChatColor.RED + "Nenhuma arena para exibir.");
             return true;
         }
 
@@ -96,7 +96,7 @@ public class ArenaList extends SubCommand {
         });
 
         if (arenas.size() > ARENAS_PER_PAGE * page) {
-            s.sendMessage(ChatColor.GRAY + "Type /" + ChatColor.GREEN + MainCommand.getInstance().getName() + " arenaList " + ++page + ChatColor.GRAY + " for next page.");
+            s.sendMessage(ChatColor.GRAY + "Type /" + ChatColor.GREEN + MainCommand.getInstance().getName() + " arenaList " + ++page + ChatColor.GRAY + " para a próxima página.");
         }
         return true;
     }
