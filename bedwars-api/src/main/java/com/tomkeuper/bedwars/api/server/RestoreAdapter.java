@@ -29,6 +29,7 @@ import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Item;
 import org.bukkit.plugin.Plugin;
+import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -102,13 +103,127 @@ public abstract class RestoreAdapter {
      * @param arena The arena to remove lobby blocks from.
      */
     public void onLobbyRemoval(@NotNull IArena arena) {
-        this.foreachBlockInRegion(
-                arena.getConfig().getArenaLoc(ConfigPath.ARENA_WAITING_POS1),
-                arena.getConfig().getArenaLoc(ConfigPath.ARENA_WAITING_POS2),
-                (block) -> block.setType(Material.AIR)
-        );
+        Location corner1 = arena.getConfig().getArenaLoc(ConfigPath.ARENA_WAITING_POS1);
+        Location corner2 = arena.getConfig().getArenaLoc(ConfigPath.ARENA_WAITING_POS2);
+        if (null == corner1 || null == corner2 || null == corner1.getWorld()) return;
 
-        Bukkit.getScheduler().runTaskLater(getOwner(), () -> clearItems(arena.getWorld()), 15L);
+        new LobbyRemovalTask(this, corner1, corner2).runTaskTimer(getOwner(), 1L, 1L);
+    }
+
+    /**
+     * Clears the waiting lobby without stalling the server.
+     * <p>
+     * The naive version of this walked the whole cuboid in a single tick calling
+     * {@code block.setType(AIR)}, which runs block physics for every block: neighbour updates,
+     * light updates and a block change packet each. On a large lobby that is tens of thousands
+     * of physics events in one tick and the server visibly freezes when a game starts.
+     * <p>
+     * This one keeps the same result but:
+     * <ul>
+     *   <li>skips blocks that are already air, which is most of a lobby region;</li>
+     *   <li>writes with physics disabled, so no neighbour or light cascade per block and no
+     *       item drops to clean up afterwards;</li>
+     *   <li>walks the region chunk by chunk instead of striding across chunk borders on every
+     *       block, so each chunk's palette stays hot;</li>
+     *   <li>spreads the work over ticks with a fixed budget, so a huge lobby costs a little on
+     *       several ticks instead of everything on one.</li>
+     * </ul>
+     * Small lobbies still finish in the first tick, so nothing looks different in game.
+     */
+    private static final class LobbyRemovalTask extends BukkitRunnable {
+
+        /** Blocks looked at per tick. Reading an air block is cheap, so this can be generous. */
+        private static final int BLOCK_BUDGET_PER_TICK = 16384;
+
+        private final RestoreAdapter adapter;
+        private final World world;
+        private final int minX, minY, minZ, maxX, maxY, maxZ;
+
+        // cursor over the region, chunk aligned
+        private int chunkX, chunkZ;
+        private int x, y, z;
+        private boolean done;
+
+        private LobbyRemovalTask(RestoreAdapter adapter, Location corner1, Location corner2) {
+            this.adapter = adapter;
+            this.world = corner1.getWorld();
+
+            this.minX = Math.min(corner1.getBlockX(), corner2.getBlockX());
+            this.minY = Math.min(corner1.getBlockY(), corner2.getBlockY());
+            this.minZ = Math.min(corner1.getBlockZ(), corner2.getBlockZ());
+            // upper bounds stay exclusive, same region the previous implementation cleared
+            this.maxX = Math.max(corner1.getBlockX(), corner2.getBlockX());
+            this.maxY = Math.max(corner1.getBlockY(), corner2.getBlockY());
+            this.maxZ = Math.max(corner1.getBlockZ(), corner2.getBlockZ());
+
+            this.chunkX = minX >> 4;
+            this.chunkZ = minZ >> 4;
+            this.x = minX;
+            this.y = minY;
+            this.z = minZ;
+            this.done = minX >= maxX || minY >= maxY || minZ >= maxZ;
+        }
+
+        @Override
+        public void run() {
+            if (done) {
+                finish();
+                return;
+            }
+
+            int budget = BLOCK_BUDGET_PER_TICK;
+            while (budget > 0) {
+                // bounds of the chunk we are currently inside, clipped to the region
+                int chunkMaxX = Math.min(((chunkX << 4) + 16), maxX);
+                int chunkMaxZ = Math.min(((chunkZ << 4) + 16), maxZ);
+
+                Block block = world.getBlockAt(x, y, z);
+                if (block.getType() != Material.AIR) {
+                    // physics off: no neighbour cascade, no light cascade, no dropped items
+                    block.setType(Material.AIR, false);
+                }
+                budget--;
+
+                // advance the cursor inside the current chunk column, then to the next chunk
+                if (++y >= maxY) {
+                    y = minY;
+                    if (++z >= chunkMaxZ) {
+                        z = Math.max(minZ, chunkZ << 4);
+                        if (++x >= chunkMaxX) {
+                            if (!advanceChunk()) {
+                                done = true;
+                                finish();
+                                return;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        /**
+         * Move to the next chunk that overlaps the region.
+         *
+         * @return false when the whole region has been walked
+         */
+        private boolean advanceChunk() {
+            chunkX++;
+            if ((chunkX << 4) >= maxX) {
+                chunkX = minX >> 4;
+                chunkZ++;
+                if ((chunkZ << 4) >= maxZ) return false;
+            }
+            x = Math.max(minX, chunkX << 4);
+            z = Math.max(minZ, chunkZ << 4);
+            y = minY;
+            return true;
+        }
+
+        private void finish() {
+            cancel();
+            // physics were off so nothing dropped, but a player may have thrown something in
+            adapter.clearItems(world, minX, minY, minZ, maxX, maxY, maxZ);
+        }
     }
 
     /**
@@ -189,8 +304,23 @@ public abstract class RestoreAdapter {
      * @param world The world instance.
      */
     public void clearItems(@NotNull World world) {
-        world.getEntities().forEach(e -> {
-            if (e instanceof Item) e.remove();
-        });
+        // getEntitiesByClass lets the server filter, instead of us walking every entity
+        for (Item item : world.getEntitiesByClass(Item.class)) {
+            item.remove();
+        }
+    }
+
+    /**
+     * Remove dropped items inside a region only, so clearing a lobby does not walk every
+     * entity in the world while a game is running.
+     */
+    public void clearItems(@NotNull World world, int minX, int minY, int minZ, int maxX, int maxY, int maxZ) {
+        for (Item item : world.getEntitiesByClass(Item.class)) {
+            Location loc = item.getLocation();
+            if (loc.getBlockX() < minX || loc.getBlockX() >= maxX) continue;
+            if (loc.getBlockY() < minY || loc.getBlockY() >= maxY) continue;
+            if (loc.getBlockZ() < minZ || loc.getBlockZ() >= maxZ) continue;
+            item.remove();
+        }
     }
 }
