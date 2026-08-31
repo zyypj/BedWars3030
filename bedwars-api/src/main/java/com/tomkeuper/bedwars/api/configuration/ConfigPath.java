@@ -62,6 +62,11 @@ public class ConfigPath {
     public static final String GENERATOR_EMERALD_TIER_III_START = "emerald.tierIII.start";
 
 
+    public static final String GENERAL_CONFIGURATION_AUTO_SCALE_ENABLED = "auto-scale.enabled";
+    public static final String GENERAL_CONFIGURATION_AUTO_SCALE_MAX_PER_ARENA = "auto-scale.max-games-per-arena";
+    public static final String GENERAL_CONFIGURATION_AUTO_SCALE_MAX_TOTAL = "auto-scale.max-total-games";
+    public static final String GENERAL_CONFIGURATION_AUTO_SCALE_TOP_UP_INTERVAL = "auto-scale.top-up-interval-seconds";
+
     public static final String GENERAL_CONFIGURATION_BUNGEE_OPTION_GAMES_BEFORE_RESTART = "bungeecord-settings.games-before-restart";
     public static final String GENERAL_CONFIGURATION_BUNGEE_OPTION_AUTO_SCALE_LIMIT = "bungeecord-settings.auto-scale-clone-limit";
     public static final String GENERAL_CONFIGURATION_BUNGEE_OPTION_RESTART_CMD = "bungeecord-settings.restart-cmd";

@@ -102,6 +102,7 @@ import java.io.File;
 import java.time.Instant;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.logging.Level;
 
 import static com.tomkeuper.bedwars.BedWars.*;
@@ -118,7 +119,7 @@ public class Arena implements IArena {
     private IShopIndex linkedShop;
     private UpgradesIndex linkedUpgrades;
 
-    private static final HashMap<String, IArena> arenaByName = new HashMap<>();
+    private static final Map<String, CopyOnWriteArrayList<IArena>> arenaByName = new ConcurrentHashMap<>();
     private static final HashMap<Player, IArena> arenaByPlayer = new HashMap<>();
     private static final HashMap<String, IArena> arenaByIdentifier = new HashMap<>();
     private static final LinkedList<IArena> arenas = new LinkedList<>();
@@ -391,7 +392,7 @@ public class Arena implements IArena {
         }
 
         arenas.add(this);
-        arenaByName.put(getArenaName(), this);
+        setArenaByName(this);
         arenaByIdentifier.put(worldName, this);
         world.getWorldBorder().setCenter(cm.getArenaLoc("waiting.Loc"));
         world.getWorldBorder().setSize(yml.getInt("worldBorder"));
@@ -1373,7 +1374,60 @@ public class Arena implements IArena {
      * @param arenaName arena name
      */
     public static IArena getArenaByName(String arenaName) {
-        return arenaByName.get(arenaName);
+        List<IArena> games = getArenasByName(arenaName);
+        if (games.isEmpty()) return null;
+        if (games.size() == 1) return games.get(0);
+        IArena best = null;
+        for (IArena game : games) {
+            if (best == null || compareForJoin(game, best) < 0) best = game;
+        }
+        return best;
+    }
+
+    /**
+     * Order used to pick which game of an arena represents it: the one a player asking for the
+     * arena by name should be sent to.
+     * <p>
+     * Unlike {@link #getSorted(List)} this is a total order with no shuffling, on purpose. The
+     * representative also owns the join signs, and a shuffled pick would make several games
+     * fight over the same sign every tick.
+     */
+    private static int compareForJoin(IArena a, IArena b) {
+        int rankA = joinRank(a.getStatus()), rankB = joinRank(b.getStatus());
+        if (rankA != rankB) return Integer.compare(rankA, rankB);
+        int playersA = a.getPlayers().size(), playersB = b.getPlayers().size();
+        if (playersA != playersB) return Integer.compare(playersB, playersA); // fill the busiest first
+        return a.getWorldName().compareTo(b.getWorldName()); // stable tie break
+    }
+
+    private static int joinRank(GameState status) {
+        if (status == GameState.starting) return 0;
+        if (status == GameState.waiting) return 1;
+        if (status == GameState.playing) return 2;
+        return 3;
+    }
+
+    /**
+     * Every running game of an arena. With auto scale an arena can host more than one game at
+     * a time, each in its own copy of the map, so callers that act on the arena as a whole
+     * (disabling, deleting, listing) have to walk all of them.
+     *
+     * @param arenaName arena name
+     * @return the games, never null. The list is a copy and safe to iterate.
+     */
+    public static @NotNull List<IArena> getArenasByName(String arenaName) {
+        if (arenaName == null) return new ArrayList<>();
+        List<IArena> games = arenaByName.get(arenaName);
+        if (games == null) {
+            // config file names are exact, but player input and signs are not
+            for (Map.Entry<String, CopyOnWriteArrayList<IArena>> entry : arenaByName.entrySet()) {
+                if (entry.getKey().equalsIgnoreCase(arenaName)) {
+                    games = entry.getValue();
+                    break;
+                }
+            }
+        }
+        return games == null ? new ArrayList<>() : new ArrayList<>(games);
     }
 
     /**
@@ -1602,11 +1656,25 @@ public class Arena implements IArena {
     }
 
     public static void setArenaByName(IArena arena) {
-        arenaByName.put(arena.getArenaName(), arena);
+        arenaByName.computeIfAbsent(arena.getArenaName(), k -> new CopyOnWriteArrayList<>()).addIfAbsent(arena);
     }
 
+    /**
+     * Drop every running game of an arena from the lookup.
+     * Prefer {@link #removeArenaByName(IArena)} when a single game ended.
+     */
     public static void removeArenaByName(@NotNull String arena) {
-        arenaByName.remove(arena.replace("_clone", ""));
+        arenaByName.remove(arena);
+    }
+
+    /**
+     * Drop a single game from the lookup, leaving the other games of the same arena alone.
+     */
+    public static void removeArenaByName(@NotNull IArena arena) {
+        List<IArena> games = arenaByName.get(arena.getArenaName());
+        if (games == null) return;
+        games.remove(arena);
+        if (games.isEmpty()) arenaByName.remove(arena.getArenaName());
     }
 
     public static void removeArenaByPlayer(Player p, @NotNull IArena arena) {
@@ -1788,6 +1856,15 @@ public class Arena implements IArena {
      * Refresh signs.
      */
     public synchronized void refreshSigns() {
+        if (autoscale) {
+            // every game of an arena registers the same join signs, so only the game players
+            // would actually be sent to paints them, otherwise the copies overwrite each other
+            IArena owner = getArenaByName(arenaName);
+            if (owner != null && owner != this) {
+                owner.refreshSigns();
+                return;
+            }
+        }
         for (Block b : getSigns()) {
             if (b == null) continue;
             if (!(b.getType().toString().endsWith("_SIGN") || b.getType().toString().endsWith("_WALL_SIGN"))) continue;
@@ -2629,7 +2706,8 @@ public class Arena implements IArena {
         scoreboards.forEach(Scoreboard::unregister);
         scoreboards = null;
         ShopManager.shop.clearArenaCache(this);
-        arenaByName.remove(arenaName);
+        removeArenaByName(this);
+        BedWars.arenaManager.releaseGameID(worldName);
         arenaByPlayer.entrySet().removeIf(entry -> entry.getValue() == this);
         players = null;
         spectators = null;
@@ -2827,31 +2905,7 @@ public class Arena implements IArena {
 
     // used for auto scale conditions
     public static boolean canAutoScale(String arenaName) {
-        if (!autoscale) return true;
-
-        if (Arena.getArenas().isEmpty()) return true;
-
-        for (IArena ar : Arena.getEnableQueue()) {
-            if (ar.getArenaName().equalsIgnoreCase(arenaName)) return false;
-        }
-
-        if (Arena.getGamesBeforeRestart() != -1 && Arena.getArenas().size() >= Arena.getGamesBeforeRestart())
-            return false;
-
-        int activeClones = 0;
-        for (IArena ar : Arena.getArenas()) {
-            if (ar.getArenaName().equalsIgnoreCase(arenaName)) {
-                // clone this arena only if there aren't available arena of the same kind
-                if (ar.getStatus() == GameState.waiting || ar.getStatus() == GameState.starting) return false;
-            }
-            // count active clones
-            if (ar.getArenaName().equals(arenaName)) {
-                activeClones++;
-            }
-        }
-
-        // check amount of active clones
-        return config.getInt(ConfigPath.GENERAL_CONFIGURATION_BUNGEE_OPTION_AUTO_SCALE_LIMIT) > activeClones;
+        return BedWars.arenaManager.canCreateGame(arenaName);
     }
 
     @Override

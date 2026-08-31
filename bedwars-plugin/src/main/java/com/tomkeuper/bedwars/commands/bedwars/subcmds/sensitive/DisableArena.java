@@ -26,6 +26,7 @@ import com.tomkeuper.bedwars.api.arena.IArena;
 import com.tomkeuper.bedwars.api.command.ParentCommand;
 import com.tomkeuper.bedwars.api.command.SubCommand;
 import com.tomkeuper.bedwars.arena.Arena;
+import java.util.List;
 import com.tomkeuper.bedwars.arena.Misc;
 import com.tomkeuper.bedwars.arena.SetupSession;
 import com.tomkeuper.bedwars.commands.bedwars.MainCommand;
@@ -62,17 +63,22 @@ public class DisableArena extends SubCommand {
             s.sendMessage("§c▪ §7" + args[0] + " é um mundo e não uma arena!");
             return true;
         }
-        IArena a = Arena.getArenaByName(args[0]);
-        if (a == null) {
+        // with auto scale an arena can be hosting several games at once, all of them have to go
+        List<IArena> games = Arena.getArenasByName(args[0]);
+        if (games.isEmpty()) {
             s.sendMessage("§c▪ §7Isso já foi desativado ou não existe!");
             return true;
         }
-        if (a.getStatus() == GameState.playing) {
-            s.sendMessage("§6 ▪ §7Há uma partida em andamento nesta arena, desative-a após a partida!");
-            return true;
+        for (IArena game : games) {
+            if (game.getStatus() == GameState.playing) {
+                s.sendMessage("§6 ▪ §7Há uma partida em andamento nesta arena, desative-a após a partida!");
+                return true;
+            }
         }
-        s.sendMessage("§6 ▪ §7Desativando arena...");
-        a.disable();
+        s.sendMessage("§6 ▪ §7Desativando arena..." + (games.size() > 1 ? " §8(" + games.size() + " partidas)" : ""));
+        for (IArena game : games) {
+            game.disable();
+        }
         return true;
     }
 

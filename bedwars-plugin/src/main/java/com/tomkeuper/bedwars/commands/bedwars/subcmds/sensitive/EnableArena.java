@@ -25,6 +25,7 @@ import com.tomkeuper.bedwars.api.arena.IArena;
 import com.tomkeuper.bedwars.api.command.ParentCommand;
 import com.tomkeuper.bedwars.api.command.SubCommand;
 import com.tomkeuper.bedwars.arena.Arena;
+import com.tomkeuper.bedwars.arena.ArenaManager;
 import com.tomkeuper.bedwars.arena.Misc;
 import com.tomkeuper.bedwars.arena.SetupSession;
 import com.tomkeuper.bedwars.commands.bedwars.MainCommand;
@@ -71,8 +72,9 @@ public class EnableArena extends SubCommand {
             }
         }
 
-        IArena aa = Arena.getArenaByName(args[0]);
-        if (aa != null) {
+        // with auto scale the arena is only "already enabled" while it still has a joinable game;
+        // if every copy is playing, an admin asking for one more is a valid request
+        if (!ArenaManager.getJoinableGames(args[0]).isEmpty()) {
             s.sendMessage("§c▪ §7Esta arena já está ativada!");
             return true;
         }

@@ -45,6 +45,10 @@ public class MainConfig extends ConfigManager {
 
         yml.options().header(plugin.getDescription().getName() + " by Mr. Ceasar.\n" +
                 "Documentação aqui: https://wiki.tomkeuper.com/docs/BedWars2023\n");
+        yml.addDefault(ConfigPath.GENERAL_CONFIGURATION_AUTO_SCALE_ENABLED, true);
+        yml.addDefault(ConfigPath.GENERAL_CONFIGURATION_AUTO_SCALE_MAX_PER_ARENA, 3);
+        yml.addDefault(ConfigPath.GENERAL_CONFIGURATION_AUTO_SCALE_MAX_TOTAL, 10);
+        yml.addDefault(ConfigPath.GENERAL_CONFIGURATION_AUTO_SCALE_TOP_UP_INTERVAL, 30);
         yml.addDefault("timeZone", "Europe/Rome");
         yml.addDefault("serverType", "MULTIARENA");
         yml.addDefault("language", "en");

@@ -412,6 +412,7 @@ public class BedWars extends JavaPlugin {
             } else {
                 registerEvents(new JoinListenerShared());
             }
+            if (autoscale) registerEvents(new AutoscaleListener());
         }
 
         registerEvents(new WorldLoadListener());
@@ -645,8 +646,14 @@ public class BedWars extends JavaPlugin {
                 if (BoardManager.init()) {
                     getLogger().info("O suporte ao TAB foi carregado");
 
+                    /* Drop game worlds a previous crash left behind before creating new ones. */
+                    arenaManager.cleanupOrphanWorlds();
+
                     /* Load join signs. */
                     loadArenasAndSigns();
+
+                    /* Keep one joinable game per arena, self healing if one fails to load. */
+                    startAutoScaleTopUpTask();
 
                 } else {
                     this.getLogger().severe("A scoreboard do TAB não está ativada! Aplicando a configuração do TAB automaticamente...");
@@ -799,6 +806,21 @@ public class BedWars extends JavaPlugin {
 
     }
 
+    /**
+     * Safety net for the auto scale system.
+     * <p>
+     * Games are normally topped up the moment one starts playing or ends, so this pass usually
+     * finds nothing to do. It exists for the cases events cannot cover: a world that failed to
+     * load, an arena disabled and re-enabled by hand, or a limit that freed up. It creates at
+     * most one game per pass and does no I/O, so it stays cheap even with many maps.
+     */
+    private void startAutoScaleTopUpTask() {
+        if (!autoscale) return;
+        int seconds = config.getInt(ConfigPath.GENERAL_CONFIGURATION_AUTO_SCALE_TOP_UP_INTERVAL);
+        if (seconds <= 0) return;
+        Bukkit.getScheduler().runTaskTimer(this, () -> arenaManager.topUpArenas(), 200L, seconds * 20L);
+    }
+
     private void loadArenasAndSigns() {
 
         api.getRestoreAdapter().convertWorlds();
@@ -842,7 +864,9 @@ public class BedWars extends JavaPlugin {
 
     public static void setServerType(ServerType serverType) {
         BedWars.serverType = serverType;
-        if (serverType == ServerType.BUNGEE) autoscale = true;
+        // bungee has always required auto scale to work; the other modes opt in through the config
+        autoscale = serverType == ServerType.BUNGEE
+                || config.getBoolean(ConfigPath.GENERAL_CONFIGURATION_AUTO_SCALE_ENABLED);
     }
 
     public static void setAutoscale(boolean autoscale) {
