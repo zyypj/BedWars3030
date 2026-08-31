@@ -165,7 +165,11 @@ public class AdvancedSlimeAdapter extends RestoreAdapter {
         } else {
             Bukkit.getScheduler().runTask(getOwner(), () -> {
                 Bukkit.unloadWorld(a.getWorldName(), false);
-                Bukkit.getScheduler().runTaskLater(getOwner(), () -> api.getArenaUtil().loadArena(a.getArenaName(), null), 80L);
+                // with auto scale the limits decide whether this arena still needs a spare game;
+                // without it the arena must always come back or the server runs out of maps
+                if (!api.isAutoScale() || api.getArenaUtil().canAutoScale(a.getArenaName())) {
+                    Bukkit.getScheduler().runTaskLater(getOwner(), () -> api.getArenaUtil().loadArena(a.getArenaName(), null), 80L);
+                }
             });
         }
     }
