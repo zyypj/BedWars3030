@@ -72,7 +72,8 @@ public class ReJoin {
         if (bwt.getMembers().isEmpty()) task = new ReJoinTask(arena, bwt);
         this.permanentsAndNonDowngradables.addAll(cachedArmor);
 
-        if (BedWars.autoscale) {
+        // auto scale runs in every server type now, but redis only exists in bungee mode
+        if (BedWars.getRedisConnection() != null) {
             JsonObject json = new JsonObject();
             json.addProperty("type", "RC");
             json.addProperty("uuid", player.getUniqueId().toString());
