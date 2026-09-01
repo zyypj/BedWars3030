@@ -1,23 +1,3 @@
-/*
- * BedWars2023 - A bed wars mini-game.
- * Copyright (C) 2024 Tomas Keuper
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <https://www.gnu.org/licenses/>.
- *
- * Contact e-mail: contact@fyreblox.com
- */
-
 package com.tomkeuper.bedwars.configuration;
 
 import com.tomkeuper.bedwars.api.configuration.ConfigManager;
@@ -31,7 +11,7 @@ public class GeneratorsConfig extends ConfigManager {
         super(plugin, name, dir);
 
         YamlConfiguration yml = getYml();
-        yml.options().header(plugin.getDescription().getName() + " by MrCeasar." +
+        yml.options().header(plugin.getDescription().getName() + " modificado por: tadeu (@zyypj)." +
                 "\nDocumentação do generators.yml: https://wiki.tomkeuper.com/docs/BedWars2023/configuration/generators-configuration\n\nOs delays podem ser incrementados em passos de um quarto de segundo (ex.: 1.25/1.5/1.75)\n");
         yml.addDefault("Default." + ConfigPath.GENERATOR_IRON_DELAY, 2.0);
         yml.addDefault("Default." + ConfigPath.GENERATOR_IRON_AMOUNT, 2);

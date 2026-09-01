@@ -1,23 +1,3 @@
-/*
- * BedWars2023 - A bed wars mini-game.
- * Copyright (C) 2024 Tomas Keuper
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <https://www.gnu.org/licenses/>.
- *
- * Contact e-mail: contact@fyreblox.com
- */
-
 package com.tomkeuper.bedwars.api.configuration;
 
 @SuppressWarnings("WeakerAccess")
@@ -61,6 +41,11 @@ public class ConfigPath {
     public static final String GENERATOR_EMERALD_TIER_III_SPAWN_LIMIT = "emerald.tierIII.spawn-limit";
     public static final String GENERATOR_EMERALD_TIER_III_START = "emerald.tierIII.start";
 
+
+    public static final String GENERAL_CONFIGURATION_AUTO_SCALE_ENABLED = "auto-scale.enabled";
+    public static final String GENERAL_CONFIGURATION_AUTO_SCALE_MAX_PER_ARENA = "auto-scale.max-games-per-arena";
+    public static final String GENERAL_CONFIGURATION_AUTO_SCALE_MAX_TOTAL = "auto-scale.max-total-games";
+    public static final String GENERAL_CONFIGURATION_AUTO_SCALE_TOP_UP_INTERVAL = "auto-scale.top-up-interval-seconds";
 
     public static final String GENERAL_CONFIGURATION_BUNGEE_OPTION_GAMES_BEFORE_RESTART = "bungeecord-settings.games-before-restart";
     public static final String GENERAL_CONFIGURATION_BUNGEE_OPTION_AUTO_SCALE_LIMIT = "bungeecord-settings.auto-scale-clone-limit";

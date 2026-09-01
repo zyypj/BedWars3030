@@ -1,23 +1,3 @@
-/*
- * BedWars2023 - A bed wars mini-game.
- * Copyright (C) 2024 Tomas Keuper
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <https://www.gnu.org/licenses/>.
- *
- * Contact e-mail: contact@fyreblox.com
- */
-
 package com.tomkeuper.bedwars.commands.bedwars.subcmds.sensitive;
 
 import com.tomkeuper.bedwars.BedWars;
@@ -26,6 +6,7 @@ import com.tomkeuper.bedwars.api.arena.IArena;
 import com.tomkeuper.bedwars.api.command.ParentCommand;
 import com.tomkeuper.bedwars.api.command.SubCommand;
 import com.tomkeuper.bedwars.arena.Arena;
+import java.util.List;
 import com.tomkeuper.bedwars.arena.Misc;
 import com.tomkeuper.bedwars.arena.SetupSession;
 import com.tomkeuper.bedwars.commands.bedwars.MainCommand;
@@ -62,17 +43,22 @@ public class DisableArena extends SubCommand {
             s.sendMessage("§c▪ §7" + args[0] + " é um mundo e não uma arena!");
             return true;
         }
-        IArena a = Arena.getArenaByName(args[0]);
-        if (a == null) {
+        // with auto scale an arena can be hosting several games at once, all of them have to go
+        List<IArena> games = Arena.getArenasByName(args[0]);
+        if (games.isEmpty()) {
             s.sendMessage("§c▪ §7Isso já foi desativado ou não existe!");
             return true;
         }
-        if (a.getStatus() == GameState.playing) {
-            s.sendMessage("§6 ▪ §7Há uma partida em andamento nesta arena, desative-a após a partida!");
-            return true;
+        for (IArena game : games) {
+            if (game.getStatus() == GameState.playing) {
+                s.sendMessage("§6 ▪ §7Há uma partida em andamento nesta arena, desative-a após a partida!");
+                return true;
+            }
         }
-        s.sendMessage("§6 ▪ §7Desativando arena...");
-        a.disable();
+        s.sendMessage("§6 ▪ §7Desativando arena..." + (games.size() > 1 ? " §8(" + games.size() + " partidas)" : ""));
+        for (IArena game : games) {
+            game.disable();
+        }
         return true;
     }
 

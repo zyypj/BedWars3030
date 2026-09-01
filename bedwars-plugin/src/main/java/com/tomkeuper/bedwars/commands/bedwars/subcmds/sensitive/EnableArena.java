@@ -1,23 +1,3 @@
-/*
- * BedWars2023 - A bed wars mini-game.
- * Copyright (C) 2024 Tomas Keuper
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <https://www.gnu.org/licenses/>.
- *
- * Contact e-mail: contact@fyreblox.com
- */
-
 package com.tomkeuper.bedwars.commands.bedwars.subcmds.sensitive;
 
 import com.tomkeuper.bedwars.BedWars;
@@ -25,6 +5,7 @@ import com.tomkeuper.bedwars.api.arena.IArena;
 import com.tomkeuper.bedwars.api.command.ParentCommand;
 import com.tomkeuper.bedwars.api.command.SubCommand;
 import com.tomkeuper.bedwars.arena.Arena;
+import com.tomkeuper.bedwars.arena.ArenaManager;
 import com.tomkeuper.bedwars.arena.Misc;
 import com.tomkeuper.bedwars.arena.SetupSession;
 import com.tomkeuper.bedwars.commands.bedwars.MainCommand;
@@ -71,8 +52,9 @@ public class EnableArena extends SubCommand {
             }
         }
 
-        IArena aa = Arena.getArenaByName(args[0]);
-        if (aa != null) {
+        // with auto scale the arena is only "already enabled" while it still has a joinable game;
+        // if every copy is playing, an admin asking for one more is a valid request
+        if (!ArenaManager.getJoinableGames(args[0]).isEmpty()) {
             s.sendMessage("§c▪ §7Esta arena já está ativada!");
             return true;
         }

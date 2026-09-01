@@ -1,23 +1,3 @@
-/*
- * BedWars2023 - A bed wars mini-game.
- * Copyright (C) 2024 Tomas Keuper
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <https://www.gnu.org/licenses/>.
- *
- * Contact e-mail: contact@fyreblox.com
- */
-
 package com.tomkeuper.bedwars.commands.bedwars.subcmds.regular;
 
 import com.tomkeuper.bedwars.api.BedWars;
@@ -32,9 +12,6 @@ import com.tomkeuper.bedwars.arena.Misc;
 import com.tomkeuper.bedwars.arena.SetupSession;
 import com.tomkeuper.bedwars.commands.bedwars.MainCommand;
 import net.md_5.bungee.api.chat.ClickEvent;
-import net.md_5.bungee.api.chat.ComponentBuilder;
-import net.md_5.bungee.api.chat.HoverEvent;
-import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
@@ -43,7 +20,8 @@ import org.bukkit.entity.Player;
 import java.util.List;
 import java.util.Objects;
 
-import static com.tomkeuper.bedwars.BedWars.*;
+import static com.tomkeuper.bedwars.BedWars.mainCmd;
+import static com.tomkeuper.bedwars.BedWars.plugin;
 import static com.tomkeuper.bedwars.api.language.Language.getList;
 
 public class CmdList extends SubCommand {
@@ -52,7 +30,7 @@ public class CmdList extends SubCommand {
         super(parent, name);
         setPriority(11);
         showInList(true);
-        setDisplayInfo(Misc.msgHoverClick("§6 ▪ §7/" + MainCommand.getInstance().getName() + " " + getSubCommandName() + "         §8 - §e ver cmds de jogador", "§fVer os comandos de jogador.", "/" + getParent().getName() + " " + getSubCommandName(), ClickEvent.Action.RUN_COMMAND));
+        setDisplayInfo(Misc.msgHoverClick("§6 ▪ §f/" + MainCommand.getInstance().getName() + " " + getSubCommandName() + "         §8 - §e ver cmds de jogador", "§fVer os comandos de jogador.", "/" + getParent().getName() + " " + getSubCommandName(), ClickEvent.Action.RUN_COMMAND));
     }
 
     @Override
@@ -77,9 +55,9 @@ public class CmdList extends SubCommand {
             int teams = 0;
 
             if (ss.getConfig().getYml().get("Team") != null) {
-                for (String team : ss.getConfig().getYml().getConfigurationSection("Team").getKeys(true)) {
+                for (String team : Objects.requireNonNull(ss.getConfig().getYml().getConfigurationSection("Team")).getKeys(true)) {
                     if (ss.getConfig().getYml().get("Team." + team + ".Color") == null) continue;
-                    ChatColor color = TeamColor.getChatColor(ss.getConfig().getYml().getString("Team." + team + ".Color"));
+                    ChatColor color = TeamColor.getChatColor(Objects.requireNonNull(ss.getConfig().getYml().getString("Team." + team + ".Color")));
                     if (ss.getConfig().getYml().get("Team." + team + ".Spawn") == null) {
                         spawnNotSet.append(color).append("▋");
                         spawnNotSetNames.append(color).append(team).append(" ");
@@ -116,9 +94,9 @@ public class CmdList extends SubCommand {
             } else if (!pos1 && pos2) {
                 posMsg = ChatColor.RED + "(POS 1 NÃO DEFINIDA)";
             } else if (pos1) {
-                posMsg = ChatColor.GREEN + "(SET)";
+                posMsg = ChatColor.GREEN + "(DEFINIDO)";
             } else {
-                posMsg = ChatColor.GRAY + "(NÃO DEFINIDO) " + ChatColor.ITALIC + "OPTIONAL";
+                posMsg = ChatColor.GRAY + "(NÃO DEFINIDO) " + ChatColor.ITALIC + "OPCIONAL";
             }
 
             String g2 = ss.getConfig().getYml().getString("group");
@@ -133,11 +111,11 @@ public class CmdList extends SubCommand {
             String setWaitingSpawn = ss.dot() + (waitingSpawn ? ChatColor.STRIKETHROUGH : "") + "setWaitingSpawn" + ChatColor.RESET + " " + (waitingSpawn ? ChatColor.GREEN + "(SET)" : ChatColor.RED + "(NÃO DEFINIDO)");
             String waitingPos = ss.dot() + (pos ? ChatColor.STRIKETHROUGH : "") + "waitingPos 1/2" + ChatColor.RESET + " " + posMsg;
             String setSpawn = ss.dot() + ((spawnNotSet.length() == 0) ? ChatColor.STRIKETHROUGH : "") + "setSpawn <teamName>" + ChatColor.RESET + " " + ((spawnNotSet.length() == 0) ? ChatColor.GREEN + "(TUDO DEFINIDO)" : ChatColor.RED + "(Restantes: " + spawnNotSet + ChatColor.RED + ")");
-            String setBed = ss.dot() + ((bedNotSet.toString().length() == 0) ? ChatColor.STRIKETHROUGH : "") + "setBed" + ChatColor.RESET + " " + ((bedNotSet.length() == 0) ? ChatColor.GREEN + "(TUDO DEFINIDO)" : ChatColor.RED + "(Restantes: " + bedNotSet + ChatColor.RED + ")");
-            String setShop = ss.dot() + ((shopNotSet.toString().length() == 0) ? ChatColor.STRIKETHROUGH : "") + "setShop" + ChatColor.RESET + " " + ((shopNotSet.length() == 0) ? ChatColor.GREEN + "(TUDO DEFINIDO)" : ChatColor.RED + "(Restantes: " + shopNotSet + ChatColor.RED + ")");
-            String setKillDrops = ss.dot() + ((killDropsNotSet.toString().length() == 0) ? ChatColor.STRIKETHROUGH : "") + "setKillDrops" + ChatColor.RESET + " " + ((shopNotSet.length() == 0) ? ChatColor.GREEN + "(TUDO DEFINIDO)" : ChatColor.RED + "(Restantes: " + killDropsNotSet + ChatColor.RED + ")");
-            String setUpgrade = ss.dot() + ((upgradeNotSet.toString().length() == 0) ? ChatColor.STRIKETHROUGH : "") + "setUpgrade" + ChatColor.RESET + " " + ((upgradeNotSet.length() == 0) ? ChatColor.GREEN + "(TUDO DEFINIDO)" : ChatColor.RED + "(Restantes: " + upgradeNotSet + ChatColor.RED + ")");
-            String addGenerator = ss.dot() + "addGenerator " + ((generatorNotSet.toString().length() == 0) ? "" : ChatColor.RED + "(Restantes: " + generatorNotSet + ChatColor.RED + ") ") + ChatColor.YELLOW + "(" + ChatColor.DARK_GREEN + "E" + emGen + " " + ChatColor.AQUA + "D" + dmGen + ChatColor.YELLOW + ")";
+            String setBed = ss.dot() + ((bedNotSet.toString().isEmpty()) ? ChatColor.STRIKETHROUGH : "") + "setBed" + ChatColor.RESET + " " + ((bedNotSet.length() == 0) ? ChatColor.GREEN + "(TUDO DEFINIDO)" : ChatColor.RED + "(Restantes: " + bedNotSet + ChatColor.RED + ")");
+            String setShop = ss.dot() + ((shopNotSet.toString().isEmpty()) ? ChatColor.STRIKETHROUGH : "") + "setShop" + ChatColor.RESET + " " + ((shopNotSet.length() == 0) ? ChatColor.GREEN + "(TUDO DEFINIDO)" : ChatColor.RED + "(Restantes: " + shopNotSet + ChatColor.RED + ")");
+            String setKillDrops = ss.dot() + ((killDropsNotSet.toString().isEmpty()) ? ChatColor.STRIKETHROUGH : "") + "setKillDrops" + ChatColor.RESET + " " + ((shopNotSet.length() == 0) ? ChatColor.GREEN + "(TUDO DEFINIDO)" : ChatColor.RED + "(Restantes: " + killDropsNotSet + ChatColor.RED + ")");
+            String setUpgrade = ss.dot() + ((upgradeNotSet.toString().isEmpty()) ? ChatColor.STRIKETHROUGH : "") + "setUpgrade" + ChatColor.RESET + " " + ((upgradeNotSet.length() == 0) ? ChatColor.GREEN + "(TUDO DEFINIDO)" : ChatColor.RED + "(Restantes: " + upgradeNotSet + ChatColor.RED + ")");
+            String addGenerator = ss.dot() + "addGenerator " + ((generatorNotSet.toString().isEmpty()) ? "" : ChatColor.RED + "(Restantes: " + generatorNotSet + ChatColor.RED + ") ") + ChatColor.YELLOW + "(" + ChatColor.DARK_GREEN + "E" + emGen + " " + ChatColor.AQUA + "D" + dmGen + ChatColor.YELLOW + ")";
             String setSpectatorSpawn = ss.dot() + (ss.getConfig().getYml().get(ConfigPath.ARENA_SPEC_LOC) == null ? "" : ChatColor.STRIKETHROUGH) + "setSpectSpawn" + ChatColor.RESET + " " + (ss.getConfig().getYml().get(ConfigPath.ARENA_SPEC_LOC) == null ? ChatColor.RED + "(NÃO DEFINIDO)" : ChatColor.GRAY + "(SET)");
 
             s.sendMessage("");
@@ -174,10 +152,6 @@ public class CmdList extends SubCommand {
 
             p.spigot().sendMessage(Misc.msgHoverClick(ss.dot() + "save", ChatColor.WHITE + "Salva a arena e volta para o lobby", "/" + getParent().getName() + " save", ClickEvent.Action.SUGGEST_COMMAND));
         } else {
-            TextComponent credits = new TextComponent(ChatColor.BLUE + "" + ChatColor.BOLD + MainCommand.getDot() + " " + ChatColor.GOLD + plugin.getName() + " " + ChatColor.GRAY + "v" + plugin.getDescription().getVersion() + " by MrCeasar");
-            credits.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, link));
-            credits.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(ChatColor.GRAY + "Arenas: " + (Arena.getArenas().size() == 0 ? ChatColor.RED + "0" : ChatColor.GREEN + "" + Arena.getArenas().size())).create()));
-            ((Player) s).spigot().sendMessage(credits);
             for (String string : getList((Player) s, Messages.COMMAND_MAIN)) {
                 s.sendMessage(string);
             }
@@ -192,7 +166,7 @@ public class CmdList extends SubCommand {
 
     @Override
     public boolean canSee(CommandSender s, BedWars api) {
-        if (s instanceof ConsoleCommandSender) return  false;
+        if (s instanceof ConsoleCommandSender) return false;
         if (s instanceof Player) {
             Player p = (Player) s;
             if (Arena.isInArena(p)) return false;

@@ -1,7 +1,7 @@
 ### Requirements for Contributing a Performance Improvement
 
 * Fill out the template below. Any pull request that does not include enough information to be reviewed in a timely manner may be closed at the maintainers' discretion.
-* The pull request must only affect performance of existing functionality. To contribute other changes, you must use a different template. You can see all templates at <https://github.com/tomkeuper/BedWars2023/blob/master/CONTRIBUTING.md>.
+* The pull request must only affect performance of existing functionality. To contribute other changes, you must use a different template. You can see all templates at <https://github.com/zyypj/BedWars3030/blob/master/CONTRIBUTING.md>.
 
 ### Description of the Change
 

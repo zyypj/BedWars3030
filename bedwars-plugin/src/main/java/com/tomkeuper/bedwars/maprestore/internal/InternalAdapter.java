@@ -1,23 +1,3 @@
-/*
- * BedWars2023 - A bed wars mini-game.
- * Copyright (C) 2024 Tomas Keuper
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <https://www.gnu.org/licenses/>.
- *
- * Contact e-mail: contact@fyreblox.com
- */
-
 package com.tomkeuper.bedwars.maprestore.internal;
 
 import com.tomkeuper.bedwars.BedWars;
@@ -63,16 +43,22 @@ public class InternalAdapter extends RestoreAdapter {
                 return;
             }
             Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
-                File bf = new File(backupFolder, a.getMapName() + ".zip"), af = new File(Bukkit.getWorldContainer(), a.getMapName());
-                if (bf.exists()) {
-                    FileUtil.delete(af);
-                }
+                File bf = new File(backupFolder, a.getMapName() + ".zip");
+                File target = new File(Bukkit.getWorldContainer(), a.getWorldName());
 
+                // First game on this map: build the backup from the base map folder.
+                // WorldZipper is synchronous, so the archive is ready right after this.
                 if (!bf.exists()) {
                     new WorldZipper(a.getMapName(), true);
-                } else {
+                }
+
+                // Every game plays on a fresh extraction of the backup. The base map folder is
+                // never the target when auto scale is on, which is what lets the same map host
+                // several games at once and keeps the base map intact for the next extraction.
+                if (bf.exists()) {
+                    FileUtil.delete(target);
                     try {
-                        ZipFileUtil.unzipFileIntoDirectory(bf, new File(Bukkit.getWorldContainer(), a.getWorldName()));
+                        ZipFileUtil.unzipFileIntoDirectory(bf, target);
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -120,7 +106,11 @@ public class InternalAdapter extends RestoreAdapter {
                 if (!success) {
                     plugin.getLogger().warning("Falha ao descarregar o mundo: " + a.getWorldName());
                 }
-                Bukkit.getScheduler().runTaskLater(plugin, () -> new Arena(a.getArenaName(), null), 80L);
+                // with auto scale the limits decide whether this arena still needs a spare game;
+                // without it the arena must always come back or the server runs out of maps
+                if (!BedWars.autoscale || Arena.canAutoScale(a.getArenaName())) {
+                    Bukkit.getScheduler().runTaskLater(plugin, () -> new Arena(a.getArenaName(), null), 80L);
+                }
             }
             if (!a.getWorldName().equals(a.getMapName())) {
                 deleteWorld(a.getWorldName());

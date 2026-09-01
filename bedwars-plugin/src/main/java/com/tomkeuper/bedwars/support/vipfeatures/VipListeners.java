@@ -1,23 +1,3 @@
-/*
- * BedWars2023 - A bed wars mini-game.
- * Copyright (C) 2024 Tomas Keuper
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <https://www.gnu.org/licenses/>.
- *
- * Contact e-mail: contact@fyreblox.com
- */
-
 package com.tomkeuper.bedwars.support.vipfeatures;
 
 import com.tomkeuper.bedwars.BedWars;
@@ -55,8 +35,8 @@ public class VipListeners implements Listener {
 
     @EventHandler
     public void onBockChange(BlockChangeEvent e) {
-        if (BedWars.getAPI().getArenaUtil().getArenaByName(e.getLocation().getWorld().getName()) != null) {
-            IArena a = BedWars.getAPI().getArenaUtil().getArenaByName(e.getLocation().getWorld().getName());
+        if (BedWars.getAPI().getArenaUtil().getArenaByIdentifier(e.getLocation().getWorld().getName()) != null) {
+            IArena a = BedWars.getAPI().getArenaUtil().getArenaByIdentifier(e.getLocation().getWorld().getName());
             for (ITeam t : a.getTeams()) {
                 for (int x = -1; x < 2; x++) {
                     for (int z = -1; z < 2; z++) {

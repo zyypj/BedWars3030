@@ -1,12 +1,12 @@
 allprojects {
     group = 'com.tomkeuper.bedwars'
     version = rootProject.version
-    description = 'BedWars minigame by Tom Keuper forked from BedWars1058'
+    description = 'Minigame Bed Wars, modificado por tadeu'
 
     ext {
         id = 'bedwars'
-        website = 'https://github.com/tomkeuper/BedWars2023'
-        author = 'Mr. Ceasar'
+        website = 'https://github.com/zyypj/BedWars3030'
+        author = 'tadeu (@zyypj)'
     }
 }
 

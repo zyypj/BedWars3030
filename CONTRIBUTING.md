@@ -20,14 +20,14 @@ por cada suporte de versão do MC.
 ## Como eu posso contribuir?
 #### Reportando bugs
 
-Ao [criar um relatório de bug](https://github.com/tomkeuper/BedWars2023/issues/new), inclua o máximo de detalhes possível.
+Ao [criar um relatório de bug](https://github.com/zyypj/BedWars3030/issues/new), inclua o máximo de detalhes possível.
 Preencha o template obrigatório; as informações pedidas nos ajudam a resolver os problemas mais rápido.
 
 > **Nota:** Se você encontrar uma issue **Closed** que pareça ser exatamente o que você está enfrentando, abra uma nova issue e inclua um link para a issue original no corpo da nova.
 
 ### Sugerindo melhorias
 Sugestões de melhoria são acompanhadas como issues do GitHub, então você precisa
-[abrir uma nova issue](https://github.com/tomkeuper/BedWars2023/issues/new)
+[abrir uma nova issue](https://github.com/zyypj/BedWars3030/issues/new)
 e fornecer as seguintes informações:
 - Use um título claro e descritivo para a issue, que identifique a sugestão.
 - Forneça uma descrição passo a passo da melhoria sugerida, com o máximo de detalhes possível.
