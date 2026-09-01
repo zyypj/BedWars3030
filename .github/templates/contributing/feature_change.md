@@ -12,7 +12,7 @@ Link to the issue that your change relates to. This must be one of the following
 * An open issue with the `beginner` label
 * An open issue with the `help-wanted` label
 
-To contribute other changes, you must use a different template. You can see all templates at https://github.com/tomkeuper/BedWars2023/blob/master/CONTRIBUTING.md.
+To contribute other changes, you must use a different template. You can see all templates at https://github.com/zyypj/BedWars3030/blob/master/CONTRIBUTING.md.
 
 -->
 

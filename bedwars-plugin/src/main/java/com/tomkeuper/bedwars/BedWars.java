@@ -11,12 +11,9 @@ import com.tomkeuper.bedwars.api.configuration.ConfigManager;
 import com.tomkeuper.bedwars.api.configuration.ConfigPath;
 import com.tomkeuper.bedwars.api.database.IDatabase;
 import com.tomkeuper.bedwars.api.economy.IEconomy;
+import com.tomkeuper.bedwars.api.hologram.IHologramManager;
 import com.tomkeuper.bedwars.api.items.handlers.IPermanentItem;
 import com.tomkeuper.bedwars.api.items.handlers.IPermanentItemHandler;
-import com.tomkeuper.bedwars.arena.feature.ResourceChestFeature;
-import com.tomkeuper.bedwars.arena.tasks.HologramTask;
-import com.tomkeuper.bedwars.handlers.items.LobbyItem;
-import com.tomkeuper.bedwars.api.hologram.IHologramManager;
 import com.tomkeuper.bedwars.api.language.Language;
 import com.tomkeuper.bedwars.api.levels.Level;
 import com.tomkeuper.bedwars.api.party.Party;
@@ -29,8 +26,10 @@ import com.tomkeuper.bedwars.arena.VoidChunkGenerator;
 import com.tomkeuper.bedwars.arena.despawnables.TargetListener;
 import com.tomkeuper.bedwars.arena.feature.AntiDropFeature;
 import com.tomkeuper.bedwars.arena.feature.GenSplitFeature;
+import com.tomkeuper.bedwars.arena.feature.ResourceChestFeature;
 import com.tomkeuper.bedwars.arena.feature.SpoilPlayerTNTFeature;
 import com.tomkeuper.bedwars.arena.spectator.SpectatorListeners;
+import com.tomkeuper.bedwars.arena.tasks.HologramTask;
 import com.tomkeuper.bedwars.arena.tasks.OneTick;
 import com.tomkeuper.bedwars.arena.tasks.Refresh;
 import com.tomkeuper.bedwars.arena.upgrades.BaseListener;
@@ -38,22 +37,29 @@ import com.tomkeuper.bedwars.arena.upgrades.HealPoolListener;
 import com.tomkeuper.bedwars.commands.bedwars.MainCommand;
 import com.tomkeuper.bedwars.commands.join.JoinCommand;
 import com.tomkeuper.bedwars.commands.leave.LeaveCommand;
+import com.tomkeuper.bedwars.commands.mapselector.MapSelectorCommand;
 import com.tomkeuper.bedwars.commands.party.PartyCommand;
 import com.tomkeuper.bedwars.commands.rejoin.RejoinCommand;
 import com.tomkeuper.bedwars.commands.shout.ShoutCommand;
 import com.tomkeuper.bedwars.commands.start.StartCommand;
 import com.tomkeuper.bedwars.configuration.*;
+import com.tomkeuper.bedwars.connectionmanager.LoadedUsersCleaner;
+import com.tomkeuper.bedwars.connectionmanager.redis.RedisArenaListeners;
+import com.tomkeuper.bedwars.connectionmanager.redis.RedisConnection;
 import com.tomkeuper.bedwars.database.H2;
 import com.tomkeuper.bedwars.database.MySQL;
 import com.tomkeuper.bedwars.database.SQLite;
 import com.tomkeuper.bedwars.halloween.HalloweenSpecial;
-import com.tomkeuper.bedwars.hologram.HologramManager;
+import com.tomkeuper.bedwars.handlers.items.LobbyItem;
 import com.tomkeuper.bedwars.handlers.items.PreGameItem;
 import com.tomkeuper.bedwars.handlers.items.SpectatorItem;
 import com.tomkeuper.bedwars.handlers.main.CommandItemHandler;
 import com.tomkeuper.bedwars.handlers.main.LeaveItemHandler;
 import com.tomkeuper.bedwars.handlers.main.StatsItemHandler;
-import com.tomkeuper.bedwars.language.*;
+import com.tomkeuper.bedwars.hologram.HologramManager;
+import com.tomkeuper.bedwars.language.English;
+import com.tomkeuper.bedwars.language.LangListener;
+import com.tomkeuper.bedwars.language.Portuguese;
 import com.tomkeuper.bedwars.levels.internal.InternalLevel;
 import com.tomkeuper.bedwars.levels.internal.LevelListeners;
 import com.tomkeuper.bedwars.listeners.*;
@@ -62,14 +68,10 @@ import com.tomkeuper.bedwars.listeners.blockstatus.BlockStatusListener;
 import com.tomkeuper.bedwars.listeners.chat.ChatAFK;
 import com.tomkeuper.bedwars.listeners.chat.ChatFormatting;
 import com.tomkeuper.bedwars.listeners.joinhandler.*;
-import com.tomkeuper.bedwars.commands.mapselector.MapSelectorCommand;
+import com.tomkeuper.bedwars.maprestore.internal.InternalAdapter;
 import com.tomkeuper.bedwars.mapselector.MapSelectorCache;
 import com.tomkeuper.bedwars.mapselector.MapSelectorConfig;
 import com.tomkeuper.bedwars.mapselector.menu.MapSelectorListener;
-import com.tomkeuper.bedwars.connectionmanager.LoadedUsersCleaner;
-import com.tomkeuper.bedwars.connectionmanager.redis.RedisArenaListeners;
-import com.tomkeuper.bedwars.connectionmanager.redis.RedisConnection;
-import com.tomkeuper.bedwars.maprestore.internal.InternalAdapter;
 import com.tomkeuper.bedwars.money.internal.MoneyListeners;
 import com.tomkeuper.bedwars.shop.ShopCache;
 import com.tomkeuper.bedwars.shop.ShopManager;
@@ -126,50 +128,225 @@ import java.util.function.BiFunction;
 @SuppressWarnings("WeakerAccess")
 public class BedWars extends JavaPlugin {
 
-    private static ServerType serverType = ServerType.MULTIARENA;
+    private static final String minecraftVersion = Bukkit.getServer().getBukkitVersion().split("-")[0];
     public static boolean debug = true, autoscale = false, isPaper = false;
     public static int hologramUpdateDistance = 50; // DEFAULT DISTANCE (update distance measured in blocks)
     public static String mainCmd = "bw", link = "https://polymart.org/resource/bedwars2023.5702";
     public static ConfigManager signs, generators;
-    private static MapSelectorConfig mapSelectorConfig;
-    private static MapSelectorCache mapSelectorCache;
     public static MainConfig config;
     public static ShopManager shop;
-    private static UpgradesManager upgradesManager;
     public static PlayerQuickBuyCache playerQuickBuyCache;
     public static ShopCache shopCache;
     public static StatsManager statsManager;
     public static BedWars plugin;
-    private BukkitAudiences adventure;
     public static VersionSupport nms;
-
-    private static Party partyManager = new NoParty();
-    private static IChat chat = new NoChat();
-    protected static Level level;
-    private static IEconomy economy;
-    private static String nmsVersion = Bukkit.getServer().getClass().getName().split("\\.")[3];
-    private static final String minecraftVersion = Bukkit.getServer().getBukkitVersion().split("-")[0];
-    private static String lobbyWorld = "";
-    private static boolean shuttingDown = false;
-
     public static ArenaManager arenaManager = new ArenaManager();
     public static IAddonManager addonManager = new AddonManager();
     public static IHologramManager hologramManager = new HologramManager();
-
+    protected static Level level;
+    private static ServerType serverType = ServerType.MULTIARENA;
+    private static MapSelectorConfig mapSelectorConfig;
+    private static MapSelectorCache mapSelectorCache;
+    private static UpgradesManager upgradesManager;
+    private static Party partyManager = new NoParty();
+    private static IChat chat = new NoChat();
+    private static IEconomy economy;
+    private static String nmsVersion = Bukkit.getServer().getClass().getName().split("\\.")[3];
+    private static String lobbyWorld = "";
+    private static boolean shuttingDown = false;
     // BedWars Items;
     private static Collection<IPermanentItem> lobbyItems = new ArrayList<>();
     private static Collection<IPermanentItem> spectatorItems = new ArrayList<>();
     private static Collection<IPermanentItem> preGameItems = new ArrayList<>();
     private static Map<String, IPermanentItemHandler> itemHandlers = new HashMap<>();
-
     //remote database
     private static IDatabase remoteDatabase;
-
     private static RedisConnection redisConnection;
-
+    private static com.tomkeuper.bedwars.api.BedWars api;
+    private BukkitAudiences adventure;
     private boolean serverSoftwareSupport = true, papiSupportLoaded = false, vaultEconomyLoaded = false, vaultChatLoaded = false;
 
-    private static com.tomkeuper.bedwars.api.BedWars api;
+    public static void registerEvents(Listener... listeners) {
+        Arrays.stream(listeners).forEach(l -> plugin.getServer().getPluginManager().registerEvents(l, plugin));
+    }
+
+    public static void setDebug(boolean value) {
+        debug = value;
+    }
+
+    public static void setAutoscale(boolean autoscale) {
+        BedWars.autoscale = autoscale;
+    }
+
+    public static void debug(String message) {
+        if (debug) {
+            plugin.getLogger().info("DEBUG: " + message);
+        }
+    }
+
+    public static String getForCurrentVersion(String v18, String v12, String v13) {
+        switch (getServerVersion()) {
+            case "v1_8_R3":
+                return v18;
+            case "v1_12_R1":
+                return v12;
+        }
+        return v13;
+    }
+
+    public static ServerType getServerType() {
+        return serverType;
+    }
+
+    public static void setServerType(ServerType serverType) {
+        BedWars.serverType = serverType;
+        // bungee has always required auto scale to work; the other modes opt in through the config
+        autoscale = serverType == ServerType.BUNGEE
+                || config.getBoolean(ConfigPath.GENERAL_CONFIGURATION_AUTO_SCALE_ENABLED);
+    }
+
+    public static Party getPartyManager() {
+        return partyManager;
+    }
+
+    public static void setPartyManager(Party partyManager) {
+        BedWars.partyManager = partyManager;
+    }
+
+    public static IChat getChatSupport() {
+        return chat;
+    }
+
+    /**
+     * Get current levels manager.
+     */
+    public static Level getLevelSupport() {
+        return level;
+    }
+
+    /**
+     * Set the levels manager.
+     * You can use this to add your own levels manager just implement
+     * the Level interface so the plugin will be able to display
+     * the level internally.
+     */
+
+    public static void setLevelAdapter(Level levelsManager) {
+        if (levelsManager instanceof InternalLevel) {
+            if (LevelListeners.instance == null) {
+                Bukkit.getPluginManager().registerEvents(new LevelListeners(), BedWars.plugin);
+            }
+        } else {
+            if (LevelListeners.instance != null) {
+                PlayerJoinEvent.getHandlerList().unregister(LevelListeners.instance);
+                PlayerQuitEvent.getHandlerList().unregister(LevelListeners.instance);
+                LevelListeners.instance = null;
+            }
+        }
+        level = levelsManager;
+    }
+
+    public static IEconomy getEconomy() {
+        return economy;
+    }
+
+    public static void setEconomy(IEconomy economy) {
+        BedWars.economy = economy;
+    }
+
+    public static ConfigManager getGeneratorsCfg() {
+        return generators;
+    }
+
+    /**
+     * Configuration of the /bwmenu map selector.
+     */
+    public static MapSelectorConfig getMapSelectorConfig() {
+        return mapSelectorConfig;
+    }
+
+    /**
+     * Favourite maps and per map join counts of the /bwmenu map selector.
+     */
+    public static MapSelectorCache getMapSelectorCache() {
+        return mapSelectorCache;
+    }
+
+    /**
+     * Get the server version
+     * Ex: v1_8_R3
+     *
+     * @since v0.6.5beta
+     */
+    public static String getServerVersion() {
+        return nmsVersion;
+    }
+
+    public static String getLobbyWorld() {
+        return lobbyWorld;
+    }
+
+    public static void setLobbyWorld(String lobbyWorld) {
+        BedWars.lobbyWorld = lobbyWorld;
+    }
+
+    /**
+     * Get remote database.
+     */
+    public static IDatabase getRemoteDatabase() {
+        return remoteDatabase;
+    }
+
+    public static void setRemoteDatabase(IDatabase database) {
+        remoteDatabase = database;
+    }
+
+    /**
+     * Get redis connection.
+     */
+    public static RedisConnection getRedisConnection() {
+        return redisConnection;
+    }
+
+    public static StatsManager getStatsManager() {
+        return statsManager;
+    }
+
+    public static UpgradesManager getUpgradeManager() {
+        return upgradesManager;
+    }
+
+    public static com.tomkeuper.bedwars.api.BedWars getAPI() {
+        return api;
+    }
+
+    public static boolean isShuttingDown() {
+        return shuttingDown;
+    }
+
+    public static Collection<IPermanentItem> getLobbyItems() {
+        return lobbyItems;
+    }
+
+    public static Collection<IPermanentItem> getSpectatorItems() {
+        return spectatorItems;
+    }
+
+    public static Collection<IPermanentItem> getPreGameItems() {
+        return preGameItems;
+    }
+
+    public static boolean registerItemHandler(IPermanentItemHandler handler) {
+        if (itemHandlers.containsKey(handler.getId())) {
+            return false;
+        }
+        itemHandlers.put(handler.getId(), handler);
+        return true;
+    }
+
+    public static Map<String, IPermanentItemHandler> getItemHandlers() {
+        return itemHandlers;
+    }
 
     @Override
     public void onLoad() {
@@ -186,7 +363,7 @@ public class BedWars extends JavaPlugin {
 
         try {
             Path downloadPath = Paths.get(getDataFolder().getPath() + File.separator + "libs");
-            ApplicationBuilder.appending("BedWars2023")
+            ApplicationBuilder.appending("BedWars2030")
                     .logger(new SlimLogger(this))
                     .downloadDirectoryPath(downloadPath)
                     .mirrorSelector((a, b) -> a)
@@ -269,19 +446,7 @@ public class BedWars extends JavaPlugin {
 
         // Setup languages
         new English();
-        new Romanian();
-        new Italian();
-        new Polish();
-        new Spanish();
-        new Russian();
-        new Bangla();
-        new Persian();
-        new Hindi();
-        new Indonesia();
         new Portuguese();
-        new SimplifiedChinese();
-        new Turkish();
-        new French();
 
         config = new MainConfig(this, "config");
         hologramUpdateDistance = config.getInt(ConfigPath.GENERAL_CONFIGURATION_HOLOGRAM_UPDATE_DISTANCE);
@@ -564,7 +729,7 @@ public class BedWars extends JavaPlugin {
 
         /* Prevent issues on reload */
         for (Player p : Bukkit.getOnlinePlayers()) {
-            p.kickPlayer("O BedWars2023 foi RECARREGADO! (não recarregue plugins)");
+            p.kickPlayer("O BedWars2030 foi RECARREGADO! (não recarregue plugins)");
         }
 
         /* Load sounds configuration */
@@ -704,7 +869,7 @@ public class BedWars extends JavaPlugin {
         // Send startup message, delayed to make sure everything is loaded and registered.
         Bukkit.getScheduler().runTaskLater(this, () -> {
             this.getLogger().info("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
-            this.getLogger().info("BedWars2023 v" + plugin.getDescription().getVersion() + " foi ativado!");
+            this.getLogger().info("BedWars2030 v" + plugin.getDescription().getVersion() + " foi ativado!");
             this.getLogger().info("");
             this.getLogger().info("Tipo de servidor: " + getServerType().toString() + (getServerType() == ServerType.BUNGEE ? " (ServerID: " + config.getString(ConfigPath.GENERAL_CONFIGURATION_BUNGEE_OPTION_SERVER_ID) + ")" : ""));
             this.getLogger().info("Auto Scale: " + autoscale);
@@ -714,7 +879,7 @@ public class BedWars extends JavaPlugin {
             this.getLogger().info("");
 
             StringJoiner arenaString = new StringJoiner(", ");
-            arenaString.setEmptyValue("None");
+            arenaString.setEmptyValue("Nenhuma");
             for (IArena arena : api.getArenaUtil().getArenas()) {
                 arenaString.add(arena.getArenaName());
             }
@@ -722,7 +887,7 @@ public class BedWars extends JavaPlugin {
             this.getLogger().info("Arena" + (api.getArenaUtil().getArenas().isEmpty() || api.getArenaUtil().getArenas().size() > 1 ? "s" : "") + " (" + api.getArenaUtil().getArenas().size() + "): " + arenaString);
 
             StringJoiner addonString = new StringJoiner(", ");
-            addonString.setEmptyValue("None");
+            addonString.setEmptyValue("Nenhuma");
             for (Addon addon : api.getAddonsUtil().getAddons()) {
                 addonString.add(addon.getName());
             }
@@ -735,10 +900,10 @@ public class BedWars extends JavaPlugin {
             this.getLogger().info("");
             this.getLogger().info("TAB Version: " + Bukkit.getPluginManager().getPlugin("TAB").getDescription().getVersion());
             this.getLogger().info("TAB Features: ");
-            this.getLogger().info("  - Scoreboard: " + (TabAPI.getInstance().getScoreboardManager() == null ? "false" : "true"));
-            this.getLogger().info("  - BossBar: " + ((TabAPI.getInstance().getBossBarManager() == null) ? "false" : "true"));
-            this.getLogger().info("  - TablistNameFormatting: " + ((TabAPI.getInstance().getTabListFormatManager() == null) ? "false" : "true"));
-            this.getLogger().info("  - HeaderFooterFormatting: " + ((TabAPI.getInstance().getHeaderFooterManager() == null) ? "false" : "true"));
+            this.getLogger().info("  - Scoreboard: " + (TabAPI.getInstance().getScoreboardManager() == null));
+            this.getLogger().info("  - BossBar: " + (TabAPI.getInstance().getBossBarManager() == null));
+            this.getLogger().info("  - TablistNameFormatting: " + (TabAPI.getInstance().getTabListFormatManager() == null));
+            this.getLogger().info("  - HeaderFooterFormatting: " + (TabAPI.getInstance().getHeaderFooterManager() == null));
             this.getLogger().info("");
             this.getLogger().info("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
         }, 80L);
@@ -846,148 +1011,6 @@ public class BedWars extends JavaPlugin {
         }
     }
 
-    public static void registerEvents(Listener... listeners) {
-        Arrays.stream(listeners).forEach(l -> plugin.getServer().getPluginManager().registerEvents(l, plugin));
-    }
-
-    public static void setDebug(boolean value) {
-        debug = value;
-    }
-
-    public static void setServerType(ServerType serverType) {
-        BedWars.serverType = serverType;
-        // bungee has always required auto scale to work; the other modes opt in through the config
-        autoscale = serverType == ServerType.BUNGEE
-                || config.getBoolean(ConfigPath.GENERAL_CONFIGURATION_AUTO_SCALE_ENABLED);
-    }
-
-    public static void setAutoscale(boolean autoscale) {
-        BedWars.autoscale = autoscale;
-    }
-
-    public static void debug(String message) {
-        if (debug) {
-            plugin.getLogger().info("DEBUG: " + message);
-        }
-    }
-
-    public static String getForCurrentVersion(String v18, String v12, String v13) {
-        switch (getServerVersion()) {
-            case "v1_8_R3":
-                return v18;
-            case "v1_12_R1":
-                return v12;
-        }
-        return v13;
-    }
-
-    public static ServerType getServerType() {
-        return serverType;
-    }
-
-    public static Party getPartyManager() {
-        return partyManager;
-    }
-
-    public static IChat getChatSupport() {
-        return chat;
-    }
-
-    /**
-     * Get current levels manager.
-     */
-    public static Level getLevelSupport() {
-        return level;
-    }
-
-    /**
-     * Set the levels manager.
-     * You can use this to add your own levels manager just implement
-     * the Level interface so the plugin will be able to display
-     * the level internally.
-     */
-
-    public static void setLevelAdapter(Level levelsManager) {
-        if (levelsManager instanceof InternalLevel) {
-            if (LevelListeners.instance == null) {
-                Bukkit.getPluginManager().registerEvents(new LevelListeners(), BedWars.plugin);
-            }
-        } else {
-            if (LevelListeners.instance != null) {
-                PlayerJoinEvent.getHandlerList().unregister(LevelListeners.instance);
-                PlayerQuitEvent.getHandlerList().unregister(LevelListeners.instance);
-                LevelListeners.instance = null;
-            }
-        }
-        level = levelsManager;
-    }
-
-    public static IEconomy getEconomy() {
-        return economy;
-    }
-
-    public static ConfigManager getGeneratorsCfg() {
-        return generators;
-    }
-
-    /**
-     * Configuration of the /bwmenu map selector.
-     */
-    public static MapSelectorConfig getMapSelectorConfig() {
-        return mapSelectorConfig;
-    }
-
-    /**
-     * Favourite maps and per map join counts of the /bwmenu map selector.
-     */
-    public static MapSelectorCache getMapSelectorCache() {
-        return mapSelectorCache;
-    }
-
-    public static void setLobbyWorld(String lobbyWorld) {
-        BedWars.lobbyWorld = lobbyWorld;
-    }
-
-    /**
-     * Get the server version
-     * Ex: v1_8_R3
-     *
-     * @since v0.6.5beta
-     */
-    public static String getServerVersion() {
-        return nmsVersion;
-    }
-
-    public static String getLobbyWorld() {
-        return lobbyWorld;
-    }
-
-    /**
-     * Get remote database.
-     */
-    public static IDatabase getRemoteDatabase() {
-        return remoteDatabase;
-    }
-
-    /**
-     * Get redis connection.
-     */
-    public static RedisConnection getRedisConnection() {
-        return redisConnection;
-    }
-
-    public static StatsManager getStatsManager() {
-        return statsManager;
-    }
-
-    public static UpgradesManager getUpgradeManager() {
-        return upgradesManager;
-    }
-
-    public static com.tomkeuper.bedwars.api.BedWars getAPI() {
-        return api;
-    }
-
     /**
      * Try loading custom adapter support.
      *
@@ -995,7 +1018,7 @@ public class BedWars extends JavaPlugin {
      */
     private boolean handleWorldAdapter() { //todo fix version check because current check is limited
         String adapterPath;
-        if (nms.getVersion() <= 12){
+        if (nms.getVersion() <= 12) {
             Plugin swmPlugin = Bukkit.getPluginManager().getPlugin("SlimeWorldManager");
 
             if (null == swmPlugin) {
@@ -1023,7 +1046,7 @@ public class BedWars extends JavaPlugin {
                 return false;
             }
         } else {
-            if (Bukkit.getServer().getName().equalsIgnoreCase("AdvancedSlimePaper")){
+            if (Bukkit.getServer().getName().equalsIgnoreCase("AdvancedSlimePaper")) {
                 adapterPath = "com.tomkeuper.bedwars.arena.mapreset.slime.AdvancedSlimePaperAdapter";
             } else {
                 this.getLogger().warning("Não foi possível encontrar o caminho do adaptador para a versão do ASP, ela não é suportada?");
@@ -1046,27 +1069,10 @@ public class BedWars extends JavaPlugin {
         return false;
     }
 
-    public static boolean isShuttingDown() {
-        return shuttingDown;
-    }
-
-    public static void setPartyManager(Party partyManager) {
-        BedWars.partyManager = partyManager;
-    }
-
-    public static void setEconomy(IEconomy economy) {
-        BedWars.economy = economy;
-    }
-
     @Override
     public ChunkGenerator getDefaultWorldGenerator(String worldName, String id) {
         return new VoidChunkGenerator();
     }
-
-    public static void setRemoteDatabase(IDatabase database) {
-        remoteDatabase = database;
-    }
-
 
     private boolean checkTABVersion(String version) {
         String targetVersion = "5.0.0";
@@ -1097,18 +1103,6 @@ public class BedWars extends JavaPlugin {
         int targetPatch = Integer.parseInt(targetParts[2]);
 
         return currentPatch >= targetPatch;
-    }
-
-    public static Collection<IPermanentItem> getLobbyItems() {
-        return lobbyItems;
-    }
-
-    public static Collection<IPermanentItem> getSpectatorItems() {
-        return spectatorItems;
-    }
-
-    public static Collection<IPermanentItem> getPreGameItems() {
-        return preGameItems;
     }
 
     private void loadPreGameItems() {
@@ -1275,14 +1269,6 @@ public class BedWars extends JavaPlugin {
         return valid;
     }
 
-    public static boolean registerItemHandler(IPermanentItemHandler handler) {
-        if (itemHandlers.containsKey(handler.getId())) {
-            return false;
-        }
-        itemHandlers.put(handler.getId(), handler);
-        return true;
-    }
-
     private void registerItemHandlers(IPermanentItemHandler... handlers) {
         for (IPermanentItemHandler handler : handlers) {
             if (registerItemHandler(handler)) {
@@ -1291,10 +1277,6 @@ public class BedWars extends JavaPlugin {
                 getLogger().warning("Não foi possível registrar o handler de item: " + handler.getId());
             }
         }
-    }
-
-    public static Map<String, IPermanentItemHandler> getItemHandlers() {
-        return itemHandlers;
     }
 
     public BukkitAudiences adventure() {

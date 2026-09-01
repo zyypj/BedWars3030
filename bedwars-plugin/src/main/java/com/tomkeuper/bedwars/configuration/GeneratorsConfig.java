@@ -11,7 +11,7 @@ public class GeneratorsConfig extends ConfigManager {
         super(plugin, name, dir);
 
         YamlConfiguration yml = getYml();
-        yml.options().header(plugin.getDescription().getName() + " by MrCeasar." +
+        yml.options().header(plugin.getDescription().getName() + " modificado por: tadeu (@zyypj)." +
                 "\nDocumentação do generators.yml: https://wiki.tomkeuper.com/docs/BedWars2023/configuration/generators-configuration\n\nOs delays podem ser incrementados em passos de um quarto de segundo (ex.: 1.25/1.5/1.75)\n");
         yml.addDefault("Default." + ConfigPath.GENERATOR_IRON_DELAY, 2.0);
         yml.addDefault("Default." + ConfigPath.GENERATOR_IRON_AMOUNT, 2);
