@@ -1,4 +1,4 @@
-![Bedwars2023_Logo](https://github.com/zyypj/BedWars3030/assets/29728836/5979c0e8-1333-40a5-b43c-49ceabd06a57)
+<img width="1672" height="941" alt="bw3030-logo" src="https://github.com/user-attachments/assets/e88236af-07bf-41a8-9dbb-f5385e84e51c" />
 
 [![Discord](https://discordapp.com/api/guilds/760851292826107926/widget.png?style=shield)](https://discord.gg/kPaBGwhmjf) [![bStats](https://img.shields.io/bstats/servers/18317)](#)
 
