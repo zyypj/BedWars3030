@@ -1,23 +1,3 @@
-/*
- * BedWars2023 - A bed wars mini-game.
- * Copyright (C) 2024 Tomas Keuper
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <https://www.gnu.org/licenses/>.
- *
- * Contact e-mail: contact@fyreblox.com
- */
-
 package com.tomkeuper.bedwars.language;
 
 import com.tomkeuper.bedwars.BedWars;
@@ -40,19 +20,19 @@ public class Portuguese extends Language {
         yml.addDefault(Messages.PREFIX, "");
         yml.addDefault("name", "Português");
 
-        yml.addDefault(Messages.FORMATTING_SIDEBAR_TAB_HEADER_LOBBY, "&6%bw_server_ip%");
-        yml.addDefault(Messages.FORMATTING_SIDEBAR_TAB_HEADER_WAITING, "&a%bw_server_ip%");
-        yml.addDefault(Messages.FORMATTING_SIDEBAR_TAB_HEADER_STARTING, "&6%bw_server_ip%");
-        yml.addDefault(Messages.FORMATTING_SIDEBAR_TAB_HEADER_PLAYING, "&d%bw_server_ip%");
-        yml.addDefault(Messages.FORMATTING_SIDEBAR_TAB_HEADER_RESTARTING, "&c%bw_server_ip%");
-        yml.addDefault(Messages.FORMATTING_SIDEBAR_TAB_HEADER_SPECTATOR, "&9%bw_server_ip%");
+        yml.addDefault(Messages.FORMATTING_SIDEBAR_TAB_HEADER_LOBBY, Arrays.asList("", "&b&lServidorMC", "&f%bw_server_ip%", ""));
+        yml.addDefault(Messages.FORMATTING_SIDEBAR_TAB_HEADER_WAITING, Arrays.asList("", "&b&lServidorMC", "&f%bw_server_ip%", ""));
+        yml.addDefault(Messages.FORMATTING_SIDEBAR_TAB_HEADER_STARTING, Arrays.asList("", "&b&lServidorMC", "&f%bw_server_ip%", ""));
+        yml.addDefault(Messages.FORMATTING_SIDEBAR_TAB_HEADER_PLAYING, Arrays.asList("", "&b&lServidorMC", "&f%bw_server_ip%", ""));
+        yml.addDefault(Messages.FORMATTING_SIDEBAR_TAB_HEADER_RESTARTING, Arrays.asList("", "&b&lServidorMC", "&f%bw_server_ip%", ""));
+        yml.addDefault(Messages.FORMATTING_SIDEBAR_TAB_HEADER_SPECTATOR, Arrays.asList("", "&b&lServidorMC", "&f%bw_server_ip%", ""));
 
-        yml.addDefault(Messages.FORMATTING_SIDEBAR_TAB_FOOTER_LOBBY, "&6%bw_server_ip%");
-        yml.addDefault(Messages.FORMATTING_SIDEBAR_TAB_FOOTER_WAITING, "&a%bw_server_ip%");
-        yml.addDefault(Messages.FORMATTING_SIDEBAR_TAB_FOOTER_STARTING, "&6%bw_server_ip%");
-        yml.addDefault(Messages.FORMATTING_SIDEBAR_TAB_FOOTER_PLAYING, "&d%bw_server_ip%");
-        yml.addDefault(Messages.FORMATTING_SIDEBAR_TAB_FOOTER_RESTARTING, "&c%bw_server_ip%");
-        yml.addDefault(Messages.FORMATTING_SIDEBAR_TAB_FOOTER_SPECTATOR, "&9%bw_server_ip%");
+        yml.addDefault(Messages.FORMATTING_SIDEBAR_TAB_FOOTER_LOBBY, Arrays.asList("", "&bDiscord: &fdiscord.%bw_server_ip%", "&bLoja: &f%loja.bw_server_ip%", ""));
+        yml.addDefault(Messages.FORMATTING_SIDEBAR_TAB_FOOTER_WAITING, Arrays.asList("", "&bDiscord: &fdiscord.%bw_server_ip%", "&bLoja: &f%loja.bw_server_ip%", ""));
+        yml.addDefault(Messages.FORMATTING_SIDEBAR_TAB_FOOTER_STARTING, Arrays.asList("", "&bDiscord: &fdiscord.%bw_server_ip%", "&bLoja: &f%loja.bw_server_ip%", ""));
+        yml.addDefault(Messages.FORMATTING_SIDEBAR_TAB_FOOTER_PLAYING, Arrays.asList("", "&bDiscord: &fdiscord.%bw_server_ip%", "&bLoja: &f%loja.bw_server_ip%", ""));
+        yml.addDefault(Messages.FORMATTING_SIDEBAR_TAB_FOOTER_RESTARTING, Arrays.asList("", "&bDiscord: &fdiscord.%bw_server_ip%", "&bLoja: &f%loja.bw_server_ip%", ""));
+        yml.addDefault(Messages.FORMATTING_SIDEBAR_TAB_FOOTER_SPECTATOR, Arrays.asList("", "&bDiscord: &fdiscord.%bw_server_ip%", "&bLoja: &f%loja.bw_server_ip%", ""));
 
         yml.addDefault(Messages.COMMAND_MAIN, Arrays.asList("", "&2▪ &7/" + BedWars.mainCmd + " stats", "&2▪ &7/entrar &o<arena/grupo>", "&2▪ &7/" + BedWars.mainCmd + " leave", "&2▪ &7/" + BedWars.mainCmd + " lang", "&2▪ &7/" + BedWars.mainCmd + " gui", "&2▪ &7/iniciar &3(vip)"));
         yml.addDefault(Messages.COMMAND_LANG_LIST_HEADER, "%bw_lang_prefix% &2Idiomas disponíveis:");

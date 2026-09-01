@@ -1,23 +1,3 @@
-/*
- * BedWars2023 - A bed wars mini-game.
- * Copyright (C) 2024 Tomas Keuper
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <https://www.gnu.org/licenses/>.
- *
- * Contact e-mail: contact@fyreblox.com
- */
-
 package com.tomkeuper.bedwars.configuration;
 
 import com.tomkeuper.bedwars.BedWars;
@@ -43,26 +23,26 @@ public class MainConfig extends ConfigManager {
 
         YamlConfiguration yml = getYml();
 
-        yml.options().header(plugin.getDescription().getName() + " by Mr. Ceasar.\n" +
+        yml.options().header(plugin.getDescription().getName() + " modificado por: tadeu (@zyypj).\n" +
                 "Documentação aqui: https://wiki.tomkeuper.com/docs/BedWars2023\n");
         yml.addDefault(ConfigPath.GENERAL_CONFIGURATION_AUTO_SCALE_ENABLED, true);
         yml.addDefault(ConfigPath.GENERAL_CONFIGURATION_AUTO_SCALE_MAX_PER_ARENA, 3);
         yml.addDefault(ConfigPath.GENERAL_CONFIGURATION_AUTO_SCALE_MAX_TOTAL, 10);
         yml.addDefault(ConfigPath.GENERAL_CONFIGURATION_AUTO_SCALE_TOP_UP_INTERVAL, 30);
-        yml.addDefault("timeZone", "Europe/Rome");
+        yml.addDefault("timeZone", "America/Sao_Paulo");
         yml.addDefault("serverType", "MULTIARENA");
-        yml.addDefault("language", "en");
-        yml.addDefault(ConfigPath.GENERAL_CONFIGURATION_DISABLED_LANGUAGES, Collections.singletonList("coloque aqui o iso do seu idioma"));
-        yml.addDefault("storeLink", "https://example.com/");
-        yml.addDefault(ConfigPath.GENERAL_CONFIGURATION_ENABLE_HALLOWEEN, true);
+        yml.addDefault("language", "pt");
+        yml.addDefault(ConfigPath.GENERAL_CONFIGURATION_DISABLED_LANGUAGES, Arrays.asList("bd", "en", "fr", "hi", "id", "it", "fa", "ro", "ru", "zh_cn", "es", "tr"));
+        yml.addDefault("storeLink", "https://loja.servidor.com.br/");
+        yml.addDefault(ConfigPath.GENERAL_CONFIGURATION_ENABLE_HALLOWEEN, false);
         yml.addDefault(ConfigPath.GENERAL_CONFIGURATION_GOLDEN_GG_ENABLED, true);
         yml.addDefault(ConfigPath.GENERAL_CONFIGURATION_GOLDEN_GG_COLOR, "GOLD");
-        yml.addDefault(ConfigPath.GENERAL_CONFIGURATION_AUTO_GG_ENABLED, true);
+        yml.addDefault(ConfigPath.GENERAL_CONFIGURATION_AUTO_GG_ENABLED, false);
         yml.addDefault(ConfigPath.GENERAL_CONFIGURATION_AUTO_GG_TEXT, "FORMATTING_CHAT_TEAM");
         yml.addDefault(ConfigPath.GENERAL_CONFIGURATION_ENABLE_ANTI_DROP, true);
         yml.addDefault(ConfigPath.GENERAL_CONFIGURATION_HOLOGRAM_UPDATE_DISTANCE, 50);
-        yml.addDefault(ConfigPath.GENERAL_CONFIGURATION_ENABLE_TEAMMATE_TRACKING_ACTION_BAR, false);
-        yml.addDefault(ConfigPath.GENERAL_CONFIGURATION_RESOURCE_CHEST_ENABLED, false);
+        yml.addDefault(ConfigPath.GENERAL_CONFIGURATION_ENABLE_TEAMMATE_TRACKING_ACTION_BAR, true);
+        yml.addDefault(ConfigPath.GENERAL_CONFIGURATION_RESOURCE_CHEST_ENABLED, true);
         yml.addDefault(ConfigPath.GENERAL_CONFIGURATION_RESOURCE_CHEST_BLOCKED, Arrays.asList(BedWars.getForCurrentVersion("WOOD_SWORD", "WOODEN_SWORD", "WOODEN_SWORD"), "SHEARS", "COMPASS"));
         yml.addDefault(ConfigPath.GENERAL_CHAT_GLOBAL, yml.get("globalChat", false));
         yml.addDefault(ConfigPath.GENERAL_CHAT_FORMATTING, yml.get("formatChat", true));
@@ -77,13 +57,13 @@ public class MainConfig extends ConfigManager {
         yml.addDefault(ConfigPath.SB_CONFIG_SIDEBAR_NAME_FORMATTING_ENABLED, true);
         yml.addDefault(ConfigPath.SB_CONFIG_SIDEBAR_USE_LOBBY_SIDEBAR, true);
         yml.addDefault(ConfigPath.SB_CONFIG_SIDEBAR_USE_GAME_SIDEBAR, true);
-        yml.addDefault(ConfigPath.SB_CONFIG_SIDEBAR_TITLE_REFRESH_INTERVAL, 200);
-        yml.addDefault(ConfigPath.SB_CONFIG_SIDEBAR_PLACEHOLDERS_REFRESH_INTERVAL, 200);
-        yml.addDefault(ConfigPath.SB_CONFIG_SIDEBAR_PREFIX_REFRESH_INTERVAL, 8000);
-        yml.addDefault(ConfigPath.SB_CONFIG_SIDEBAR_SUFFIX_REFRESH_INTERVAL, 100);
-        yml.addDefault(ConfigPath.SB_CONFIG_SIDEBAR_LIST_FORMAT_LOBBY, false);
-        yml.addDefault(ConfigPath.SB_CONFIG_SIDEBAR_LIST_FORMAT_WAITING, false);
-        yml.addDefault(ConfigPath.SB_CONFIG_SIDEBAR_LIST_FORMAT_STARTING, false);
+        yml.addDefault(ConfigPath.SB_CONFIG_SIDEBAR_TITLE_REFRESH_INTERVAL, 100);
+        yml.addDefault(ConfigPath.SB_CONFIG_SIDEBAR_PLACEHOLDERS_REFRESH_INTERVAL, 150);
+        yml.addDefault(ConfigPath.SB_CONFIG_SIDEBAR_PREFIX_REFRESH_INTERVAL, 200);
+        yml.addDefault(ConfigPath.SB_CONFIG_SIDEBAR_SUFFIX_REFRESH_INTERVAL, 400);
+        yml.addDefault(ConfigPath.SB_CONFIG_SIDEBAR_LIST_FORMAT_LOBBY, true);
+        yml.addDefault(ConfigPath.SB_CONFIG_SIDEBAR_LIST_FORMAT_WAITING, true);
+        yml.addDefault(ConfigPath.SB_CONFIG_SIDEBAR_LIST_FORMAT_STARTING, true);
         yml.addDefault(ConfigPath.SB_CONFIG_SIDEBAR_LIST_FORMAT_PLAYING, true);
         yml.addDefault(ConfigPath.SB_CONFIG_SIDEBAR_LIST_FORMAT_RESTARTING, true);
         yml.addDefault(ConfigPath.GENERAL_CONFIGURATION_REJOIN_TIME, 60 * 5);
@@ -101,17 +81,17 @@ public class MainConfig extends ConfigManager {
         yml.addDefault(ConfigPath.GENERAL_CONFIGURATION_BUNGEE_OPTION_SERVER_ID, "bw1");
         yml.addDefault(ConfigPath.GENERAL_CONFIGURATION_BUNGEE_OPTION_BWP_TIME_OUT, 5000);
         yml.addDefault(ConfigPath.GENERAL_CONFIGURATION_BUNGEE_OPTION_CLOUDNET_SUPPORT, false);
-        yml.addDefault(ConfigPath.GENERAL_CONFIGURATION_START_COUNTDOWN_REGULAR, 40);
+        yml.addDefault(ConfigPath.GENERAL_CONFIGURATION_START_COUNTDOWN_REGULAR, 25);
         yml.addDefault(ConfigPath.GENERAL_CONFIGURATION_START_COUNTDOWN_HALF, 25);
         yml.addDefault(ConfigPath.GENERAL_CONFIGURATION_START_COUNTDOWN_SHORTENED, 5);
         yml.addDefault(ConfigPath.GENERAL_CONFIGURATION_RESTART, 15);
         yml.addDefault(ConfigPath.GENERAL_CONFIGURATION_RE_SPAWN_COUNTDOWN, 5);
-        yml.addDefault(ConfigPath.GENERAL_CONFIGURATION_REJOIN_RE_SPAWN_COUNTDOWN, 10);
+        yml.addDefault(ConfigPath.GENERAL_CONFIGURATION_REJOIN_RE_SPAWN_COUNTDOWN, 5);
         yml.addDefault(ConfigPath.GENERAL_CONFIGURATION_BEDS_DESTROY_COUNTDOWN, 360);
         yml.addDefault(ConfigPath.GENERAL_CONFIGURATION_DRAGON_SPAWN_COUNTDOWN, 600);
         yml.addDefault(ConfigPath.GENERAL_CONFIGURATION_GAME_END_COUNTDOWN, 120);
         yml.addDefault(ConfigPath.GENERAL_CONFIGURATION_SHOUT_COOLDOWN, 30);
-        yml.addDefault(ConfigPath.GENERAL_CONFIG_PLACEHOLDERS_REPLACEMENTS_SERVER_IP, "yourServer.Com");
+        yml.addDefault(ConfigPath.GENERAL_CONFIG_PLACEHOLDERS_REPLACEMENTS_SERVER_IP, "servidor.com.br");
 
         yml.addDefault(ConfigPath.GENERAL_CONFIGURATION_HUNGER_WAITING, false);
         yml.addDefault(ConfigPath.GENERAL_CONFIGURATION_HUNGER_INGAME, false);
@@ -120,7 +100,7 @@ public class MainConfig extends ConfigManager {
 
         //heal pool category
         yml.addDefault(ConfigPath.GENERAL_CONFIGURATION_HEAL_POOL_ENABLE, true);
-        yml.addDefault(ConfigPath.GENERAL_CONFIGURATION_HEAL_POOL_SEEN_TEAM_ONLY, true);
+        yml.addDefault(ConfigPath.GENERAL_CONFIGURATION_HEAL_POOL_SEEN_TEAM_ONLY, false);
 
         // tnt jump category
         yml.addDefault(ConfigPath.GENERAL_TNT_JUMP_STRENGTH_REDUCTION, 5);
@@ -247,7 +227,7 @@ public class MainConfig extends ConfigManager {
         save();
 
         //set default server language
-        String whatLang = "en";
+        String whatLang = "pt";
         File[] langs = new File(plugin.getDataFolder(), "/Languages").listFiles();
         if (langs != null) {
             for (File f : langs) {
@@ -255,10 +235,10 @@ public class MainConfig extends ConfigManager {
                     if (f.getName().contains("messages_") && f.getName().contains(".yml")) {
                         String lang = f.getName().replace("messages_", "").replace(".yml", "");
                         if (lang.equalsIgnoreCase(yml.getString("language"))) {
-                            whatLang = f.getName().replace("messages_", "").replace(".yml", "");
+                            whatLang = lang;
                         }
                         if (Language.getLang(lang) == null) {
-                            BedWars.debug("Loading language: " + lang);
+                            BedWars.debug("Carregando lingua: " + lang);
                             new Language(BedWars.plugin, lang);
                         }
                     }

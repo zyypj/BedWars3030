@@ -1,23 +1,3 @@
-/*
- * BedWars2023 - A bed wars mini-game.
- * Copyright (C) 2024 Tomas Keuper
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <https://www.gnu.org/licenses/>.
- *
- * Contact e-mail: contact@fyreblox.com
- */
-
 package com.tomkeuper.bedwars;
 
 import com.andrei1058.vipfeatures.api.IVipFeatures;
@@ -82,6 +62,10 @@ import com.tomkeuper.bedwars.listeners.blockstatus.BlockStatusListener;
 import com.tomkeuper.bedwars.listeners.chat.ChatAFK;
 import com.tomkeuper.bedwars.listeners.chat.ChatFormatting;
 import com.tomkeuper.bedwars.listeners.joinhandler.*;
+import com.tomkeuper.bedwars.commands.mapselector.MapSelectorCommand;
+import com.tomkeuper.bedwars.mapselector.MapSelectorCache;
+import com.tomkeuper.bedwars.mapselector.MapSelectorConfig;
+import com.tomkeuper.bedwars.mapselector.menu.MapSelectorListener;
 import com.tomkeuper.bedwars.connectionmanager.LoadedUsersCleaner;
 import com.tomkeuper.bedwars.connectionmanager.redis.RedisArenaListeners;
 import com.tomkeuper.bedwars.connectionmanager.redis.RedisConnection;
@@ -147,6 +131,8 @@ public class BedWars extends JavaPlugin {
     public static int hologramUpdateDistance = 50; // DEFAULT DISTANCE (update distance measured in blocks)
     public static String mainCmd = "bw", link = "https://polymart.org/resource/bedwars2023.5702";
     public static ConfigManager signs, generators;
+    private static MapSelectorConfig mapSelectorConfig;
+    private static MapSelectorCache mapSelectorCache;
     public static MainConfig config;
     public static ShopManager shop;
     private static UpgradesManager upgradesManager;
@@ -301,6 +287,10 @@ public class BedWars extends JavaPlugin {
         hologramUpdateDistance = config.getInt(ConfigPath.GENERAL_CONFIGURATION_HOLOGRAM_UPDATE_DISTANCE);
 
         generators = new GeneratorsConfig(this, "generators", this.getDataFolder().getPath());
+
+        /* /bwmenu map selector */
+        mapSelectorConfig = new MapSelectorConfig(this, "map-selector", this.getDataFolder().getPath());
+        mapSelectorCache = new MapSelectorCache(this, "map-selector-cache", this.getDataFolder().getPath());
         // Initialize signs config after the main config
         if (getServerType() != ServerType.BUNGEE) {
             signs = new SignsConfig(this, "signs", this.getDataFolder().getPath());
@@ -385,7 +375,8 @@ public class BedWars extends JavaPlugin {
 
         // Register events
         registerEvents(new EnderPearlLanded(), new QuitAndTeleportListener(), new BreakPlace(), new DamageDeathMove(), new Inventory(), new Interact(), new RefreshGUI(), new HungerWeatherSpawn(), new CmdProcess(),
-                new FireballListener(), new EggBridge(), new SpectatorListeners(), new BaseListener(), new TargetListener(), new LangListener(), new Warnings(this), new ChatAFK(), new GameEndListener());
+                new FireballListener(), new EggBridge(), new SpectatorListeners(), new BaseListener(), new TargetListener(), new LangListener(), new Warnings(this), new ChatAFK(), new GameEndListener(),
+                new MapSelectorListener());
 
         if (config.getBoolean(ConfigPath.GENERAL_CONFIGURATION_HEAL_POOL_ENABLE)) {
             registerEvents(new HealPoolListener());
@@ -765,6 +756,7 @@ public class BedWars extends JavaPlugin {
             Bukkit.getLogger().info("Registrando o comando /party..");
             nms.registerCommand("party", new PartyCommand("party"));
         }
+        registerShortcut("bwmenu", Collections.singletonList("bedwarsmenu"), MapSelectorCommand::new);
         registerShortcut("iniciar", Collections.singletonList("start"), StartCommand::new);
         registerShortcut("entrar", Arrays.asList("join", "jogar"), JoinCommand::new);
     }
@@ -936,6 +928,20 @@ public class BedWars extends JavaPlugin {
 
     public static ConfigManager getGeneratorsCfg() {
         return generators;
+    }
+
+    /**
+     * Configuration of the /bwmenu map selector.
+     */
+    public static MapSelectorConfig getMapSelectorConfig() {
+        return mapSelectorConfig;
+    }
+
+    /**
+     * Favourite maps and per map join counts of the /bwmenu map selector.
+     */
+    public static MapSelectorCache getMapSelectorCache() {
+        return mapSelectorCache;
     }
 
     public static void setLobbyWorld(String lobbyWorld) {
