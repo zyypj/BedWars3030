@@ -24,6 +24,7 @@ import org.bukkit.util.Vector;
 import org.jetbrains.annotations.Nullable;
 
 import javax.annotation.Nonnull;
+import java.lang.reflect.Method;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
@@ -728,4 +729,27 @@ public abstract class VersionSupport {
      * @return The absorption health of the player.
      */
     public abstract float getAbsorption(Player player);
+
+    private static Method playerListHeaderFooterMethod;
+    private static boolean playerListHeaderFooterLookedUp;
+
+    public void setTabListName(Player player, String name) {
+        player.setPlayerListName(name);
+    }
+
+    public void setTabHeaderFooter(Player player, String header, String footer) {
+        if (!playerListHeaderFooterLookedUp) {
+            playerListHeaderFooterLookedUp = true;
+            try {
+                playerListHeaderFooterMethod = Player.class.getMethod("setPlayerListHeaderFooter", String.class, String.class);
+            } catch (NoSuchMethodException unsupportedOnLegacy) {
+                playerListHeaderFooterMethod = null;
+            }
+        }
+        if (playerListHeaderFooterMethod == null) return;
+        try {
+            playerListHeaderFooterMethod.invoke(player, header, footer);
+        } catch (ReflectiveOperationException ignored) {
+        }
+    }
 }
