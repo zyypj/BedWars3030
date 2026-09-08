@@ -10,7 +10,6 @@ dependencies {
     }
     compileOnly 'com.iridium:IridiumColorAPI:1.0.11'
     compileOnly 'org.apache.commons:commons-lang3:3.14.0' // Used by IridiumColorAPI
-    compileOnly 'com.github.NEZNAMY:TAB-API:5.0.7'
     compileOnly 'net.kyori:adventure-api:4.17.0'
     compileOnly 'net.kyori:adventure-text-minimessage:4.17.0'
 }
@@ -25,7 +24,6 @@ repositories {
     mavenLocal()
     maven { url = uri('https://repo.papermc.io/repository/maven-public/') } // bungeecord-chat (dep of spigot-api)
     maven { url = uri('https://nexus.iridiumdevelopment.net/repository/maven-releases/') } // IridiumColorAPI
-    maven { url = uri('https://jitpack.io') } // TAB
     maven { url = uri('https://repo.codemc.io/repository/nms/') } // Spigot
 }
 

@@ -65,7 +65,6 @@ dependencies {
     }
     compileOnly 'org.spigotmc:spigot:1.8.8-R0.1-SNAPSHOT'
     compileOnly 'me.clip:placeholderapi:2.11.6'
-    compileOnly 'com.github.NEZNAMY:TAB-API:5.0.7'
     compileOnly 'de.dytanic.cloudnet:cloudnet-wrapper-jvm:3.4.5-RELEASE'
     slim 'redis.clients:jedis:5.0.2'
     slim 'com.flowpowered:flow-nbt:2.0.2'
@@ -85,7 +84,6 @@ bukkit {
     version = "${project.version}"
 
     load = 'STARTUP'
-    depend = ['TAB']
     softDepend = [
             'Vault',
             'PlaceholderAPI',
