@@ -281,6 +281,10 @@ public class MainConfig extends ConfigManager {
             }
         }
 
+        if (BedWars.getServerType() != ServerType.BUNGEE) {
+            BedWars.setAutoscale(yml.getBoolean(ConfigPath.GENERAL_CONFIGURATION_AUTO_SCALE_ENABLED));
+        }
+
         BedWars.setLobbyWorld(getLobbyWorldName());
     }
 

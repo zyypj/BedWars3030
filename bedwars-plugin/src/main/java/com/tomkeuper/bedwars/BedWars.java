@@ -202,7 +202,7 @@ public class BedWars extends JavaPlugin {
         BedWars.serverType = serverType;
         // bungee has always required auto scale to work; the other modes opt in through the config
         autoscale = serverType == ServerType.BUNGEE
-                || config.getBoolean(ConfigPath.GENERAL_CONFIGURATION_AUTO_SCALE_ENABLED);
+                || (config != null && config.getBoolean(ConfigPath.GENERAL_CONFIGURATION_AUTO_SCALE_ENABLED));
     }
 
     public static Party getPartyManager() {
