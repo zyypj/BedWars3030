@@ -19,6 +19,8 @@ import java.util.*;
 
 public class MainConfig extends ConfigManager {
 
+    private static final int STATS_LAYOUT_VERSION = 2;
+
     public MainConfig(Plugin plugin, String name) {
         super(plugin, name, BedWars.plugin.getDataFolder().getPath());
 
@@ -206,11 +208,13 @@ public class MainConfig extends ConfigManager {
 
         /* default stats GUI items */
         yml.addDefault(ConfigPath.GENERAL_CONFIGURATION_STATS_GUI_SIZE, 45);
-        if (yml.get(ConfigPath.GENERAL_CONFIGURATION_STATS_PATH + ".geral") == null) {
+        if (yml.getInt(ConfigPath.GENERAL_CONFIGURATION_STATS_LAYOUT_VERSION) < STATS_LAYOUT_VERSION) {
             yml.set(ConfigPath.GENERAL_CONFIGURATION_STATS_PATH, null);
             yml.set(ConfigPath.GENERAL_CONFIGURATION_STATS_GUI_SIZE, 45);
+            yml.set(ConfigPath.GENERAL_CONFIGURATION_STATS_LAYOUT_VERSION, STATS_LAYOUT_VERSION);
 
             Material bed = Material.valueOf(BedWars.getForCurrentVersion("BED", "BED", "RED_BED"));
+            Misc.addDefaultStatsItem(yml, 4, Material.PAPER, 0, "geral", 1);
             Misc.addDefaultStatsItem(yml, 10, bed, 0, "solo", 1);
             Misc.addDefaultStatsItem(yml, 12, bed, 0, "duplas", 2);
             Misc.addDefaultStatsItem(yml, 14, bed, 0, "trios", 3);
@@ -219,7 +223,6 @@ public class MainConfig extends ConfigManager {
             Misc.addDefaultStatsItem(yml, 30, bed, 0, "2v2", 2);
             Misc.addDefaultStatsItem(yml, 32, bed, 0, "3v3", 3);
             Misc.addDefaultStatsItem(yml, 34, bed, 0, "4v4", 4);
-            Misc.addDefaultStatsItem(yml, 40, Material.PAPER, 0, "geral", 1);
         }
 
         yml.addDefault(ConfigPath.GENERAL_CONFIGURATION_DEFAULT_ITEMS + ".Default", Collections.singletonList(BedWars.getForCurrentVersion("WOOD_SWORD", "WOOD_SWORD", "WOODEN_SWORD")));
