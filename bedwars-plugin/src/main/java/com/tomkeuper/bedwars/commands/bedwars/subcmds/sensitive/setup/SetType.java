@@ -5,6 +5,7 @@ import com.tomkeuper.bedwars.api.command.ParentCommand;
 import com.tomkeuper.bedwars.api.command.SubCommand;
 import com.tomkeuper.bedwars.api.configuration.ConfigPath;
 import com.tomkeuper.bedwars.api.server.SetupType;
+import com.tomkeuper.bedwars.arena.ArenaMode;
 import com.tomkeuper.bedwars.arena.Misc;
 import com.tomkeuper.bedwars.arena.SetupSession;
 import com.tomkeuper.bedwars.configuration.Permissions;
@@ -14,7 +15,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 
-import java.util.Arrays;
 import java.util.List;
 
 public class SetType extends SubCommand {
@@ -25,7 +25,7 @@ public class SetType extends SubCommand {
         setPermission(Permissions.PERMISSION_SETUP_ARENA);
     }
 
-    private static final List<String> available = Arrays.asList("Solo", "Doubles", "3v3v3v3", "4v4v4v4");
+    private static final List<String> available = ArenaMode.getGroups();
 
     @Override
     public boolean execute(String[] args, CommandSender s) {
@@ -43,23 +43,22 @@ public class SetType extends SubCommand {
                 sendUsage(p);
                 return true;
             }
+            ArenaMode mode = ArenaMode.getByGroup(args[0]);
+            if (mode == null) {
+                sendUsage(p);
+                return true;
+            }
             List<String> groups = BedWars.config.getYml().getStringList(ConfigPath.GENERAL_CONFIGURATION_ARENA_GROUPS);
-            String input = args[0].substring(0, 1).toUpperCase() + args[0].substring(1).toLowerCase();
+            String input = mode.getGroup();
             if (!groups.contains(input)) {
                 groups.add(input);
                 BedWars.config.set(ConfigPath.GENERAL_CONFIGURATION_ARENA_GROUPS, groups);
             }
-            if (input.equals("Solo")) {
-                ss.getConfig().set("maxInTeam", 1);
-            } else if (input.equalsIgnoreCase("Doubles")) {
-                ss.getConfig().set("maxInTeam", 2);
-            } else if (input.equalsIgnoreCase("3v3v3v3")) {
-                ss.getConfig().set("maxInTeam", 3);
-            } else if (input.equalsIgnoreCase("4v4v4v4")) {
-                ss.getConfig().set("maxInTeam", 4);
-            }
+            ss.getConfig().set("maxInTeam", mode.getMaxInTeam());
+            ss.getConfig().set("minPlayers", mode.getMinPlayers());
             ss.getConfig().set("group", input);
             p.sendMessage("§6 ▪ §7Grupo da arena alterado para: §d" + input);
+            p.sendMessage("§6 ▪ §7Máximo por time: §f" + mode.getMaxInTeam() + " §7| Mínimo para começar: §f" + mode.getMinPlayers());
             if (ss.getSetupType() == SetupType.ASSISTED) {
                 Bukkit.dispatchCommand(p, getParent().getName());
             }
