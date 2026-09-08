@@ -77,6 +77,7 @@ import com.tomkeuper.bedwars.shop.ShopCache;
 import com.tomkeuper.bedwars.shop.ShopManager;
 import com.tomkeuper.bedwars.shop.quickbuy.PlayerQuickBuyCache;
 import com.tomkeuper.bedwars.sidebar.BoardManager;
+import com.tomkeuper.bedwars.support.version.common.BossBarSupport;
 import com.tomkeuper.bedwars.stats.StatsManager;
 import com.tomkeuper.bedwars.support.citizens.CitizensListener;
 import com.tomkeuper.bedwars.support.citizens.JoinNPC;
@@ -94,7 +95,6 @@ import com.tomkeuper.bedwars.utils.ItemBuilder;
 import com.tomkeuper.bedwars.utils.SlimLogger;
 import de.dytanic.cloudnet.wrapper.Wrapper;
 import io.github.slimjar.app.builder.ApplicationBuilder;
-import me.neznamy.tab.api.TabAPI;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import org.bstats.bukkit.Metrics;
 import org.bstats.charts.SimplePie;
@@ -792,39 +792,20 @@ public class BedWars extends JavaPlugin {
 
         // Initialize sidebar manager
         Bukkit.getScheduler().runTask(this, () -> {
-            if (Bukkit.getPluginManager().getPlugin("TAB") != null) {
-                getLogger().info("Ativando a integração com o TAB!");
-                if (!checkTABVersion(Bukkit.getPluginManager().getPlugin("TAB").getDescription().getVersion())) {
-                    this.getLogger().severe("Versão do TAB inválida, você está usando a v" + Bukkit.getPluginManager().getPlugin("TAB").getDescription().getVersion() + " mas é necessária a v5.0.0 ou superior!");
-                    Bukkit.getPluginManager().disablePlugin(this);
-                    return;
-                }
-                if (BoardManager.init()) {
-                    getLogger().info("O suporte ao TAB foi carregado");
+            if (BoardManager.init()) {
+                getLogger().info("Sistema de scoreboard interno carregado");
 
-                    /* Drop game worlds a previous crash left behind before creating new ones. */
-                    arenaManager.cleanupOrphanWorlds();
+                /* Drop game worlds a previous crash left behind before creating new ones. */
+                arenaManager.cleanupOrphanWorlds();
 
-                    /* Load join signs. */
-                    loadArenasAndSigns();
+                /* Load join signs. */
+                loadArenasAndSigns();
 
-                    /* Keep one joinable game per arena, self healing if one fails to load. */
-                    startAutoScaleTopUpTask();
+                /* Keep one joinable game per arena, self healing if one fails to load. */
+                startAutoScaleTopUpTask();
 
-                } else {
-                    this.getLogger().severe("A scoreboard do TAB não está ativada! Aplicando a configuração do TAB automaticamente...");
-
-                    // Execute the command programmatically
-                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "bw applyTabConfig");
-                    getLogger().info("O comando de configuração do TAB foi executado.");
-
-                    this.getLogger().warning("\n\nReiniciando o servidor para aplicar as alterações...\n\n");
-                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "restart");
-
-
-                }
             } else {
-                this.getLogger().severe("Não foi possível integrar com o TAB do NEZNAMY!");
+                this.getLogger().severe("Não foi possível iniciar o sistema de scoreboard interno!");
                 Bukkit.getPluginManager().disablePlugin(this);
             }
         });
@@ -898,12 +879,11 @@ public class BedWars extends JavaPlugin {
             this.getLogger().info("Vault Chat Hook: " + vaultChatLoaded);
             this.getLogger().info("Vault Economy Hook: " + vaultEconomyLoaded);
             this.getLogger().info("");
-            this.getLogger().info("TAB Version: " + Bukkit.getPluginManager().getPlugin("TAB").getDescription().getVersion());
-            this.getLogger().info("TAB Features: ");
-            this.getLogger().info("  - Scoreboard: " + (TabAPI.getInstance().getScoreboardManager() == null));
-            this.getLogger().info("  - BossBar: " + (TabAPI.getInstance().getBossBarManager() == null));
-            this.getLogger().info("  - TablistNameFormatting: " + (TabAPI.getInstance().getTabListFormatManager() == null));
-            this.getLogger().info("  - HeaderFooterFormatting: " + (TabAPI.getInstance().getHeaderFooterManager() == null));
+            this.getLogger().info("Scoreboard: sistema interno (sem dependências)");
+            this.getLogger().info("  - Sidebar do lobby: " + config.getBoolean(ConfigPath.SB_CONFIG_SIDEBAR_USE_LOBBY_SIDEBAR));
+            this.getLogger().info("  - Sidebar de jogo: " + config.getBoolean(ConfigPath.SB_CONFIG_SIDEBAR_USE_GAME_SIDEBAR));
+            this.getLogger().info("  - Formatação da tablist: " + config.getBoolean(ConfigPath.SB_CONFIG_SIDEBAR_NAME_FORMATTING_ENABLED));
+            this.getLogger().info("  - BossBar do dragão: " + BossBarSupport.isSupported(nms.getVersion()));
             this.getLogger().info("");
             this.getLogger().info("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
         }, 80L);
@@ -1074,36 +1054,6 @@ public class BedWars extends JavaPlugin {
         return new VoidChunkGenerator();
     }
 
-    private boolean checkTABVersion(String version) {
-        String targetVersion = "5.0.0";
-
-        String[] currentParts = version.split("\\.");
-        String[] targetParts = targetVersion.split("\\.");
-
-        // Compare major version
-        int currentMajor = Integer.parseInt(currentParts[0]);
-        int targetMajor = Integer.parseInt(targetParts[0]);
-        if (currentMajor < targetMajor) {
-            return false;
-        } else if (currentMajor > targetMajor) {
-            return true;
-        }
-
-        // Compare minor version
-        int currentMinor = Integer.parseInt(currentParts[1]);
-        int targetMinor = Integer.parseInt(targetParts[1]);
-        if (currentMinor < targetMinor) {
-            return false;
-        } else if (currentMinor > targetMinor) {
-            return true;
-        }
-
-        // Compare patch version
-        int currentPatch = Integer.parseInt(currentParts[2]);
-        int targetPatch = Integer.parseInt(targetParts[2]);
-
-        return currentPatch >= targetPatch;
-    }
 
     private void loadPreGameItems() {
         if (config.getYml().get(ConfigPath.GENERAL_CONFIGURATION_PRE_GAME_ITEMS_PATH) == null) return;

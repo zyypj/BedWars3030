@@ -47,17 +47,14 @@ import com.tomkeuper.bedwars.listeners.dropshandler.PlayerDrops;
 import com.tomkeuper.bedwars.money.internal.MoneyPerMinuteTask;
 import com.tomkeuper.bedwars.shop.ShopCache;
 import com.tomkeuper.bedwars.shop.main.ShopIndex;
+import com.tomkeuper.bedwars.api.sidebar.IBossBar;
 import com.tomkeuper.bedwars.sidebar.BoardManager;
+import com.tomkeuper.bedwars.sidebar.DragonBossBar;
+import com.tomkeuper.bedwars.support.version.common.BossBarSupport;
 import com.tomkeuper.bedwars.support.citizens.JoinNPC;
 import com.tomkeuper.bedwars.support.paper.PaperSupport;
 import com.tomkeuper.bedwars.support.papi.SupportPAPI;
 import com.tomkeuper.bedwars.support.vault.WithEconomy;
-import me.neznamy.tab.api.TabAPI;
-import me.neznamy.tab.api.TabPlayer;
-import me.neznamy.tab.api.bossbar.BossBar;
-import me.neznamy.tab.api.placeholder.PlayerPlaceholder;
-import me.neznamy.tab.api.placeholder.ServerPlaceholder;
-import me.neznamy.tab.api.scoreboard.Scoreboard;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.*;
@@ -123,9 +120,8 @@ public class Arena implements IArena {
     private LinkedList<org.bukkit.util.Vector> placed = new LinkedList<>();
     private List<String> nextEvents = new ArrayList<>();
     private List<Region> regionsList = new ArrayList<>();
-    private List<ServerPlaceholder> serverPlaceholders = new ArrayList<>();
-    private List<BossBar> dragonBossbars = new ArrayList<>();
-    private List<Scoreboard> scoreboards = new ArrayList<>();
+    private List<DragonBossBar> dragonBossbars = new ArrayList<>();
+    private List<String> scoreboards = new ArrayList<>();
     private int renderDistance, magicMilkTime = 30;
 
     private final List<Player> leaving = new ArrayList<>();
@@ -1620,7 +1616,7 @@ public class Arena implements IArena {
     @Override
     public void setGroup(String group) {
         this.group = group;
-        scoreboards.forEach(Scoreboard::unregister);
+        BoardManager.getInstance().unregisterScoreboards(scoreboards);
         registerScoreboards();
     }
 
@@ -1744,29 +1740,8 @@ public class Arena implements IArena {
         } else if (status == GameState.restarting) {
             restartingTask = new GameRestartingTask(this);
         }
-        PlayerPlaceholder prefixPlaceholderTab = (PlayerPlaceholder) TabAPI.getInstance().getPlaceholderManager().getPlaceholder("%bw_prefix_tab%");
-        PlayerPlaceholder suffixPlaceholderTab = (PlayerPlaceholder) TabAPI.getInstance().getPlaceholderManager().getPlaceholder("%bw_suffix_tab%");
-        PlayerPlaceholder prefixPlaceholderHead = (PlayerPlaceholder) TabAPI.getInstance().getPlaceholderManager().getPlaceholder("%bw_prefix_head%");
-        PlayerPlaceholder suffixPlaceholderHead = (PlayerPlaceholder) TabAPI.getInstance().getPlaceholderManager().getPlaceholder("%bw_suffix_head%");
-        players.forEach(c -> {
-            BoardManager.getInstance().giveTabFeatures(c, this, false);
-            TabPlayer tabPlayer = TabAPI.getInstance().getPlayer(c.getUniqueId());
-            assert tabPlayer != null;
-            prefixPlaceholderTab.updateValue(tabPlayer, BoardManager.getInstance().getPrefixTab(tabPlayer));
-            suffixPlaceholderTab.updateValue(tabPlayer, BoardManager.getInstance().getSuffixTab(tabPlayer));
-            prefixPlaceholderHead.updateValue(tabPlayer, BoardManager.getInstance().getPrefixHead(tabPlayer));
-            suffixPlaceholderHead.updateValue(tabPlayer, BoardManager.getInstance().getSuffixHead(tabPlayer));
-        });
-
-        spectators.forEach(c -> {
-            BoardManager.getInstance().giveTabFeatures(c, this, false);
-            TabPlayer tabPlayer = TabAPI.getInstance().getPlayer(c.getUniqueId());
-            assert tabPlayer != null;
-            prefixPlaceholderTab.updateValue(tabPlayer, BoardManager.getInstance().getPrefixTab(tabPlayer));
-            suffixPlaceholderTab.updateValue(tabPlayer, BoardManager.getInstance().getSuffixTab(tabPlayer));
-            prefixPlaceholderHead.updateValue(tabPlayer, BoardManager.getInstance().getPrefixHead(tabPlayer));
-            suffixPlaceholderHead.updateValue(tabPlayer, BoardManager.getInstance().getSuffixHead(tabPlayer));
-        });
+        players.forEach(c -> BoardManager.getInstance().giveTabFeatures(c, this, false));
+        spectators.forEach(c -> BoardManager.getInstance().giveTabFeatures(c, this, false));
     }
 
     /**
@@ -2674,16 +2649,13 @@ public class Arena implements IArena {
                 despawnable.destroy();
             }
         }
-        for (ServerPlaceholder placeholder : serverPlaceholders) {
-            TabAPI.getInstance().getPlaceholderManager().unregisterPlaceholder(placeholder);
-        }
-        if (TabAPI.getInstance().getBossBarManager() != null) {
-            for (BossBar bossBar : dragonBossbars) {
-                bossBar.getPlayers().forEach(bossBar::removePlayer);
+        if (dragonBossbars != null) {
+            for (DragonBossBar dragonBossBar : dragonBossbars) {
+                dragonBossBar.remove();
             }
             dragonBossbars = null;
         }
-        scoreboards.forEach(Scoreboard::unregister);
+        BoardManager.getInstance().unregisterScoreboards(scoreboards);
         scoreboards = null;
         ShopManager.shop.clearArenaCache(this);
         removeArenaByName(this);
@@ -2958,8 +2930,20 @@ public class Arena implements IArena {
     }
 
     @Override
-    public List<BossBar> getDragonBossbars() {
-        return dragonBossbars;
+    public List<IBossBar> getDragonBossbars() {
+        List<IBossBar> bossBars = new ArrayList<>();
+        if (dragonBossbars == null) return bossBars;
+        for (DragonBossBar dragonBossBar : dragonBossbars) {
+            bossBars.add(dragonBossBar.getBossBar());
+        }
+        return bossBars;
+    }
+
+    public void refreshDragonBossBars() {
+        if (dragonBossbars == null) return;
+        for (DragonBossBar dragonBossBar : dragonBossbars) {
+            dragonBossBar.refresh();
+        }
     }
 
     public boolean isAllowMapBreak() {
@@ -3006,18 +2990,14 @@ public class Arena implements IArena {
      * Can be used on all versions but will show double bossbars on 1.8 servers as vanilla bossbar is client sided
      */
     public void createTABTeamDragonBossBar(ITeam team, int dragonNumber) {
-        if (TabAPI.getInstance().getBossBarManager() == null) {
-            BedWars.plugin.getLogger().warning("A BossBar está desativada na config do TAB! Ative-a por lá.\n Lembre-se de remover a config padrão ServerInfo se quiser usar as bossbars de dragão");
-            return;
-        }
-        String dragonPlaceholderName = "%bw_" + team.getArena().getWorldName() + "_" + team.getName() + "+" + dragonNumber + "%";
-        ServerPlaceholder dragonPlaceholder = TabAPI.getInstance().getPlaceholderManager().registerServerPlaceholder(dragonPlaceholderName, 500, () -> String.valueOf(team.getDragons().get(dragonNumber).getHealth() / team.getDragons().get(dragonNumber).getMaxHealth() * 100));
-        serverPlaceholders.add(dragonPlaceholder);
+        if (!BossBarSupport.isSupported(BedWars.nms.getVersion())) return;
+        if (dragonBossbars == null) return;
+
         for (Player player : team.getArena().getPlayers()) {
             String name = Language.getMsg(player, Messages.FORMATTING_BOSSBAR_DRAGON).replace("%bw_team%", team.getColor().chat() + team.getName()).replace("%bw_team_color%", String.valueOf(team.getColor().chat())).replace("%bw_team_name%", team.getDisplayName(getPlayerLanguage(player))).replace("%bw_team_letter%", String.valueOf(team.getName().length() != 0 ? team.getName().charAt(0) : ""));
-            BossBar bb = TabAPI.getInstance().getBossBarManager().createBossBar(name, dragonPlaceholderName, String.valueOf(team.getColor()), "PROGRESS");
-            bb.addPlayer(Objects.requireNonNull(TabAPI.getInstance().getPlayer(player.getUniqueId())));
-            dragonBossbars.add(bb);
+            IBossBar bossBar = BossBarSupport.create(BedWars.nms.getVersion(), name, String.valueOf(team.getColor()));
+            bossBar.addPlayer(player);
+            dragonBossbars.add(new DragonBossBar(bossBar, team, dragonNumber));
         }
     }
 

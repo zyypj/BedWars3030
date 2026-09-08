@@ -2,50 +2,48 @@ package com.tomkeuper.bedwars.sidebar;
 
 import com.tomkeuper.bedwars.api.arena.IArena;
 import com.tomkeuper.bedwars.api.events.player.PlayerLeaveArenaEvent;
-import com.tomkeuper.bedwars.arena.Arena;
-import me.neznamy.tab.api.TabAPI;
-import me.neznamy.tab.api.TabPlayer;
-import me.neznamy.tab.api.bossbar.BossBar;
-import me.neznamy.tab.api.placeholder.PlayerPlaceholder;
+import com.tomkeuper.bedwars.api.sidebar.IBossBar;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
-import java.util.Objects;
+import java.util.List;
 
 public class BoardListener implements Listener {
 
     @EventHandler
-    public void onArenaLeave(PlayerLeaveArenaEvent event){
-        IArena arena = Arena.getArenaByPlayer(event.getPlayer());
-        if (TabAPI.getInstance().getPlayer(event.getPlayer().getUniqueId()) == null) return;
-        if (TabAPI.getInstance().getBossBarManager() != null && arena != null){
-            for (BossBar bossBar : arena.getDragonBossbars()){
-                bossBar.removePlayer(Objects.requireNonNull(TabAPI.getInstance().getPlayer(event.getPlayer().getUniqueId())));
+    public void onJoin(PlayerJoinEvent event) {
+        BoardManager manager = BoardManager.getInstance();
+        if (manager == null) return;
+        manager.getOrCreateBoard(event.getPlayer());
+        manager.refreshFormatting();
+    }
+
+    @EventHandler
+    public void onArenaLeave(PlayerLeaveArenaEvent event) {
+        BoardManager manager = BoardManager.getInstance();
+        if (manager == null) return;
+
+        Player player = event.getPlayer();
+        IArena arena = event.getArena();
+        if (arena != null) {
+            List<IBossBar> dragonBossbars = arena.getDragonBossbars();
+            if (dragonBossbars != null) {
+                for (IBossBar bossBar : dragonBossbars) {
+                    bossBar.removePlayer(player);
+                }
             }
         }
 
-        // Force update the prefix and suffix
-        PlayerPlaceholder prefixPlaceholderTab = (PlayerPlaceholder) TabAPI.getInstance().getPlaceholderManager().getPlaceholder("%bw_prefix_tab%");
-        PlayerPlaceholder suffixPlaceholderTab = (PlayerPlaceholder) TabAPI.getInstance().getPlaceholderManager().getPlaceholder("%bw_suffix_tab%");
-        PlayerPlaceholder prefixPlaceholderHead = (PlayerPlaceholder) TabAPI.getInstance().getPlaceholderManager().getPlaceholder("%bw_prefix_head%");
-        PlayerPlaceholder suffixPlaceholderHead = (PlayerPlaceholder) TabAPI.getInstance().getPlaceholderManager().getPlaceholder("%bw_suffix_head%");
-        TabPlayer tabPlayer = TabAPI.getInstance().getPlayer(event.getPlayer().getUniqueId());
-
-        assert tabPlayer != null;
-        prefixPlaceholderTab.updateValue(tabPlayer, BoardManager.getInstance().getPrefixTab(tabPlayer));
-        suffixPlaceholderTab.updateValue(tabPlayer, BoardManager.getInstance().getSuffixTab(tabPlayer));
-        prefixPlaceholderHead.updateValue(tabPlayer, BoardManager.getInstance().getPrefixHead(tabPlayer));
-        suffixPlaceholderHead.updateValue(tabPlayer, BoardManager.getInstance().getSuffixHead(tabPlayer));
+        manager.refreshFormatting(player);
     }
 
     @EventHandler
-    public void onDisconnect(PlayerLeaveArenaEvent event) {
-        BoardManager.getInstance().cleanupPlayer(event.getPlayer());
-    }
-
-    @EventHandler
-    public void onPlayerQuit(PlayerQuitEvent event){
-        BoardManager.getInstance().tabPlayerCache.remove(event.getPlayer().getUniqueId());
+    public void onQuit(PlayerQuitEvent event) {
+        BoardManager manager = BoardManager.getInstance();
+        if (manager == null) return;
+        manager.cleanupPlayer(event.getPlayer());
     }
 }
