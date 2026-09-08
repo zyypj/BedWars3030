@@ -5,6 +5,7 @@ import com.tomkeuper.bedwars.api.configuration.ConfigManager;
 import com.tomkeuper.bedwars.api.configuration.ConfigPath;
 import com.tomkeuper.bedwars.api.language.Language;
 import com.tomkeuper.bedwars.api.server.ServerType;
+import com.tomkeuper.bedwars.arena.ArenaMode;
 import com.tomkeuper.bedwars.arena.Misc;
 import org.apache.logging.log4j.core.config.Loggers;
 import org.bukkit.Bukkit;
@@ -31,6 +32,7 @@ public class MainConfig extends ConfigManager {
         yml.addDefault(ConfigPath.GENERAL_CONFIGURATION_AUTO_SCALE_TOP_UP_INTERVAL, 30);
         yml.addDefault("timeZone", "America/Sao_Paulo");
         yml.addDefault("serverType", "MULTIARENA");
+        yml.addDefault(ConfigPath.GENERAL_CONFIGURATION_ARENA_GROUPS, ArenaMode.getGroups());
         yml.addDefault("language", "pt");
         yml.addDefault(ConfigPath.GENERAL_CONFIGURATION_DISABLED_LANGUAGES, Arrays.asList("bd", "en", "fr", "hi", "id", "it", "fa", "ro", "ru", "zh_cn", "es", "tr"));
         yml.addDefault("storeLink", "https://loja.servidor.com.br/");
