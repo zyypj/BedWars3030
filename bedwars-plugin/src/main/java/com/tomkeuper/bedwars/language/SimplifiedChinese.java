@@ -357,15 +357,6 @@ public class SimplifiedChinese extends Language {
         yml.addDefault(Messages.SCOREBOARD_DEFAULT_PLAYING, Arrays.asList("&e&l起床战争", "&7%bw_date%", "", "&f%bw_next_event% - &a%bw_time%", "",
                 "%bw_team_1%", "%bw_team_2%", "%bw_team_3%", "%bw_team_4%", "%bw_team_5%", "%bw_team_6%", "%bw_team_7%", "%bw_team_8%", "", "&e%bw_server_ip%"));
 
-        yml.addDefault("scoreboard.Doubles.playing", Arrays.asList("&e&l起床战争", "&7%bw_date%", "", "&f%bw_next_event% - &a%bw_time%", "",
-                "%bw_team_1%", "%bw_team_2%", "%bw_team_3%", "%bw_team_4%", "%bw_team_5%", "%bw_team_6%", "%bw_team_7%", "%bw_team_8%", "", "&e%bw_server_ip%"));
-
-        yml.addDefault("scoreboard.3v3v3v3.playing", Arrays.asList("&e&l起床战争", "&7%bw_date%", "", "&f%bw_next_event% - &a%bw_time%", "",
-                "%bw_team_1%", "%bw_team_2%", "%bw_team_3%", "%bw_team_4%", "", "&f击杀：&a%bw_kills%", "&f最终击杀：&a%bw_final_kills%", "&f破坏床：&a%bw_beds%", "", "&e%bw_server_ip%"));
-
-        yml.addDefault("scoreboard.4v4v4v4.playing", Arrays.asList("&e&l起床战争", "&7%bw_date%", "", "&f%bw_next_event% - &a%bw_time%", "",
-                "%bw_team_1%", "%bw_team_2%", "%bw_team_3%", "%bw_team_4%", "", "&f击杀：&a%bw_kills%", "&f最终击杀：&a%bw_final_kills%", "&f破坏床：&a%bw_beds%", "", "&e%bw_server_ip%"));
-
         yml.addDefault(Messages.SCOREBOARD_LOBBY, Arrays.asList("&6&l起床战争,&4&l起&6&l床战争,&6&l起&4&l床&6&l战争,&6&l起床&4&l战&6&l争,&6&l起床战&4&l争,&6&l起床战争",
                 "&f等级：%bw_level%", "", "&f进度：&a%bw_current_xp%&7/&b%bw_required_xp%", "%bw_progress%", "", "&7%bw_player%", "", "&f金币：&a%bw_money%", "", "&f总胜场：&a%bw_wins%", "&f总击杀：&a%bw_kills%", "", "&e%bw_server_ip%"));
 
