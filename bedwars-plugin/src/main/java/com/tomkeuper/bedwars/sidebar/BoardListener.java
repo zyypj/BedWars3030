@@ -1,8 +1,12 @@
 package com.tomkeuper.bedwars.sidebar;
 
+import com.tomkeuper.bedwars.BedWars;
 import com.tomkeuper.bedwars.api.arena.IArena;
 import com.tomkeuper.bedwars.api.events.player.PlayerLeaveArenaEvent;
+import com.tomkeuper.bedwars.api.server.ServerType;
 import com.tomkeuper.bedwars.api.sidebar.IBossBar;
+import com.tomkeuper.bedwars.arena.Arena;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -17,8 +21,21 @@ public class BoardListener implements Listener {
     public void onJoin(PlayerJoinEvent event) {
         BoardManager manager = BoardManager.getInstance();
         if (manager == null) return;
-        manager.getOrCreateBoard(event.getPlayer());
+
+        Player player = event.getPlayer();
+        manager.getOrCreateBoard(player);
         manager.refreshFormatting();
+
+        if (BedWars.getServerType() == ServerType.SHARED
+                && !player.getWorld().getName().equalsIgnoreCase(BedWars.getLobbyWorld())) {
+            return;
+        }
+
+        // Give time for player to be put in arena player list.
+        Bukkit.getScheduler().runTaskLater(BedWars.plugin, () -> {
+            if (!player.isOnline()) return;
+            manager.giveTabFeatures(player, Arena.getArenaByPlayer(player), false);
+        }, 5);
     }
 
     @EventHandler
