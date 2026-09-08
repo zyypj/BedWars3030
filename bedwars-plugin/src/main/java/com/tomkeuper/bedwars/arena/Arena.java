@@ -1,6 +1,5 @@
 package com.tomkeuper.bedwars.arena;
 
-import com.saicone.rtag.util.SkullTexture;
 import com.tomkeuper.bedwars.BedWars;
 import com.tomkeuper.bedwars.api.arena.GameState;
 import com.tomkeuper.bedwars.api.arena.IArena;
@@ -1902,7 +1901,7 @@ public class Arena implements IArena {
             ItemStack item = lobbyItem.getItem();
 
             if (BedWars.nms.isPlayerHead(item.getType().name(), item.getDurability())) {
-                ItemStack head = SkullTexture.getTexturedHead(p.getName());
+                ItemStack head = BedWars.nms.getPlayerHead(p, item);
                 SkullMeta skullMeta = (SkullMeta) head.getItemMeta();
                 ItemMeta origMeta = item.getItemMeta();
                 if (origMeta != null) {
@@ -1946,7 +1945,7 @@ public class Arena implements IArena {
             ItemStack item = preGameItem.getItem();
 
             if (BedWars.nms.isPlayerHead(item.getType().name(), item.getDurability())) {
-                ItemStack head = SkullTexture.getTexturedHead(p.getName());
+                ItemStack head = BedWars.nms.getPlayerHead(p, item);
                 SkullMeta skullMeta = (SkullMeta) head.getItemMeta();
                 ItemMeta origMeta = item.getItemMeta();
                 if (origMeta != null) {
@@ -1990,7 +1989,7 @@ public class Arena implements IArena {
             ItemStack item = spectatorItem.getItem();
 
             if (BedWars.nms.isPlayerHead(item.getType().name(), item.getDurability())) {
-                ItemStack head = SkullTexture.getTexturedHead(p.getName());
+                ItemStack head = BedWars.nms.getPlayerHead(p, item);
                 SkullMeta skullMeta = (SkullMeta) head.getItemMeta();
                 ItemMeta origMeta = item.getItemMeta();
                 if (origMeta != null) {
