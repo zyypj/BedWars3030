@@ -102,6 +102,7 @@ public class ConfigPath {
     public static final String GENERAL_CONFIGURATION_STATS_ITEMS_MATERIAL = GENERAL_CONFIGURATION_STATS_PATH + ".%path%.material";
     public static final String GENERAL_CONFIGURATION_STATS_ITEMS_DATA = GENERAL_CONFIGURATION_STATS_PATH + ".%path%.data";
     public static final String GENERAL_CONFIGURATION_STATS_ITEMS_SLOT = GENERAL_CONFIGURATION_STATS_PATH + ".%path%.slot";
+    public static final String GENERAL_CONFIGURATION_STATS_ITEMS_AMOUNT = GENERAL_CONFIGURATION_STATS_PATH + ".%path%.amount";
 
     public static final String GENERAL_CONFIGURATION_TELEPORTER_PATH = "teleporter-gui";
     public static final String GENERAL_CONFIGURATION_TELEPORTER_SETTINGS_PATH = GENERAL_CONFIGURATION_TELEPORTER_PATH + ".settings";

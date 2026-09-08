@@ -10,6 +10,7 @@ import com.tomkeuper.bedwars.api.exceptions.InvalidMaterialException;
 import com.tomkeuper.bedwars.api.language.Messages;
 import com.tomkeuper.bedwars.api.region.Region;
 import com.tomkeuper.bedwars.api.server.ServerType;
+import com.tomkeuper.bedwars.api.stats.IModeStats;
 import com.tomkeuper.bedwars.api.stats.IPlayerStats;
 import com.tomkeuper.bedwars.configuration.Sounds;
 import com.tomkeuper.bedwars.support.papi.SupportPAPI;
@@ -263,9 +264,14 @@ public class Misc {
      * add default stats gui item
      */
     public static void addDefaultStatsItem(YamlConfiguration yml, int slot, Material itemstack, int data, String path) {
+        addDefaultStatsItem(yml, slot, itemstack, data, path, 1);
+    }
+
+    public static void addDefaultStatsItem(YamlConfiguration yml, int slot, Material itemstack, int data, String path, int amount) {
         yml.addDefault(ConfigPath.GENERAL_CONFIGURATION_STATS_ITEMS_MATERIAL.replace("%path%", path), itemstack.toString());
         yml.addDefault(ConfigPath.GENERAL_CONFIGURATION_STATS_ITEMS_DATA.replace("%path%", path), data);
         yml.addDefault(ConfigPath.GENERAL_CONFIGURATION_STATS_ITEMS_SLOT.replace("%path%", path), slot);
+        yml.addDefault(ConfigPath.GENERAL_CONFIGURATION_STATS_ITEMS_AMOUNT.replace("%path%", path), amount);
     }
 
     /**
@@ -287,6 +293,7 @@ public class Misc {
                 if (ConfigPath.GENERAL_CONFIGURATION_STATS_GUI_SIZE.contains(s)) continue;
                 /* create new itemStack for content */
                 ItemStack i = nms.createItemStack(config.getYml().getString(ConfigPath.GENERAL_CONFIGURATION_STATS_ITEMS_MATERIAL.replace("%path%", s)).toUpperCase(), 1, (short) config.getInt(ConfigPath.GENERAL_CONFIGURATION_STATS_ITEMS_DATA.replace("%path%", s)));
+                i.setAmount(Math.max(1, config.getInt(ConfigPath.GENERAL_CONFIGURATION_STATS_ITEMS_AMOUNT.replace("%path%", s))));
                 ItemMeta im = i.getItemMeta();
                 im.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
                 im.setDisplayName(replaceStatsPlaceholders(p, getMsg(p, Messages.PLAYER_STATS_GUI_PATH + "-" + s + "-name"), true));
@@ -333,8 +340,54 @@ public class Misc {
             s = s.replace("%bw_playername%", player.getName());
         if (s.contains("%bw_prefix%"))
             s = s.replace("%bw_prefix%", BedWars.getChatSupport().getPrefix(player));
+        if (s.contains("%bw_assists%"))
+            s = s.replace("%bw_assists%", String.valueOf(stats.getAssists()));
+        if (s.contains("%bw_final_assists%"))
+            s = s.replace("%bw_final_assists%", String.valueOf(stats.getFinalAssists()));
+        if (s.contains("%bw_beds_lost%"))
+            s = s.replace("%bw_beds_lost%", String.valueOf(stats.getBedsLost()));
+        if (s.contains("%bw_winstreak%"))
+            s = s.replace("%bw_winstreak%", String.valueOf(stats.getWinstreak()));
+        if (s.contains("%bw_best_winstreak%"))
+            s = s.replace("%bw_best_winstreak%", String.valueOf(stats.getBestWinstreak()));
+
+        if (s.contains("%bw_level%"))
+            s = s.replace("%bw_level%", BedWars.getLevelSupport().getLevel(player));
+        if (s.contains("%bw_level_unformatted%"))
+            s = s.replace("%bw_level_unformatted%", String.valueOf(BedWars.getLevelSupport().getPlayerLevel(player)));
+        if (s.contains("%bw_current_xp%"))
+            s = s.replace("%bw_current_xp%", BedWars.getLevelSupport().getCurrentXpFormatted(player));
+        if (s.contains("%bw_required_xp%"))
+            s = s.replace("%bw_required_xp%", BedWars.getLevelSupport().getRequiredXpFormatted(player));
+        if (s.contains("%bw_progress%"))
+            s = s.replace("%bw_progress%", BedWars.getLevelSupport().getProgressBar(player));
+
+        s = replaceModeStatsPlaceholders(stats, s);
 
         return papiReplacements ? SupportPAPI.getSupportPAPI().replace(player, s) : s;
+    }
+
+    private static String replaceModeStatsPlaceholders(IPlayerStats stats, String s) {
+        for (ArenaMode mode : ArenaMode.values()) {
+            String prefix = "%bw_" + mode.getGroup().toLowerCase() + "_";
+            if (!s.contains(prefix)) continue;
+
+            IModeStats modeStats = stats.getModeStats(mode.getGroup().toLowerCase());
+            s = s.replace(prefix + "games_played%", String.valueOf(modeStats.getGamesPlayed()));
+            s = s.replace(prefix + "wins%", String.valueOf(modeStats.getWins()));
+            s = s.replace(prefix + "losses%", String.valueOf(modeStats.getLosses()));
+            s = s.replace(prefix + "kills%", String.valueOf(modeStats.getKills()));
+            s = s.replace(prefix + "deaths%", String.valueOf(modeStats.getDeaths()));
+            s = s.replace(prefix + "assists%", String.valueOf(modeStats.getAssists()));
+            s = s.replace(prefix + "final_kills%", String.valueOf(modeStats.getFinalKills()));
+            s = s.replace(prefix + "final_deaths%", String.valueOf(modeStats.getFinalDeaths()));
+            s = s.replace(prefix + "final_assists%", String.valueOf(modeStats.getFinalAssists()));
+            s = s.replace(prefix + "beds%", String.valueOf(modeStats.getBedsDestroyed()));
+            s = s.replace(prefix + "beds_lost%", String.valueOf(modeStats.getBedsLost()));
+            s = s.replace(prefix + "winstreak%", String.valueOf(modeStats.getWinstreak()));
+            s = s.replace(prefix + "best_winstreak%", String.valueOf(modeStats.getBestWinstreak()));
+        }
+        return s;
     }
 
     public static boolean isNumber(String s) {
