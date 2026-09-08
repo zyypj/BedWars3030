@@ -16,6 +16,7 @@ import com.tomkeuper.bedwars.api.language.Language;
 import com.tomkeuper.bedwars.api.language.Messages;
 import com.tomkeuper.bedwars.api.server.ServerType;
 import com.tomkeuper.bedwars.arena.Arena;
+import com.tomkeuper.bedwars.arena.AssistTracker;
 import com.tomkeuper.bedwars.arena.LastHit;
 import com.tomkeuper.bedwars.arena.SetupSession;
 import com.tomkeuper.bedwars.arena.team.BedWarsTeam;
@@ -152,6 +153,7 @@ public class DamageDeathMove implements Listener {
                     ITeam damagerTeam = arena.getTeam(damagerPlayer);
                     // Only update if not teammates (except for TNT)
                     if (victimTeam != damagerTeam || damagerEntity instanceof TNTPrimed) {
+                        AssistTracker.record(player, damagerPlayer);
                         LastHit lh = LastHit.getLastHit(player);
                         if (lh != null) {
                             lh.setDamager(damagerPlayer);
