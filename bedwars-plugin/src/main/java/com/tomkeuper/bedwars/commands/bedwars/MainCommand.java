@@ -80,6 +80,7 @@ public class MainCommand extends BukkitCommand implements ParentCommand {
         new CreateTeam(this, "createTeam");
         new WaitingPos(this, "waitingPos");
         new RemoveTeam(this, "removeTeam");
+        new SetMode(this, "setMode");
         new SetMaxInTeam(this, "setMaxInTeam");
         new SetMaxBuildHeight(this, "setMaxBuildHeight");
         new SetMinBuildHeight(this, "setMinBuildHeight");
