@@ -1,9 +1,13 @@
 package com.tomkeuper.bedwars.stats;
 
+import com.tomkeuper.bedwars.api.stats.IModeStats;
 import com.tomkeuper.bedwars.api.stats.IPlayerStats;
+import org.jetbrains.annotations.NotNull;
 
 import java.time.Instant;
+import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class PlayerStats implements IPlayerStats {
 
@@ -21,6 +25,12 @@ public class PlayerStats implements IPlayerStats {
     private int finalDeaths;
     private int bedsDestroyed;
     private int gamesPlayed;
+    private int assists;
+    private int finalAssists;
+    private int bedsLost;
+    private int winstreak;
+    private int bestWinstreak;
+    private final Map<String, IModeStats> modeStats = new ConcurrentHashMap<>();
 
     public PlayerStats(UUID uuid) {
         this.uuid = uuid;
@@ -122,5 +132,71 @@ public class PlayerStats implements IPlayerStats {
 
     public int getTotalKills() {
         return totalKills;
+    }
+    @Override
+    public int getAssists() {
+        return assists;
+    }
+
+    @Override
+    public void setAssists(int assists) {
+        this.assists = assists;
+    }
+
+    @Override
+    public int getFinalAssists() {
+        return finalAssists;
+    }
+
+    @Override
+    public void setFinalAssists(int finalAssists) {
+        this.finalAssists = finalAssists;
+    }
+
+    @Override
+    public int getBedsLost() {
+        return bedsLost;
+    }
+
+    @Override
+    public void setBedsLost(int bedsLost) {
+        this.bedsLost = bedsLost;
+    }
+
+    @Override
+    public int getWinstreak() {
+        return winstreak;
+    }
+
+    @Override
+    public void setWinstreak(int winstreak) {
+        this.winstreak = winstreak;
+        if (winstreak > bestWinstreak) this.bestWinstreak = winstreak;
+    }
+
+    @Override
+    public int getBestWinstreak() {
+        return bestWinstreak;
+    }
+
+    @Override
+    public void setBestWinstreak(int bestWinstreak) {
+        this.bestWinstreak = bestWinstreak;
+    }
+
+    @Override
+    public @NotNull IModeStats getModeStats(@NotNull String mode) {
+        return modeStats.computeIfAbsent(mode.toLowerCase(), ModeStats::new);
+    }
+
+    @Override
+    public @NotNull Map<String, IModeStats> getModeStats() {
+        return modeStats;
+    }
+
+    @Override
+    public void setModeStats(@NotNull Map<String, IModeStats> modeStats) {
+        this.modeStats.clear();
+        this.modeStats.putAll(modeStats);
     }
 }

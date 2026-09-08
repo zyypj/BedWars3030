@@ -1,6 +1,9 @@
 package com.tomkeuper.bedwars.api.stats;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.time.Instant;
+import java.util.Map;
 import java.util.UUID;
 
 /**
@@ -175,4 +178,31 @@ public interface IPlayerStats {
      * @return The total number of kills.
      */
     int getTotalKills();
+    int getAssists();
+
+    void setAssists(int assists);
+
+    int getFinalAssists();
+
+    void setFinalAssists(int finalAssists);
+
+    int getBedsLost();
+
+    void setBedsLost(int bedsLost);
+
+    int getWinstreak();
+
+    void setWinstreak(int winstreak);
+
+    int getBestWinstreak();
+
+    void setBestWinstreak(int bestWinstreak);
+
+    @NotNull
+    IModeStats getModeStats(@NotNull String mode);
+
+    @NotNull
+    Map<String, IModeStats> getModeStats();
+
+    void setModeStats(@NotNull Map<String, IModeStats> modeStats);
 }
