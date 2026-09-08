@@ -1,5 +1,6 @@
 package com.tomkeuper.bedwars.sidebar;
 
+import com.tomkeuper.bedwars.BedWars;
 import com.tomkeuper.bedwars.support.papi.SupportPAPI;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -8,6 +9,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -16,6 +18,7 @@ public class PlaceholderRegistry {
 
     private final Map<String, Function<Player, String>> playerPlaceholders = new ConcurrentHashMap<>();
     private final Map<String, Supplier<String>> serverPlaceholders = new ConcurrentHashMap<>();
+    private final Set<String> brokenPlaceholders = ConcurrentHashMap.newKeySet();
 
     public void registerPlayerPlaceholder(@NotNull String identifier, @NotNull Function<Player, String> resolver) {
         playerPlaceholders.put(identifier, resolver);
@@ -92,15 +95,17 @@ public class PlaceholderRegistry {
     @Nullable
     private String resolve(@NotNull Player player, @NotNull String identifier) {
         Function<Player, String> playerResolver = playerPlaceholders.get(identifier);
-        if (playerResolver != null) {
-            String value = playerResolver.apply(player);
+        Supplier<String> serverResolver = playerResolver == null ? serverPlaceholders.get(identifier) : null;
+        if (playerResolver == null && serverResolver == null) return null;
+
+        try {
+            String value = playerResolver != null ? playerResolver.apply(player) : serverResolver.get();
             return value == null ? "" : value;
+        } catch (Throwable brokenPlaceholder) {
+            if (brokenPlaceholders.add(identifier)) {
+                BedWars.plugin.getLogger().warning("O placeholder " + identifier + " falhou e será exibido vazio: " + brokenPlaceholder);
+            }
+            return "";
         }
-        Supplier<String> serverResolver = serverPlaceholders.get(identifier);
-        if (serverResolver != null) {
-            String value = serverResolver.get();
-            return value == null ? "" : value;
-        }
-        return null;
     }
 }
