@@ -83,6 +83,7 @@ public class SQLite implements IDatabase {
                         "iso VARCHAR(200));";
                 st.executeUpdate(sql);
             }
+            ModeStatsIO.createTable(connection);
         }catch (SQLException e) {
             e.printStackTrace();
         }
@@ -190,6 +191,7 @@ public class SQLite implements IDatabase {
                     statement.executeUpdate();
                 }
             }
+            ModeStatsIO.save(connection, stats);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -219,6 +221,7 @@ public class SQLite implements IDatabase {
                     }
                 }
             }
+            ModeStatsIO.load(connection, stats);
         } catch (SQLException e) {
             e.printStackTrace();
         }

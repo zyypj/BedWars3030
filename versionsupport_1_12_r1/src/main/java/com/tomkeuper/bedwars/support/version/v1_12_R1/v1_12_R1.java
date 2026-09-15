@@ -864,4 +864,30 @@ public class v1_12_R1 extends VersionSupport {
         }
         return new CraftArmorStand((CraftServer) getPlugin().getServer(), nmsEntity);
     }
+
+    @Override
+    public void setTabListName(Player player, String name) {
+        EntityPlayer handle = ((CraftPlayer) player).getHandle();
+        handle.listName = new ChatComponentText(name);
+        PacketPlayOutPlayerInfo packet = new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.UPDATE_DISPLAY_NAME, handle);
+        for (Player receiver : Bukkit.getOnlinePlayers()) {
+            ((CraftPlayer) receiver).getHandle().playerConnection.sendPacket(packet);
+        }
+    }
+
+    @Override
+    public void setTabHeaderFooter(Player player, String header, String footer) {
+        PacketPlayOutPlayerListHeaderFooter packet = new PacketPlayOutPlayerListHeaderFooter();
+        try {
+            Field headerField = PacketPlayOutPlayerListHeaderFooter.class.getDeclaredField("a");
+            headerField.setAccessible(true);
+            headerField.set(packet, new ChatComponentText(header));
+            Field footerField = PacketPlayOutPlayerListHeaderFooter.class.getDeclaredField("b");
+            footerField.setAccessible(true);
+            footerField.set(packet, new ChatComponentText(footer));
+        } catch (ReflectiveOperationException unsupportedMapping) {
+            return;
+        }
+        ((CraftPlayer) player).getHandle().playerConnection.sendPacket(packet);
+    }
 }

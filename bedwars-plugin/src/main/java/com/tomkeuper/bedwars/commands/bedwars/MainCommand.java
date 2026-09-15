@@ -72,7 +72,6 @@ public class MainCommand extends BukkitCommand implements ParentCommand {
         if (BedWars.getServerType() == ServerType.BUNGEE){
             new RedisUpdate(this, "redisUpdate"); // not listed
         }
-        new ApplyTabConfig(this, "applyTabConfig"); // not listed
 
         /* Arena setup commands (in world) */
         new AutoCreateTeams(this, "autoCreateTeams");
@@ -81,6 +80,7 @@ public class MainCommand extends BukkitCommand implements ParentCommand {
         new CreateTeam(this, "createTeam");
         new WaitingPos(this, "waitingPos");
         new RemoveTeam(this, "removeTeam");
+        new SetMode(this, "setMode");
         new SetMaxInTeam(this, "setMaxInTeam");
         new SetMaxBuildHeight(this, "setMaxBuildHeight");
         new SetMinBuildHeight(this, "setMinBuildHeight");

@@ -141,6 +141,7 @@ public class MySQL implements IDatabase {
             try (Statement statement = connection.createStatement()) {
                 statement.executeUpdate(sql);
             }
+            ModeStatsIO.createTable(connection);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -236,6 +237,7 @@ public class MySQL implements IDatabase {
                     statement.executeUpdate();
                 }
             }
+            ModeStatsIO.save(connection, stats);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -266,6 +268,7 @@ public class MySQL implements IDatabase {
                     }
                 }
             }
+            ModeStatsIO.load(connection, stats);
         } catch (SQLException e) {
             e.printStackTrace();
         }

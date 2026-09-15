@@ -1,7 +1,6 @@
 package com.tomkeuper.bedwars.api.sidebar;
 
 import com.tomkeuper.bedwars.api.arena.IArena;
-import me.neznamy.tab.api.scoreboard.Scoreboard;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -30,5 +29,5 @@ public interface IScoreboardService {
      * @return Get the current active scoreboard of a player.
      */
     @Nullable
-    Scoreboard getScoreboard(@NotNull Player player);
+    ISidebar getScoreboard(@NotNull Player player);
 }

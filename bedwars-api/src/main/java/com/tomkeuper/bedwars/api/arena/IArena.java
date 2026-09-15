@@ -13,7 +13,7 @@ import com.tomkeuper.bedwars.api.tasks.PlayingTask;
 import com.tomkeuper.bedwars.api.tasks.RestartingTask;
 import com.tomkeuper.bedwars.api.tasks.StartingTask;
 import com.tomkeuper.bedwars.api.upgrades.UpgradesIndex;
-import me.neznamy.tab.api.bossbar.BossBar;
+import com.tomkeuper.bedwars.api.sidebar.IBossBar;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.block.Block;
@@ -751,7 +751,7 @@ public interface IArena {
      *
      * @return The list of dragon boss bars.
      */
-    List<BossBar> getDragonBossbars();
+    List<IBossBar> getDragonBossbars();
 
     /**
      * Check if breaking map is allowed, otherwise only placed blocks are allowed.

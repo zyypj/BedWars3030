@@ -66,6 +66,7 @@ public class H2 implements IDatabase {
                         "iso VARCHAR(200));";
                 st.executeUpdate(sql);
             }
+            ModeStatsIO.createTable(connection);
         }catch (SQLException e) {
             e.printStackTrace();
         }
@@ -174,6 +175,7 @@ public class H2 implements IDatabase {
                     statement.executeUpdate();
                 }
             }
+            ModeStatsIO.save(connection, stats);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -203,6 +205,7 @@ public class H2 implements IDatabase {
                     }
                 }
             }
+            ModeStatsIO.load(connection, stats);
         } catch (SQLException e) {
             e.printStackTrace();
         }

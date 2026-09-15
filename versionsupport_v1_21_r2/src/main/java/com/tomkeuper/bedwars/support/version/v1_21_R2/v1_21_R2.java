@@ -3,7 +3,6 @@ package com.tomkeuper.bedwars.support.version.v1_21_R2;
 import com.mojang.datafixers.util.Pair;
 import com.saicone.rtag.RtagItem;
 import com.saicone.rtag.util.OptionalType;
-import com.saicone.rtag.util.SkullTexture;
 import com.tomkeuper.bedwars.api.arena.IArena;
 import com.tomkeuper.bedwars.api.arena.generator.IGeneratorAnimation;
 import com.tomkeuper.bedwars.api.arena.shop.ShopHolo;
@@ -62,6 +61,7 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.inventory.InventoryEvent;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
@@ -573,7 +573,7 @@ public final class v1_21_R2 extends VersionSupport {
 
     @Override
     public org.bukkit.inventory.ItemStack getPlayerHead(Player player, org.bukkit.inventory.ItemStack copyTagFrom) {
-        org.bukkit.inventory.ItemStack head = SkullTexture.getTexturedHead(player.getUniqueId().toString());
+        org.bukkit.inventory.ItemStack head = new org.bukkit.inventory.ItemStack(materialPlayerHead());
 
         if (copyTagFrom != null) {
             var tag = getTag(copyTagFrom);
@@ -583,6 +583,11 @@ public final class v1_21_R2 extends VersionSupport {
             head = rtagItem.getItem();
         }
 
+        var meta = head.getItemMeta();
+        if (meta instanceof SkullMeta) {
+            ((SkullMeta) meta).setOwnerProfile(player.getPlayerProfile());
+        }
+        head.setItemMeta(meta);
         return head;
     }
 

@@ -323,7 +323,7 @@ public class Language extends ConfigManager {
         if (yml.getDefaults() == null || !yml.getDefaults().contains(Messages.PLAYER_STATS_GUI_PATH + "-" + path + "-name"))
             yml.addDefault(Messages.PLAYER_STATS_GUI_PATH + "-" + path + "-name", name);
         if (yml.getDefaults() == null || !yml.getDefaults().contains(Messages.PLAYER_STATS_GUI_PATH + "-" + path + "-lore"))
-            yml.addDefault(Messages.PLAYER_STATS_GUI_PATH + "-" + path + "-lore", lore);
+            yml.addDefault(Messages.PLAYER_STATS_GUI_PATH + "-" + path + "-lore", Arrays.asList(lore));
     }
 
     /**

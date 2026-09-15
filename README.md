@@ -24,13 +24,11 @@ O BedWars2023 vai se integrar a ele e fazer tudo por você.
 # Dependências
 - Java 11
 - Forks do Spigot com NMS
-- Plugin [TAB](https://github.com/NEZNAMY/TAB)
 
 # Instalação básica
-- Baixe a release mais recente e a dependência dela
+- Baixe a release mais recente
 - Coloque na pasta plugins
 - Reinicie o servidor
-- Vá até a pasta de config do TAB e ative a scoreboard
 
 # Setups prontos e addons da comunidade
 

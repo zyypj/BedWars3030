@@ -5,6 +5,7 @@ import com.tomkeuper.bedwars.api.configuration.ConfigManager;
 import com.tomkeuper.bedwars.api.configuration.ConfigPath;
 import com.tomkeuper.bedwars.api.language.Language;
 import com.tomkeuper.bedwars.api.server.ServerType;
+import com.tomkeuper.bedwars.arena.ArenaMode;
 import com.tomkeuper.bedwars.arena.Misc;
 import org.apache.logging.log4j.core.config.Loggers;
 import org.bukkit.Bukkit;
@@ -17,6 +18,8 @@ import java.io.IOException;
 import java.util.*;
 
 public class MainConfig extends ConfigManager {
+
+    private static final int STATS_LAYOUT_VERSION = 2;
 
     public MainConfig(Plugin plugin, String name) {
         super(plugin, name, BedWars.plugin.getDataFolder().getPath());
@@ -31,6 +34,7 @@ public class MainConfig extends ConfigManager {
         yml.addDefault(ConfigPath.GENERAL_CONFIGURATION_AUTO_SCALE_TOP_UP_INTERVAL, 30);
         yml.addDefault("timeZone", "America/Sao_Paulo");
         yml.addDefault("serverType", "MULTIARENA");
+        yml.addDefault(ConfigPath.GENERAL_CONFIGURATION_ARENA_GROUPS, ArenaMode.getGroups());
         yml.addDefault("language", "pt");
         yml.addDefault(ConfigPath.GENERAL_CONFIGURATION_DISABLED_LANGUAGES, Arrays.asList("bd", "en", "fr", "hi", "id", "it", "fa", "ro", "ru", "zh_cn", "es", "tr"));
         yml.addDefault("storeLink", "https://loja.servidor.com.br/");
@@ -203,18 +207,22 @@ public class MainConfig extends ConfigManager {
         yml.addDefault(ConfigPath.GENERAL_CONFIGURATION_TELEPORTER_SLOTS, "10,11,12,13,14,15,16,19,20,21,22,23,24,25");
 
         /* default stats GUI items */
-        yml.addDefault(ConfigPath.GENERAL_CONFIGURATION_STATS_GUI_SIZE, 27);
-        if (isFirstTime()) {
-            Misc.addDefaultStatsItem(yml, 10, Material.DIAMOND, 0, "wins");
-            Misc.addDefaultStatsItem(yml, 11, Material.REDSTONE, 0, "losses");
-            Misc.addDefaultStatsItem(yml, 12, Material.IRON_SWORD, 0, "kills");
-            Misc.addDefaultStatsItem(yml, 13, Material.valueOf(BedWars.getForCurrentVersion("SKULL_ITEM", "SKULL_ITEM", "SKELETON_SKULL")), 0, "deaths");
-            Misc.addDefaultStatsItem(yml, 14, Material.DIAMOND_SWORD, 0, "final-kills");
-            Misc.addDefaultStatsItem(yml, 15, Material.valueOf(BedWars.getForCurrentVersion("SKULL_ITEM", "SKULL_ITEM", "SKELETON_SKULL")), 1, "final-deaths");
-            Misc.addDefaultStatsItem(yml, 16, Material.valueOf(BedWars.getForCurrentVersion("BED", "BED", "RED_BED")), 0, "beds-destroyed");
-            Misc.addDefaultStatsItem(yml, 21, Material.valueOf(BedWars.getForCurrentVersion("STAINED_GLASS_PANE", "STAINED_GLASS_PANE", "BLACK_STAINED_GLASS_PANE")), 0, "first-play");
-            Misc.addDefaultStatsItem(yml, 22, Material.CHEST, 0, "games-played");
-            Misc.addDefaultStatsItem(yml, 23, Material.valueOf(BedWars.getForCurrentVersion("STAINED_GLASS_PANE", "STAINED_GLASS_PANE", "BLACK_STAINED_GLASS_PANE")), 0, "last-play");
+        yml.addDefault(ConfigPath.GENERAL_CONFIGURATION_STATS_GUI_SIZE, 45);
+        if (yml.getInt(ConfigPath.GENERAL_CONFIGURATION_STATS_LAYOUT_VERSION) < STATS_LAYOUT_VERSION) {
+            yml.set(ConfigPath.GENERAL_CONFIGURATION_STATS_PATH, null);
+            yml.set(ConfigPath.GENERAL_CONFIGURATION_STATS_GUI_SIZE, 45);
+            yml.set(ConfigPath.GENERAL_CONFIGURATION_STATS_LAYOUT_VERSION, STATS_LAYOUT_VERSION);
+
+            Material bed = Material.valueOf(BedWars.getForCurrentVersion("BED", "BED", "RED_BED"));
+            Misc.addDefaultStatsItem(yml, 4, Material.PAPER, 0, "geral", 1);
+            Misc.addDefaultStatsItem(yml, 10, bed, 0, "solo", 1);
+            Misc.addDefaultStatsItem(yml, 12, bed, 0, "duplas", 2);
+            Misc.addDefaultStatsItem(yml, 14, bed, 0, "trios", 3);
+            Misc.addDefaultStatsItem(yml, 16, bed, 0, "quartetos", 4);
+            Misc.addDefaultStatsItem(yml, 28, bed, 0, "1v1", 1);
+            Misc.addDefaultStatsItem(yml, 30, bed, 0, "2v2", 2);
+            Misc.addDefaultStatsItem(yml, 32, bed, 0, "3v3", 3);
+            Misc.addDefaultStatsItem(yml, 34, bed, 0, "4v4", 4);
         }
 
         yml.addDefault(ConfigPath.GENERAL_CONFIGURATION_DEFAULT_ITEMS + ".Default", Collections.singletonList(BedWars.getForCurrentVersion("WOOD_SWORD", "WOOD_SWORD", "WOODEN_SWORD")));
@@ -279,6 +287,10 @@ public class MainConfig extends ConfigManager {
             } else {
                 set("serverType", "MULTIARENA");
             }
+        }
+
+        if (BedWars.getServerType() != ServerType.BUNGEE) {
+            BedWars.setAutoscale(yml.getBoolean(ConfigPath.GENERAL_CONFIGURATION_AUTO_SCALE_ENABLED));
         }
 
         BedWars.setLobbyWorld(getLobbyWorldName());
