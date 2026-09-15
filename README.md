@@ -2,7 +2,7 @@
 
 [![Discord](https://discordapp.com/api/guilds/760851292826107926/widget.png?style=shield)](https://discord.gg/kPaBGwhmjf) [![bStats](https://img.shields.io/bstats/servers/18317)](#)
 
-Desde março de 2023, o desenvolvimento do BedWars2023 começou como um fork do plugin [BedWars1058](https://www.spigotmc.org/resources/bedwars1058-opensource.97320/). O objetivo deste fork é implementar novos recursos e modernizar a base de código.
+Desde agosto de 2026, o desenvolvimento do BedWars2039 começou como um fork do plugin [BedWars2023](https://www.github.com/tomkeuper/BedWars2023). O objetivo deste fork é implementar novos recursos e modernizar a base de código.
 
 O plugin é publicado sob a licença open-source GNU GPL 3.0. Você pode ler a licença completa [aqui](https://www.gnu.org/licenses/gpl-3.0.html).
 
