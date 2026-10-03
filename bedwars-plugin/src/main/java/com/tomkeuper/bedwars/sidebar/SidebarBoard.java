@@ -119,6 +119,19 @@ public class SidebarBoard implements ISidebar {
         visibleLines = index;
     }
 
+    /**
+     * Put the player back on this board if something swapped their scoreboard out.
+     * <p>
+     * Only the constructor assigns it, so without this a single reset elsewhere would hide the sidebar for the
+     * rest of the session: the cached board would go on updating a scoreboard nobody is watching.
+     */
+    public void ensureApplied() {
+        if (!player.isOnline()) return;
+        if (player.getScoreboard() == scoreboard) return;
+
+        player.setScoreboard(scoreboard);
+    }
+
     @Override
     public void remove() {
         clearLines();

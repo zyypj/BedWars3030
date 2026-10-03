@@ -43,6 +43,14 @@ public class BoardManager implements IScoreboardService {
 
     private final PlaceholderRegistry placeholders = new PlaceholderRegistry();
     private final Map<String, SidebarContent> registeredSidebars = new ConcurrentHashMap<>();
+    /**
+     * How many arenas still need each registered sidebar.
+     * <p>
+     * The keys are built from the arena group, not the arena, so every game of a group registers the same
+     * ones. Auto scale keeps several of those alive at once, and without counting them the first game to end
+     * would drop the sidebar out from under all the others.
+     */
+    private final Map<String, Integer> sidebarUsers = new ConcurrentHashMap<>();
     private final Map<UUID, SidebarBoard> boards = new ConcurrentHashMap<>();
     private final Map<UUID, Integer> tabPlayersPrefix = new ConcurrentHashMap<>();
     private final Map<UUID, Integer> tabPlayersSuffix = new ConcurrentHashMap<>();
@@ -107,13 +115,22 @@ public class BoardManager implements IScoreboardService {
 
     public void unregisterScoreboards(@Nullable List<String> names) {
         if (names == null) return;
-        names.forEach(registeredSidebars::remove);
+
+        for (String name : names) {
+            // Only the last game of a group takes the shared sidebar down with it.
+            int remaining = sidebarUsers.merge(name, -1, Integer::sum);
+            if (remaining > 0) continue;
+
+            sidebarUsers.remove(name);
+            registeredSidebars.remove(name);
+        }
     }
 
     private String register(String name, List<String> lines) {
         if (!lines.isEmpty()) {
             registeredSidebars.put(name, new SidebarContent(lines.subList(1, lines.size())));
         }
+        sidebarUsers.merge(name, 1, Integer::sum);
         return name;
     }
 
@@ -363,6 +380,10 @@ public class BoardManager implements IScoreboardService {
             SidebarBoard board = getOrCreateBoard(player);
             if (board == null) return;
 
+            // The board object is cached per player, so anything that reset their scoreboard in the meantime
+            // would leave them looking at a different one while this keeps updating the cached board.
+            board.ensureApplied();
+
             if ((arena == null && !BedWars.config.getBoolean(ConfigPath.SB_CONFIG_SIDEBAR_USE_LOBBY_SIDEBAR))
                     || (arena != null && !BedWars.config.getBoolean(ConfigPath.SB_CONFIG_SIDEBAR_USE_GAME_SIDEBAR))) {
                 board.setName("");
@@ -397,6 +418,10 @@ public class BoardManager implements IScoreboardService {
             }
 
             SidebarContent content = registeredSidebars.get(scoreboardName);
+            if (content == null) {
+                // A blank sidebar is invisible in game, so say why here rather than leaving it a mystery.
+                BedWars.debug("Nenhum conteudo registrado para a scoreboard: " + scoreboardName);
+            }
             board.setName(scoreboardName);
             board.setContent(TITLE_PLACEHOLDER, content == null ? Collections.emptyList() : content.getLines());
             board.setHealthDisplay(arena != null && arena.getStatus() == GameState.playing,
