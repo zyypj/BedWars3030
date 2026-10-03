@@ -256,6 +256,7 @@ public class ConfigPath {
     public static final String GENERAL_FIREBALL_KNOCKBACK_HORIZONTAL_OTHERS = GENERAL_FIREBALL_PATH + ".knockback.horizontal.others";
     public static final String GENERAL_FIREBALL_JUMP_TOLERANCE = GENERAL_FIREBALL_PATH + ".jump-tolerance";
     public static final String GENERAL_FIREBALL_COOLDOWN = GENERAL_FIREBALL_PATH + ".cooldown";
+    public static final String GENERAL_FIREBALL_FALL_DAMAGE_REDUCTION = GENERAL_FIREBALL_PATH + ".fall-damage-reduction";
     private static final String GENERAL_FIREBALL_DAMAGE_PATH = GENERAL_FIREBALL_PATH + ".damage";
     public static final String GENERAL_FIREBALL_DAMAGE_SELF = GENERAL_FIREBALL_DAMAGE_PATH + ".self";
     public static final String GENERAL_FIREBALL_DAMAGE_ENEMY = GENERAL_FIREBALL_DAMAGE_PATH + ".enemy";

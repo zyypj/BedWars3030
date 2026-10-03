@@ -126,12 +126,13 @@ public class MainConfig extends ConfigManager {
         yml.addDefault(ConfigPath.GENERAL_FIREBALL_EXPLOSION_SIZE, 3);
         yml.addDefault(ConfigPath.GENERAL_FIREBALL_SPEED_MULTIPLIER, 10);
         yml.addDefault(ConfigPath.GENERAL_FIREBALL_MAKE_FIRE, false);
-        yml.addDefault(ConfigPath.GENERAL_FIREBALL_KNOCKBACK_HORIZONTAL_SELF, 1.0);
+        yml.addDefault(ConfigPath.GENERAL_FIREBALL_KNOCKBACK_HORIZONTAL_SELF, 2.0);
         yml.addDefault(ConfigPath.GENERAL_FIREBALL_KNOCKBACK_HORIZONTAL_OTHERS, 1.0);
-        yml.addDefault(ConfigPath.GENERAL_FIREBALL_KNOCKBACK_VERTICAL_SELF, 0.65);
-        yml.addDefault(ConfigPath.GENERAL_FIREBALL_KNOCKBACK_VERTICAL_OTHERS, 0.65);
+        yml.addDefault(ConfigPath.GENERAL_FIREBALL_KNOCKBACK_VERTICAL_SELF, 1.3);
+        yml.addDefault(ConfigPath.GENERAL_FIREBALL_KNOCKBACK_VERTICAL_OTHERS, 0.8);
         yml.addDefault(ConfigPath.GENERAL_FIREBALL_JUMP_TOLERANCE, 0.5);
         yml.addDefault(ConfigPath.GENERAL_FIREBALL_COOLDOWN, 0.5);
+        yml.addDefault(ConfigPath.GENERAL_FIREBALL_FALL_DAMAGE_REDUCTION, 0.0);
         yml.addDefault(ConfigPath.GENERAL_FIREBALL_DAMAGE_SELF, 2.0);
         yml.addDefault(ConfigPath.GENERAL_FIREBALL_DAMAGE_ENEMY, 2.0);
         yml.addDefault(ConfigPath.GENERAL_FIREBALL_DAMAGE_TEAMMATES, 0.0);

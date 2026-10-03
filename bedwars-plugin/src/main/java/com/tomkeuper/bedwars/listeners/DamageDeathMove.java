@@ -120,6 +120,11 @@ public class DamageDeathMove implements Listener {
             else BedWarsTeam.reSpawnInvulnerability.remove(player.getUniqueId());
         }
 
+        if (e.getCause() == EntityDamageEvent.DamageCause.FALL && FireballListener.consumeRecentFireballKnockback(player)) {
+            double reduction = FireballListener.getFireballFallDamageReduction();
+            if (reduction > 0.0D) e.setDamage(Math.max(0.0D, e.getDamage() - reduction));
+        }
+
         double finalHealth = player.getHealth() - e.getFinalDamage();
         if (finalHealth < 0.5) {
             e.setCancelled(true);

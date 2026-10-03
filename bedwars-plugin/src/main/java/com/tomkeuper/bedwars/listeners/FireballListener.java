@@ -31,15 +31,20 @@ import org.bukkit.projectiles.ProjectileSource;
 import org.bukkit.util.Vector;
 
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
-
-import static com.tomkeuper.bedwars.BedWars.config;
 
 public class FireballListener implements Listener {
 
+    private static final double MIN_LENGTH_SQUARED = 1.0E-4D;
+    private static final double ENEMY_VERTICAL_BOOST = 1.5D;
+    private static final long FIREBALL_FALL_DAMAGE_WINDOW_MILLIS = 8_000L;
+    private static final Map<UUID, Long> RECENT_FIREBALL_KNOCKBACKS = new ConcurrentHashMap<>();
+    private static volatile double fireballFallDamageReduction = 0.0D;
 
     private final List<String> explosionProofMaterials;
     private final double fireballExplosionSize, fireballHorizontalSelf, fireballHorizontalOthers, fireballVerticalSelf, fireballVerticalOthers;
+    private final double fireballJumpTolerance;
     private final double damageSelf, damageEnemy, damageTeammates;
     private final double fireballSpeedMultiplier, fireballCooldown;
     private final boolean fireballMakeFire;
@@ -49,15 +54,17 @@ public class FireballListener implements Listener {
         explosionProofMaterials = config.getList(ConfigPath.GENERAL_FIREBALL_EXPLOSION_PROOF_BLOCKS).stream().map(Object::toString).collect(Collectors.toList());
         fireballExplosionSize = config.getDouble(ConfigPath.GENERAL_FIREBALL_EXPLOSION_SIZE);
         fireballMakeFire = config.getBoolean(ConfigPath.GENERAL_FIREBALL_MAKE_FIRE);
-        fireballHorizontalSelf = config.getDouble(ConfigPath.GENERAL_FIREBALL_KNOCKBACK_HORIZONTAL_SELF) * -1;
-        fireballHorizontalOthers = config.getDouble(ConfigPath.GENERAL_FIREBALL_KNOCKBACK_HORIZONTAL_OTHERS) * -1;
+        fireballHorizontalSelf = Math.abs(config.getDouble(ConfigPath.GENERAL_FIREBALL_KNOCKBACK_HORIZONTAL_SELF));
+        fireballHorizontalOthers = Math.abs(config.getDouble(ConfigPath.GENERAL_FIREBALL_KNOCKBACK_HORIZONTAL_OTHERS));
         fireballVerticalSelf = config.getDouble(ConfigPath.GENERAL_FIREBALL_KNOCKBACK_VERTICAL_SELF);
         fireballVerticalOthers = config.getDouble(ConfigPath.GENERAL_FIREBALL_KNOCKBACK_VERTICAL_OTHERS);
+        fireballJumpTolerance = config.getDouble(ConfigPath.GENERAL_FIREBALL_JUMP_TOLERANCE);
         damageSelf = config.getDouble(ConfigPath.GENERAL_FIREBALL_DAMAGE_SELF);
         damageEnemy = config.getDouble(ConfigPath.GENERAL_FIREBALL_DAMAGE_ENEMY);
         damageTeammates = config.getDouble(ConfigPath.GENERAL_FIREBALL_DAMAGE_TEAMMATES);
         fireballSpeedMultiplier = config.getDouble(ConfigPath.GENERAL_FIREBALL_SPEED_MULTIPLIER);
         fireballCooldown = config.getDouble(ConfigPath.GENERAL_FIREBALL_COOLDOWN);
+        fireballFallDamageReduction = config.getDouble(ConfigPath.GENERAL_FIREBALL_FALL_DAMAGE_REDUCTION);
     }
 
     @EventHandler
@@ -125,49 +132,17 @@ public class FireballListener implements Listener {
             if (respawnInvulnerability > System.currentTimeMillis()) continue;
             BedWarsTeam.reSpawnInvulnerability.remove(playerUUID);
 
-            Vector playerVector = player.getLocation().toVector();
-            Vector normalizedVector = playerVector.subtract(vector).normalize();
-            Vector horizontalVector;
-            double y;
-
-            if (entity.getUniqueId() == source.getUniqueId()) {
-                horizontalVector = normalizedVector.multiply(Math.abs(fireballHorizontalSelf));
-                y = normalizedVector.getY();
-
-                // FIXED: Check horizontal distance instead of just Y tolerance
-                double horizontalDistance = Math.sqrt(normalizedVector.getX() * normalizedVector.getX() +
-                        normalizedVector.getZ() * normalizedVector.getZ());
-
-                if (horizontalDistance <= config.getDouble(ConfigPath.GENERAL_FIREBALL_JUMP_TOLERANCE)) {
-                    // Mostly vertical explosion (including straight down)
-                    y = fireballVerticalSelf * 1.5;
-                } else {
-                    // Has horizontal component
-                    y = Math.abs(y) * fireballVerticalSelf * 1.5;
-                }
-            } else {
-                horizontalVector = normalizedVector.multiply(Math.abs(fireballHorizontalOthers));
-                y = normalizedVector.getY();
-
-                // FIXED: Check horizontal distance instead of just Y tolerance
-                double horizontalDistance = Math.sqrt(normalizedVector.getX() * normalizedVector.getX() +
-                        normalizedVector.getZ() * normalizedVector.getZ());
-
-                if (horizontalDistance <= config.getDouble(ConfigPath.GENERAL_FIREBALL_JUMP_TOLERANCE)) {
-                    // Mostly vertical explosion (including straight down)
-                    y = fireballVerticalOthers * 1.5;
-                } else {
-                    // Has horizontal component
-                    y = Math.abs(y) * fireballVerticalOthers * 1.5;
-                }
-            }
+            Vector blastDirection = blastDirection(player.getLocation().toVector(), vector);
+            Vector launchVelocity = player.getUniqueId().equals(source.getUniqueId())
+                    ? selfLaunch(player, blastDirection)
+                    : enemyLaunch(blastDirection);
 
             // FIXED: Delay velocity application for newer versions to avoid being overridden
-            final Vector finalVelocity = horizontalVector.setY(y);
             final Player finalPlayer = player;
             Bukkit.getScheduler().runTask(BedWars.plugin, () -> {
                 try {
-                    finalPlayer.setVelocity(finalVelocity);
+                    markFireballKnockback(finalPlayer);
+                    finalPlayer.setVelocity(launchVelocity);
                 } catch (IllegalArgumentException ignored) {}
             });
 
@@ -240,5 +215,50 @@ public class FireballListener implements Listener {
         if (!(shooter instanceof Player) || !Arena.isInArena((Player) shooter))  return;
 
         e.setFire(fireballMakeFire);
+    }
+
+    public static void markFireballKnockback(Player player) {
+        RECENT_FIREBALL_KNOCKBACKS.put(player.getUniqueId(), System.currentTimeMillis());
+    }
+
+    public static boolean consumeRecentFireballKnockback(Player player) {
+        Long markedAt = RECENT_FIREBALL_KNOCKBACKS.remove(player.getUniqueId());
+        if (markedAt == null) return false;
+        return markedAt >= System.currentTimeMillis() - FIREBALL_FALL_DAMAGE_WINDOW_MILLIS;
+    }
+
+    public static double getFireballFallDamageReduction() {
+        return fireballFallDamageReduction;
+    }
+
+    // A blast right on the player's position has no direction; normalizing it gives NaN and the
+    // velocity is rejected, so the player got no knockback at all. Treat it as straight up.
+    private static Vector blastDirection(Vector target, Vector explosion) {
+        Vector direction = target.clone().subtract(explosion);
+        return direction.lengthSquared() < MIN_LENGTH_SQUARED ? new Vector(0D, 1D, 0D) : direction.normalize();
+    }
+
+    // The launcher gets a fixed impulse: the blast only picks the direction, never the strength.
+    // Scaling by the blast vector made a fireball at the feet fire straight up and one a step away
+    // fire almost flat, so the same jump never repeated.
+    private Vector selfLaunch(Player player, Vector blast) {
+        Vector horizontal = new Vector(blast.getX(), 0D, blast.getZ());
+        horizontal = horizontal.lengthSquared() < MIN_LENGTH_SQUARED ? horizontalFacing(player) : horizontal.normalize();
+        return new Vector(horizontal.getX() * fireballHorizontalSelf, fireballVerticalSelf, horizontal.getZ() * fireballHorizontalSelf);
+    }
+
+    private Vector enemyLaunch(Vector blast) {
+        double horizontalDistance = Math.sqrt(blast.getX() * blast.getX() + blast.getZ() * blast.getZ());
+        double vertical = horizontalDistance <= fireballJumpTolerance
+                ? fireballVerticalOthers * ENEMY_VERTICAL_BOOST
+                : Math.abs(blast.getY()) * fireballVerticalOthers * ENEMY_VERTICAL_BOOST;
+        return new Vector(blast.getX() * fireballHorizontalOthers, vertical, blast.getZ() * fireballHorizontalOthers);
+    }
+
+    // Where the player's body points, ignoring pitch. Always unit length, so the launch keeps the
+    // same strength whether the player looks up, down or straight ahead.
+    private static Vector horizontalFacing(Player player) {
+        double yaw = Math.toRadians(player.getLocation().getYaw());
+        return new Vector(-Math.sin(yaw), 0D, Math.cos(yaw));
     }
 }
