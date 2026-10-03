@@ -192,6 +192,7 @@ public class Romanian extends Language {
         yml.addDefault(Messages.FORMATTING_SCOREBOARD_TEAM_ELIMINATED, "&c&l✘");
         yml.addDefault(Messages.FORMATTING_SCOREBOARD_BED_DESTROYED, "&a%bw_players_remaining%");
         yml.addDefault(Messages.FORMATTING_SCOREBOARD_TEAM_ALIVE, "&a&l✓");
+        yml.addDefault(Messages.FORMATTING_SCOREBOARD_TEAM_DISCONNECTED, "&e&l✓");
         yml.addDefault(Messages.FORMATTING_SCOREBOARD_NEXEVENT_TIMER, "mm:ss");
         yml.addDefault(Messages.FORMATTING_SCOREBOARD_YOUR_TEAM, "&7 TU");
         yml.addDefault(Messages.FORMATTING_ACTION_BAR_TRACKING, "&fTracking: %bw_team% &f- Distance: %bw_distance%m");
@@ -243,6 +244,7 @@ public class Romanian extends Language {
         yml.addDefault(Messages.PLAYER_DIE_PVP_FINAL_KILL, "%bw_player_color%%bw_player% &7a fost ucis de %bw_killer_color%%bw_killer_name%&7. &b&lUCIDERE FINALA!");
         yml.addDefault(Messages.PLAYER_DIE_PVP_LOG_OUT_REGULAR, "%bw_player_color%%bw_player% &7s-a deconectat in timpul luptei cu %bw_killer_color%%bw_killer_name%&7.");
         yml.addDefault(Messages.PLAYER_DIE_PVP_LOG_OUT_FINAL, "%bw_player_color%%bw_player% &7s-a deconectat in timpul luptei cu %bw_killer_color%%bw_killer_name%&7. &b&lUCIDERE FINALA!");
+        yml.addDefault(Messages.PLAYER_DIE_DISCONNECTED_FINAL_KILL, "%bw_player_color%%bw_player% &7was eliminated while disconnected by %bw_killer_color%%bw_killer_name%&7. &b&lFINAL KILL!");
         yml.addDefault(Messages.PLAYER_DIE_RESPAWN_TITLE, "&cESTI BLEG!");
         yml.addDefault(Messages.PLAYER_DIE_RESPAWN_SUBTITLE, "&eTe vei respawna in &c%bw_time% &esecunde!");
         yml.addDefault(Messages.PLAYER_DIE_RESPAWN_CHAT, "%bw_lang_prefix%&eTe vei respawna in &c%bw_time% &esecunde!");

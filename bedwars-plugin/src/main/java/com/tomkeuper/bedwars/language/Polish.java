@@ -192,6 +192,7 @@ public class Polish extends Language{
         yml.addDefault(Messages.FORMATTING_SCOREBOARD_TEAM_ELIMINATED, "&c&l✘");
         yml.addDefault(Messages.FORMATTING_SCOREBOARD_BED_DESTROYED, "&a%bw_players_remaining%");
         yml.addDefault(Messages.FORMATTING_SCOREBOARD_TEAM_ALIVE, "&a&l✓");
+        yml.addDefault(Messages.FORMATTING_SCOREBOARD_TEAM_DISCONNECTED, "&e&l✓");
         yml.addDefault(Messages.FORMATTING_SCOREBOARD_NEXEVENT_TIMER, "mm:ss");
         yml.addDefault(Messages.FORMATTING_SCOREBOARD_YOUR_TEAM, "&7 YOU");
         yml.addDefault(Messages.FORMATTING_ACTION_BAR_TRACKING, "&fTracking: %bw_team% &f- Distance: %bw_distance%m");
@@ -244,6 +245,7 @@ public class Polish extends Language{
         yml.addDefault(Messages.PLAYER_DIE_PVP_FINAL_KILL, "%bw_player_color%%bw_player% &7zostal zabity przez %bw_killer_color%%bw_killer_name%&7. &b&lOSTATECZNE ZABOJSTWO!");
         yml.addDefault(Messages.PLAYER_DIE_PVP_LOG_OUT_REGULAR, "%bw_player_color%%bw_player% &7wyszedł podczas walki z %bw_killer_color%%bw_killer_name%&7.");
         yml.addDefault(Messages.PLAYER_DIE_PVP_LOG_OUT_FINAL, "%bw_player_color%%bw_player% &7wyszedł podczas walki z %bw_killer_color%%bw_killer_name%&7. &b&lOSTATECZNE ZABÓJSTWO!");
+        yml.addDefault(Messages.PLAYER_DIE_DISCONNECTED_FINAL_KILL, "%bw_player_color%%bw_player% &7was eliminated while disconnected by %bw_killer_color%%bw_killer_name%&7. &b&lFINAL KILL!");
         yml.addDefault(Messages.PLAYER_DIE_RESPAWN_TITLE, "&cUMARLES");
         yml.addDefault(Messages.PLAYER_DIE_RESPAWN_SUBTITLE, "&eOdrodzisz sie za &c%bw_time% &esekund/y!");
         yml.addDefault(Messages.PLAYER_DIE_RESPAWN_CHAT, "%bw_lang_prefix%&eOdrodzisz sie za &c%bw_time% &esekund/y!");

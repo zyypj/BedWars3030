@@ -12,6 +12,7 @@ import com.tomkeuper.bedwars.api.sidebar.IScoreboardService;
 import com.tomkeuper.bedwars.api.sidebar.ISidebar;
 import com.tomkeuper.bedwars.api.tasks.PlayingTask;
 import com.tomkeuper.bedwars.arena.Arena;
+import com.tomkeuper.bedwars.arena.ReJoin;
 import com.tomkeuper.bedwars.levels.internal.PlayerLevel;
 import lombok.Getter;
 import org.bukkit.Bukkit;
@@ -464,6 +465,9 @@ public class BoardManager implements IScoreboardService {
             } else {
                 result = getMsg(player, Messages.FORMATTING_SCOREBOARD_TEAM_ELIMINATED);
             }
+        } else if (currentTeam.getMembers().isEmpty() && ReJoin.hasPending(currentTeam)) {
+            // the whole team left, but can still come back
+            result = getMsg(player, Messages.FORMATTING_SCOREBOARD_TEAM_DISCONNECTED);
         } else {
             result = getMsg(player, Messages.FORMATTING_SCOREBOARD_TEAM_ALIVE);
         }

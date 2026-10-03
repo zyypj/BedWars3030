@@ -202,6 +202,7 @@ public class Messages {
     public static String FORMATTING_SCOREBOARD_TEAM_ELIMINATED = "format-sb-team-eliminated";
     public static String FORMATTING_SCOREBOARD_BED_DESTROYED = "format-sb-bed-destroyed";
     public static String FORMATTING_SCOREBOARD_TEAM_ALIVE = "format-sb-team-alive";
+    public static String FORMATTING_SCOREBOARD_TEAM_DISCONNECTED = "format-sb-team-disconnected";
     public static String FORMATTING_SCOREBOARD_NEXEVENT_TIMER = "format-sb-generator-timer";
     public static String FORMATTING_SCOREBOARD_YOUR_TEAM = "format-sb-you";
     public static String FORMATTING_ACTION_BAR_TRACKING = "format-action-tracking";
@@ -295,6 +296,7 @@ public class Messages {
     public static String PLAYER_DIE_IRON_GOLEM_FINAL_KILL = "player-die-golem-final";
     public static String PLAYER_DIE_PVP_LOG_OUT_REGULAR = "player-die-pvp-log-out-regular";
     public static String PLAYER_DIE_PVP_LOG_OUT_FINAL = "player-die-pvp-log-out-final";
+    public static String PLAYER_DIE_DISCONNECTED_FINAL_KILL = "player-die-disconnected-final";
 
     public static String PLAYER_DIE_REWARD_DIAMOND = "player-loot-diamond";
     public static String PLAYER_DIE_REWARD_IRON = "player-loot-iron";

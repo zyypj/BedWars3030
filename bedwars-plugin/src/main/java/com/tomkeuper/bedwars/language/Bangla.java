@@ -214,6 +214,7 @@ public class Bangla extends Language {
         yml.addDefault(Messages.FORMATTING_SCOREBOARD_TEAM_ELIMINATED, "&c&l✘");
         yml.addDefault(Messages.FORMATTING_SCOREBOARD_BED_DESTROYED, "&a%bw_players_remaining%");
         yml.addDefault(Messages.FORMATTING_SCOREBOARD_TEAM_ALIVE, "&a&l✓");
+        yml.addDefault(Messages.FORMATTING_SCOREBOARD_TEAM_DISCONNECTED, "&e&l✓");
         yml.addDefault(Messages.FORMATTING_SCOREBOARD_NEXEVENT_TIMER, "mm:ss");
         yml.addDefault(Messages.FORMATTING_SCOREBOARD_YOUR_TEAM, "&7 YOU");
         yml.addDefault(Messages.FORMATTING_ACTION_BAR_TRACKING, "&fTracking: %bw_team% &f- Duratto: %bw_distance%m");
@@ -262,6 +263,7 @@ public class Bangla extends Language {
         yml.addDefault(Messages.PLAYER_DIE_KNOCKED_IN_VOID_FINAL_KILL, "%bw_killer_color%%bw_killer_name%&7 %bw_player_color%%bw_player% &7ke void e falalen. &b&lFINAL KILL!");
         yml.addDefault(Messages.PLAYER_DIE_PVP_LOG_OUT_REGULAR, "%bw_player_color%%bw_player% %bw_killer_color%%bw_killer_name% &7er sathe fight korar majhe disconnect korlen.");
         yml.addDefault(Messages.PLAYER_DIE_PVP_LOG_OUT_FINAL, "%bw_player_color%%bw_player% %bw_killer_color%%bw_killer_name% &7er sathe fight korar majhe disconnect korlen. &b&lFINAL KILL!");
+        yml.addDefault(Messages.PLAYER_DIE_DISCONNECTED_FINAL_KILL, "%bw_player_color%%bw_player% &7was eliminated while disconnected by %bw_killer_color%%bw_killer_name%&7. &b&lFINAL KILL!");
         yml.addDefault(Messages.PLAYER_DIE_KNOCKED_BY_REGULAR_KILL, "%bw_killer_color%%bw_killer_name% %bw_player_color%%bw_player% &7ke dhakka dilen.");
         yml.addDefault(Messages.PLAYER_DIE_KNOCKED_BY_FINAL_KILL, "%bw_killer_color%%bw_killer_name% %bw_player_color%%bw_player% &7ke dhakka dilen. &b&lFINAL KILL!");
         yml.addDefault(Messages.PLAYER_DIE_EXPLOSION_WITH_SOURCE_REGULAR_KILL, "%bw_player_color%%bw_player% %bw_killer_color%%bw_killer_name% &7er bomb dara void e porlen.");

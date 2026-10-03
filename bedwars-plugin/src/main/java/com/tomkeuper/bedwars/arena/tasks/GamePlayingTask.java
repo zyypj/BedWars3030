@@ -11,6 +11,7 @@ import com.tomkeuper.bedwars.api.language.Language;
 import com.tomkeuper.bedwars.api.language.Messages;
 import com.tomkeuper.bedwars.api.tasks.PlayingTask;
 import com.tomkeuper.bedwars.arena.Arena;
+import com.tomkeuper.bedwars.arena.ReJoin;
 import com.tomkeuper.bedwars.listeners.chat.ChatFormatting;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -102,6 +103,8 @@ public class GamePlayingTask implements Runnable, PlayingTask {
                     }
                     for (ITeam t : getArena().getTeams()) {
                         t.setBedDestroyed(true);
+                        // without a bed the members who left can't come back anymore
+                        if (ReJoin.hasPending(t)) ReJoin.eliminateDisconnected(getArena(), t, null);
                     }
                     getArena().updateNextEvent();
                 }

@@ -13,6 +13,7 @@ import com.tomkeuper.bedwars.api.language.Messages;
 import com.tomkeuper.bedwars.api.region.Region;
 import com.tomkeuper.bedwars.api.server.ServerType;
 import com.tomkeuper.bedwars.arena.Arena;
+import com.tomkeuper.bedwars.arena.ReJoin;
 import com.tomkeuper.bedwars.configuration.Sounds;
 import com.tomkeuper.bedwars.listeners.chat.ChatFormatting;
 import com.tomkeuper.bedwars.support.paper.PaperSupport;
@@ -373,6 +374,8 @@ public class BreakPlace implements Listener {
                                                     Sounds.playSound(ConfigPath.SOUNDS_BED_DESTROY_OWN, on);
                                                 else Sounds.playSound(ConfigPath.SOUNDS_BED_DESTROY, on);
                                             }
+                                            // members who left can't come back without a bed: final kill for the breaker
+                                            if (ReJoin.hasPending(t)) ReJoin.eliminateDisconnected(a, t, p);
                                         }
                                         return;
                                     }

@@ -9,6 +9,7 @@ import com.tomkeuper.bedwars.api.language.Messages;
 import com.tomkeuper.bedwars.api.party.Party;
 import com.tomkeuper.bedwars.api.stats.IPlayerStats;
 import com.tomkeuper.bedwars.arena.Arena;
+import com.tomkeuper.bedwars.arena.ReJoin;
 import com.tomkeuper.bedwars.commands.shout.ShoutCommand;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import org.bukkit.Bukkit;
@@ -190,8 +191,12 @@ public class PAPISupport extends PlaceholderExpansion {
             if (s.equalsIgnoreCase("team_status"))
                 team = arena.getTeam(player);
             else team = arena.getTeam(s.replace("team_status_", ""));
-            if (team != null)
-                return !team.isBedDestroyed() ? lang.getString(Messages.FORMATTING_SCOREBOARD_TEAM_ALIVE) : !team.getMembers().isEmpty() ? String.valueOf(team.getMembers().size()) : lang.getString(Messages.FORMATTING_SCOREBOARD_TEAM_ELIMINATED);
+            if (team != null) {
+                if (!team.isBedDestroyed()) {
+                    return team.getMembers().isEmpty() && ReJoin.hasPending(team) ? lang.getString(Messages.FORMATTING_SCOREBOARD_TEAM_DISCONNECTED) : lang.getString(Messages.FORMATTING_SCOREBOARD_TEAM_ALIVE);
+                }
+                return !team.getMembers().isEmpty() ? String.valueOf(team.getMembers().size()) : lang.getString(Messages.FORMATTING_SCOREBOARD_TEAM_ELIMINATED);
+            }
         }
         if (s.startsWith("team_color")) {
             ITeam team;

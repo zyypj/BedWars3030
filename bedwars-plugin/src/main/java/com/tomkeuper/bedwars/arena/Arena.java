@@ -848,6 +848,15 @@ public class Arena implements IArena {
                 lastDamager = null;
             }
         }
+        // leaving without a bed is a final kill: with no recent hit it goes to whoever broke the bed
+        boolean creditedToBedDestroyer = false;
+        if (lastDamager == null && team != null && team.isBedDestroyed()) {
+            Player bedDestroyer = team.getBedDestroyer();
+            if (bedDestroyer != null && isPlayer(bedDestroyer) && !team.isMember(bedDestroyer)) {
+                lastDamager = bedDestroyer;
+                creditedToBedDestroyer = true;
+            }
+        }
         Bukkit.getPluginManager().callEvent(new PlayerLeaveArenaEvent(p, this, lastDamager));
         //players.remove must be under call event in order to check if the player is a spectator or not
         players.remove(p);
@@ -908,7 +917,7 @@ public class Arena implements IArena {
                     PlayerKillEvent.PlayerKillCause cause;
                     if (team.isBedDestroyed()) {
                         cause = PlayerKillEvent.PlayerKillCause.PLAYER_DISCONNECT_FINAL;
-                        message = Messages.PLAYER_DIE_PVP_LOG_OUT_FINAL;
+                        message = creditedToBedDestroyer ? Messages.PLAYER_DIE_DISCONNECTED_FINAL_KILL : Messages.PLAYER_DIE_PVP_LOG_OUT_FINAL;
                     } else {
                         message = Messages.PLAYER_DIE_PVP_LOG_OUT_REGULAR;
                         cause = PlayerKillEvent.PlayerKillCause.PLAYER_DISCONNECT;
@@ -2638,7 +2647,7 @@ public class Arena implements IArena {
         destroyReJoins();
         if (worldName != null) arenaByIdentifier.remove(worldName);
         arenas.remove(this);
-        for (ReJoinTask rjt : ReJoinTask.getReJoinTasks()) {
+        for (ReJoinTask rjt : new ArrayList<>(ReJoinTask.getReJoinTasks())) {
             if (rjt.getArena() == this) {
                 rjt.destroy();
             }
