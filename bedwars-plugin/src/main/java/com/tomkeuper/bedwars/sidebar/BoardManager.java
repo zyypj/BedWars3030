@@ -36,7 +36,7 @@ import static com.tomkeuper.bedwars.api.language.Language.getMsg;
 public class BoardManager implements IScoreboardService {
 
     private static final String TITLE_PLACEHOLDER = "%bw_scoreboard_title%";
-    private static final String BELOW_NAME_TITLE = "&cHealth";
+    private static final String BELOW_NAME_TITLE = "&c❤️";
 
     @Getter
     private static BoardManager instance;

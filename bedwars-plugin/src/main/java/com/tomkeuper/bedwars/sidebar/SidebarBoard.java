@@ -151,7 +151,7 @@ public class SidebarBoard implements ISidebar {
             if (belowName == null) {
                 belowName = scoreboard.registerNewObjective(BELOW_NAME_OBJECTIVE, "health");
                 belowName.setDisplaySlot(DisplaySlot.BELOW_NAME);
-                belowName.setDisplayName(truncate(belowNameTitle, legacy ? 32 : 128));
+                belowName.setDisplayName(truncate(ChatColor.RED + belowNameTitle, legacy ? 32 : 128));
             }
             if (tabHealth == null) {
                 tabHealth = scoreboard.registerNewObjective(TAB_HEALTH_OBJECTIVE, "health");
