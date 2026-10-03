@@ -5,6 +5,8 @@ import com.tomkeuper.bedwars.api.arena.IArena;
 import com.tomkeuper.bedwars.api.arena.shop.IBuyItem;
 import com.tomkeuper.bedwars.api.arena.shop.ICategoryContent;
 import com.tomkeuper.bedwars.api.arena.shop.IContentTier;
+import com.tomkeuper.bedwars.api.arena.shop.ShopLimitType;
+import com.tomkeuper.bedwars.api.arena.team.ITeam;
 import com.tomkeuper.bedwars.api.configuration.ConfigPath;
 import com.tomkeuper.bedwars.api.events.shop.ShopBuyEvent;
 import com.tomkeuper.bedwars.api.language.Language;
@@ -16,6 +18,7 @@ import com.tomkeuper.bedwars.api.shop.IShopCategory;
 import com.tomkeuper.bedwars.arena.Arena;
 import com.tomkeuper.bedwars.configuration.Sounds;
 import com.tomkeuper.bedwars.shop.ShopCache;
+import com.tomkeuper.bedwars.shop.ShopLimits;
 import com.tomkeuper.bedwars.shop.quickbuy.PlayerQuickBuyCache;
 import com.tomkeuper.bedwars.listeners.chat.ChatFormatting;
 import lombok.Getter;
@@ -54,6 +57,8 @@ public class CategoryContent implements ICategoryContent {
     private boolean downgradable = false;
     private boolean unbreakable = false;
     private byte weight = 0;
+    private int purchaseLimit = 0;
+    private ShopLimitType purchaseLimitType = ShopLimitType.PER_PLAYER;
 
 
     /**
@@ -85,6 +90,16 @@ public class CategoryContent implements ICategoryContent {
             BedWars.plugin.getLogger().severe("tier1 não encontrado para " + path);
             return;
         }
+
+        // A disabled item stays fully configured in the file but never reaches the shop, which is how the
+        // editor hides one without throwing its prices and tiers away.
+        if (!yml.getBoolean(path + "." + ConfigPath.SHOP_CATEGORY_CONTENT_ENABLED, true)) {
+            BedWars.debug("Skipping disabled CategoryContent " + path);
+            return;
+        }
+
+        purchaseLimit = Math.max(0, yml.getInt(path + "." + ConfigPath.SHOP_CATEGORY_CONTENT_LIMIT, 0));
+        purchaseLimitType = ShopLimitType.byName(yml.getString(path + "." + ConfigPath.SHOP_CATEGORY_CONTENT_LIMIT_TYPE));
 
         if (yml.get(path + "." + ConfigPath.SHOP_CATEGORY_CONTENT_IS_PERMANENT) != null) {
             permanent = yml.getBoolean(path + "." + ConfigPath.SHOP_CATEGORY_CONTENT_IS_PERMANENT);
@@ -166,6 +181,16 @@ public class CategoryContent implements ICategoryContent {
             else ct = contentTiers.get(shopCache.getContentTier(getIdentifier()));
         }
 
+        // Check the purchase limit before the money, so a player who cannot buy it at all is told why rather
+        // than being told they are short of iron.
+        if (!withinLimit(player, ct)) {
+            BedWars.plugin.adventure().player(player).sendMessage(ChatFormatting.parseLegacyMini(
+                    getMsg(player, Messages.SHOP_LIMIT_REACHED)
+                            .replace("%bw_limit%", String.valueOf(purchaseLimit))));
+            Sounds.playSound(ConfigPath.SOUNDS_INSUFF_MONEY, player);
+            return false;
+        }
+
         // Check money
         int money = calculateMoney(player, ct.getCurrency());
         if (money < ct.getPrice()) {
@@ -196,6 +221,8 @@ public class CategoryContent implements ICategoryContent {
         // Give items
         giveItems(player, event.getShopCache(), Arena.getArenaByPlayer(player));
 
+        countPurchase(player);
+
         // Play sound
         Sounds.playSound(ConfigPath.SOUNDS_BOUGHT, player);
 
@@ -216,6 +243,68 @@ public class CategoryContent implements ICategoryContent {
         }
         shopCache.setCategoryWeight(father, weight);
         return true;
+    }
+
+    @Override
+    public int getPurchaseLimit() {
+        return purchaseLimit;
+    }
+
+    @Override
+    public ShopLimitType getPurchaseLimitType() {
+        return purchaseLimitType;
+    }
+
+    /**
+     * @return true when this purchase is still inside the content's limit, and always true when it has none
+     */
+    private boolean withinLimit(Player player, IContentTier tier) {
+        if (purchaseLimit <= 0) return true;
+
+        IArena arena = Arena.getArenaByPlayer(player);
+        if (purchaseLimitType == ShopLimitType.IN_INVENTORY) {
+            return countInInventory(player, tier) < purchaseLimit;
+        }
+
+        ITeam team = purchaseLimitType == ShopLimitType.PER_TEAM && arena != null ? arena.getTeam(player) : null;
+        return ShopLimits.get(arena, ShopLimits.key(getIdentifier(), player, team)) < purchaseLimit;
+    }
+
+    /**
+     * An inventory limit is read off the inventory itself, so nothing has to be counted for it.
+     */
+    private void countPurchase(Player player) {
+        if (purchaseLimit <= 0 || purchaseLimitType == ShopLimitType.IN_INVENTORY) return;
+
+        IArena arena = Arena.getArenaByPlayer(player);
+        ITeam team = purchaseLimitType == ShopLimitType.PER_TEAM && arena != null ? arena.getTeam(player) : null;
+        ShopLimits.increment(arena, ShopLimits.key(getIdentifier(), player, team));
+    }
+
+    /**
+     * How many of what this tier grants the player is already carrying.
+     * <p>
+     * Matched on material alone: a wool of another colour is still a wool as far as a "one in the inventory"
+     * limit is concerned, and the team colour is applied after the shop hands the item over anyway.
+     */
+    private int countInInventory(Player player, IContentTier tier) {
+        List<IBuyItem> granted = tier.getBuyItemsList();
+        List<Material> materials = new ArrayList<>();
+
+        if (granted == null || granted.isEmpty()) {
+            materials.add(tier.getItemStack().getType());
+        } else {
+            for (IBuyItem item : granted) {
+                if (item.getItemStack() != null) materials.add(item.getItemStack().getType());
+            }
+        }
+
+        int count = 0;
+        for (ItemStack carried : player.getInventory().getContents()) {
+            if (carried == null || carried.getType() == Material.AIR) continue;
+            if (materials.contains(carried.getType())) count += carried.getAmount();
+        }
+        return count;
     }
 
     /**

@@ -370,6 +370,7 @@ public class French extends Language {
         yml.addDefault(Messages.SHOP_NEW_PURCHASE, "%bw_lang_prefix%&aVous avez acheté &6%bw_item%");
         yml.addDefault(Messages.SHOP_ALREADY_BOUGHT, "%bw_lang_prefix%&cVous avez déjà acheté ca!");
         yml.addDefault(Messages.SHOP_ALREADY_HIGHER_TIER, "%bw_lang_prefix%&cVous avez déjà le tier maximum de cette item.");
+        yml.addDefault(Messages.SHOP_LIMIT_REACHED, "%bw_lang_prefix%&cVous avez déjà acheté le maximum de cet objet (&f%bw_limit%&c).");
         yml.addDefault(Messages.SHOP_UTILITY_NPC_SILVERFISH_NAME, "%bw_team_color%&l%bw_team_name% &r%bw_team_color%Moucheron");
         yml.addDefault(Messages.SHOP_UTILITY_NPC_IRON_GOLEM_NAME, "%bw_team_color%%bw_despawn_time%s &8[ %bw_team_color%%bw_health%&8]");
         yml.addDefault(Messages.SHOP_SEPARATOR_NAME, "&8⇧ Catégories");

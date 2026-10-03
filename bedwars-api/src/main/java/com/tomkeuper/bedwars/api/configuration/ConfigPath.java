@@ -367,6 +367,12 @@ public class ConfigPath {
     public static final String SHOP_CATEGORY_CONTENT_IS_DOWNGRADABLE = "content-settings.is-downgradable";
     public static final String SHOP_CATEGORY_CONTENT_IS_UNBREAKABLE = "content-settings.is-unbreakable";
     public static final String SHOP_CATEGORY_CONTENT_WEIGHT = "content-settings.weight";
+    /** Set to false to keep a shop item out of the shop without deleting how it is configured. */
+    public static final String SHOP_CATEGORY_CONTENT_ENABLED = "content-settings.enabled";
+    /** How many times it may be bought; 0 or missing means no limit. */
+    public static final String SHOP_CATEGORY_CONTENT_LIMIT = "content-settings.limit";
+    /** How the limit is counted: PER_PLAYER, PER_TEAM or IN_INVENTORY. */
+    public static final String SHOP_CATEGORY_CONTENT_LIMIT_TYPE = "content-settings.limit-type";
     public static final String SHOP_CATEGORY_CONTENT_CONTENT_TIERS = "content-tiers";
     public static final String SHOP_CATEGORY_CONTENT_PATH = ".category-content";
 

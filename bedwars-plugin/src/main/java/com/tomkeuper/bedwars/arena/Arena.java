@@ -45,6 +45,7 @@ import com.tomkeuper.bedwars.listeners.chat.ChatFormatting;
 import com.tomkeuper.bedwars.listeners.dropshandler.PlayerDrops;
 import com.tomkeuper.bedwars.money.internal.MoneyPerMinuteTask;
 import com.tomkeuper.bedwars.shop.ShopCache;
+import com.tomkeuper.bedwars.shop.ShopLimits;
 import com.tomkeuper.bedwars.shop.main.ShopIndex;
 import com.tomkeuper.bedwars.api.sidebar.IBossBar;
 import com.tomkeuper.bedwars.sidebar.BoardManager;
@@ -2666,6 +2667,7 @@ public class Arena implements IArena {
         BoardManager.getInstance().unregisterScoreboards(scoreboards);
         scoreboards = null;
         ShopManager.shop.clearArenaCache(this);
+        ShopLimits.clear(this);
         removeArenaByName(this);
         BedWars.arenaManager.releaseGameID(worldName);
         arenaByPlayer.entrySet().removeIf(entry -> entry.getValue() == this);

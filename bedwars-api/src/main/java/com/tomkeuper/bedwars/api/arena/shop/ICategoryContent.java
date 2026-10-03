@@ -49,6 +49,22 @@ public interface ICategoryContent {
     boolean isDowngradable();
 
     /**
+     * How many times this content may be bought in one match.
+     *
+     * @return the limit, or 0 when there is none
+     */
+    default int getPurchaseLimit() {
+        return 0;
+    }
+
+    /**
+     * How {@link #getPurchaseLimit()} is counted. Meaningless when there is no limit.
+     */
+    default ShopLimitType getPurchaseLimitType() {
+        return ShopLimitType.PER_PLAYER;
+    }
+
+    /**
      * Check if the content is upgradeable
      *
      * @return if the code is upgradable (Has more than 1 tier)
