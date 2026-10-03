@@ -7,6 +7,7 @@ import com.tomkeuper.bedwars.api.arena.team.ITeam;
 import com.tomkeuper.bedwars.api.language.Language;
 import com.tomkeuper.bedwars.api.language.Messages;
 import com.tomkeuper.bedwars.api.party.Party;
+import com.tomkeuper.bedwars.api.stats.IModeStats;
 import com.tomkeuper.bedwars.api.stats.IPlayerStats;
 import com.tomkeuper.bedwars.arena.Arena;
 import com.tomkeuper.bedwars.arena.ReJoin;
@@ -141,6 +142,20 @@ public class PAPISupport extends PlaceholderExpansion {
                     return String.valueOf(stats.getBedsDestroyed());
                 case "gamesplayed":
                     return String.valueOf(stats.getGamesPlayed());
+                case "winstreak":
+                    return String.valueOf(stats.getWinstreak());
+                case "bestwinstreak":
+                case "best_winstreak":
+                    return String.valueOf(stats.getBestWinstreak());
+            }
+            // per mode: stats_<mode>_winstreak and stats_<mode>_best_winstreak, e.g. stats_solo_winstreak
+            boolean best = targetedStat.endsWith("_best_winstreak");
+            if (best || targetedStat.endsWith("_winstreak")) {
+                String mode = targetedStat.substring(0, targetedStat.length() - (best ? "_best_winstreak" : "_winstreak").length()).toLowerCase();
+                // read without getModeStats(mode), which would create an empty entry for any typo
+                IModeStats modeStats = stats.getModeStats().get(mode);
+                if (modeStats == null) return "0";
+                return String.valueOf(best ? modeStats.getBestWinstreak() : modeStats.getWinstreak());
             }
         }
 

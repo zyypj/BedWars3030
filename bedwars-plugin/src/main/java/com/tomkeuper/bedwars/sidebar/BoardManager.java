@@ -10,8 +10,11 @@ import com.tomkeuper.bedwars.api.language.Messages;
 import com.tomkeuper.bedwars.api.server.ServerType;
 import com.tomkeuper.bedwars.api.sidebar.IScoreboardService;
 import com.tomkeuper.bedwars.api.sidebar.ISidebar;
+import com.tomkeuper.bedwars.api.stats.IModeStats;
+import com.tomkeuper.bedwars.api.stats.IPlayerStats;
 import com.tomkeuper.bedwars.api.tasks.PlayingTask;
 import com.tomkeuper.bedwars.arena.Arena;
+import com.tomkeuper.bedwars.arena.ArenaMode;
 import com.tomkeuper.bedwars.arena.ReJoin;
 import com.tomkeuper.bedwars.levels.internal.PlayerLevel;
 import lombok.Getter;
@@ -294,6 +297,14 @@ public class BoardManager implements IScoreboardService {
         placeholders.registerPlayerPlaceholder("%bw_wins%", player -> String.valueOf(BedWars.getStatsManager().get(player.getUniqueId()).getWins()));
         placeholders.registerPlayerPlaceholder("%bw_losses%", player -> String.valueOf(BedWars.getStatsManager().get(player.getUniqueId()).getLosses()));
         placeholders.registerPlayerPlaceholder("%bw_games_played%", player -> String.valueOf(BedWars.getStatsManager().get(player.getUniqueId()).getGamesPlayed()));
+        placeholders.registerPlayerPlaceholder("%bw_winstreak%", player -> String.valueOf(getWinstreak(player, null, false)));
+        placeholders.registerPlayerPlaceholder("%bw_best_winstreak%", player -> String.valueOf(getWinstreak(player, null, true)));
+        for (ArenaMode mode : ArenaMode.values()) {
+            String group = mode.getGroup().toLowerCase();
+            // same names the stats menu uses, e.g. %bw_solo_winstreak%
+            placeholders.registerPlayerPlaceholder("%bw_" + group + "_winstreak%", player -> String.valueOf(getWinstreak(player, group, false)));
+            placeholders.registerPlayerPlaceholder("%bw_" + group + "_best_winstreak%", player -> String.valueOf(getWinstreak(player, group, true)));
+        }
         placeholders.registerPlayerPlaceholder("%bw_next_event%", this::getNextEventName);
         placeholders.registerPlayerPlaceholder("%bw_on%", player -> String.valueOf(getOnlinePlayers(player)));
         placeholders.registerPlayerPlaceholder("%bw_max%", player -> Arena.getArenaByPlayer(player) == null ? "" : String.valueOf(Arena.getArenaByPlayer(player).getMaxPlayers()));
@@ -466,6 +477,20 @@ public class BoardManager implements IScoreboardService {
         teams.sort(Comparator.comparing(team -> ChatColor.stripColor(
                 ChatColor.translateAlternateColorCodes('&', team.getDisplayName(language))), collator));
         return teams;
+    }
+
+    /**
+     * A player's winstreak, overall when mode is null. Reading a mode the player never played gives 0 without
+     * creating an empty entry for it in their stats.
+     */
+    private static int getWinstreak(Player player, @Nullable String mode, boolean best) {
+        IPlayerStats stats = BedWars.getStatsManager().getUnsafe(player.getUniqueId());
+        if (stats == null) return 0;
+        if (mode == null) return best ? stats.getBestWinstreak() : stats.getWinstreak();
+
+        IModeStats modeStats = stats.getModeStats().get(mode.toLowerCase());
+        if (modeStats == null) return 0;
+        return best ? modeStats.getBestWinstreak() : modeStats.getWinstreak();
     }
 
     private String getTeamStatus(ITeam currentTeam, Player player) {
