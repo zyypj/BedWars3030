@@ -1,6 +1,8 @@
 package com.tomkeuper.bedwars.arena;
 
 import org.jetbrains.annotations.NotNull;
+import com.tomkeuper.bedwars.api.language.Language;
+import com.tomkeuper.bedwars.api.language.Messages;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -61,6 +63,46 @@ public enum ArenaMode {
         for (ArenaMode mode : values()) {
             groups.add(mode.group);
         }
+        return groups;
+    }
+
+    /**
+     * The position a group takes in every list players see.
+     *
+     * @return the index of the mode, or a number past the end for a group that is not one
+     */
+    /**
+     * Write a display name for every mode into the language files.
+     * <p>
+     * {@code Arena} only names a group when an arena of it loads, which leaves a configured mode with no map
+     * yet showing MISSING_LANG wherever it is listed. Existing names are never overwritten.
+     */
+    public static void registerDisplayNames() {
+        for (ArenaMode mode : values()) {
+            Language.saveIfNotExists(Messages.ARENA_DISPLAY_GROUP_PATH + mode.getGroup().toLowerCase(),
+                    mode.getGroup());
+        }
+    }
+
+    public static int order(@Nullable String group) {
+        ArenaMode mode = getByGroup(group);
+        return mode == null ? values().length : mode.ordinal();
+    }
+
+    /**
+     * Put groups in the order the modes are declared in: Solo, Duplas, Trios, Quartetos, then 1v1 to 4v4.
+     * <p>
+     * Anything that is not a known mode keeps to the back, sorted by name, so a custom group never pushes the
+     * standard ones out of the order players are used to.
+     *
+     * @return the same list, sorted in place
+     */
+    @NotNull
+    public static List<String> sortGroups(@NotNull List<String> groups) {
+        groups.sort((a, b) -> {
+            int byMode = Integer.compare(order(a), order(b));
+            return byMode != 0 ? byMode : a.compareToIgnoreCase(b);
+        });
         return groups;
     }
 }

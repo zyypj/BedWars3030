@@ -21,6 +21,7 @@ import com.tomkeuper.bedwars.api.server.RestoreAdapter;
 import com.tomkeuper.bedwars.api.server.ServerType;
 import com.tomkeuper.bedwars.api.server.VersionSupport;
 import com.tomkeuper.bedwars.arena.Arena;
+import com.tomkeuper.bedwars.arena.ArenaMode;
 import com.tomkeuper.bedwars.arena.ArenaManager;
 import com.tomkeuper.bedwars.arena.VoidChunkGenerator;
 import com.tomkeuper.bedwars.arena.despawnables.TargetListener;
@@ -667,6 +668,9 @@ public class BedWars extends JavaPlugin {
 
         /* Save messages for stats gui items if custom items added, for each language */
         Language.setupCustomStatsMessages();
+
+        /* Name every mode, so one configured without a map yet is still readable wherever it is listed */
+        ArenaMode.registerDisplayNames();
 
 
         /* PlaceholderAPI Support */

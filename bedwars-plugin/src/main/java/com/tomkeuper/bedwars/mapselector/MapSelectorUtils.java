@@ -6,6 +6,7 @@ import com.tomkeuper.bedwars.api.arena.IArena;
 import com.tomkeuper.bedwars.api.language.Language;
 import com.tomkeuper.bedwars.api.language.Messages;
 import com.tomkeuper.bedwars.arena.Arena;
+import com.tomkeuper.bedwars.arena.ArenaMode;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
@@ -42,7 +43,8 @@ public final class MapSelectorUtils {
         for (IArena arena : Arena.getArenas()) {
             if (!groups.contains(arena.getGroup())) groups.add(arena.getGroup());
         }
-        return groups;
+        // Arenas load in whatever order the folder listed them, which is not an order anyone wants to read.
+        return ArenaMode.sortGroups(groups);
     }
 
     /**
@@ -50,8 +52,14 @@ public final class MapSelectorUtils {
      */
     public static boolean groupsExist(@NotNull String group) {
         List<String> existing = getExistingGroups();
+
         for (String part : splitGroups(group)) {
-            if (!existing.contains(part)) return false;
+            String trimmed = part.trim();
+            // A configured mode counts even with no arena yet: the menu opens and simply has no map to offer,
+            // which is clearer than refusing to open it at all.
+            if (existing.contains(trimmed)) continue;
+            if (com.tomkeuper.bedwars.arena.ArenaMode.getByGroup(trimmed) != null) continue;
+            return false;
         }
         return true;
     }
@@ -61,7 +69,14 @@ public final class MapSelectorUtils {
      */
     public static @NotNull String getDisplayGroup(@NotNull Player player, @NotNull String group) {
         if (group.contains(",")) return group;
-        return Language.getPlayerLanguage(player).m(Messages.ARENA_DISPLAY_GROUP_PATH + group.toLowerCase());
+
+        String path = Messages.ARENA_DISPLAY_GROUP_PATH + group.toLowerCase();
+        Language language = Language.getPlayerLanguage(player);
+
+        // The name is only written when an arena of the group loads, so a mode with no map yet has none. The
+        // raw key reads far better than MISSING_LANG on the screen a player is looking at.
+        if (language == null || language.getYml().get(path) == null) return group;
+        return language.m(path);
     }
 
     /**
