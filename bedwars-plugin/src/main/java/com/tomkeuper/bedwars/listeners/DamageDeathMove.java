@@ -507,10 +507,9 @@ public class DamageDeathMove implements Listener {
                         if (lh.getDamager() instanceof Player) killer = (Player) lh.getDamager();
                         if (killer != null && killer.getUniqueId().equals(victim.getUniqueId())) killer = null;
                     }
-                } else if (bedDestroyer != null) {
-                    killer = bedDestroyer;
-                    if (killer.getUniqueId().equals(victim.getUniqueId())) killer = null;
                 }
+                // fell alone: the final kill goes to whoever broke the bed
+                if (killer == null) killer = getBedDestroyerKiller(arena, victim, victimsTeam);
                 if (killer == null) message = victimsTeamBedDestroyed ? Messages.PLAYER_DIE_VOID_FALL_FINAL_KILL : Messages.PLAYER_DIE_VOID_FALL_REGULAR_KILL;
                 else {
                     if (killer != victim) message = victimsTeamBedDestroyed ? Messages.PLAYER_DIE_KNOCKED_IN_VOID_FINAL_KILL : Messages.PLAYER_DIE_KNOCKED_IN_VOID_REGULAR_KILL;
@@ -539,31 +538,17 @@ public class DamageDeathMove implements Listener {
                     cause = victimsTeamBedDestroyed ? PlayerKillEvent.PlayerKillCause.PLAYER_SHOOT_FINAL_KILL : PlayerKillEvent.PlayerKillCause.PLAYER_SHOOT;
                 }
             } else if (damageEvent.getCause() == EntityDamageEvent.DamageCause.FALL) {
-                if (lh != null) {
-                    // check if kicked off in the last 10 seconds
-                    if (lh.getTime() >= System.currentTimeMillis() - 10000) {
-                        if (lh.getDamager() instanceof Player) killer = (Player) lh.getDamager();
-                        if (killer != null && killer.getUniqueId().equals(victim.getUniqueId())) killer = null;
-                        if (killer != null) {
-                            if (killer != victim)
-                                message = victimsTeamBedDestroyed ? Messages.PLAYER_DIE_KNOCKED_BY_FINAL_KILL : Messages.PLAYER_DIE_KNOCKED_BY_REGULAR_KILL;
-                            else
-                                message = victimsTeamBedDestroyed ? Messages.PLAYER_DIE_VOID_FALL_FINAL_KILL : Messages.PLAYER_DIE_VOID_FALL_REGULAR_KILL;
-                        }
-                        cause = victimsTeamBedDestroyed ? PlayerKillEvent.PlayerKillCause.PLAYER_PUSH_FINAL : PlayerKillEvent.PlayerKillCause.PLAYER_PUSH;
-                    }
-                } else if (bedDestroyer != null) {
-                    killer = bedDestroyer;
-                    if (killer.getUniqueId().equals(victim.getUniqueId())) killer = null;
-
-                    if (killer != null) {
-                        if (killer != victim) {
-                            message = victimsTeam.isBedDestroyed() ? Messages.PLAYER_DIE_KNOCKED_BY_FINAL_KILL : Messages.PLAYER_DIE_KNOCKED_BY_REGULAR_KILL;
-                        } else {
-                            message = victimsTeam.isBedDestroyed() ? Messages.PLAYER_DIE_VOID_FALL_FINAL_KILL : Messages.PLAYER_DIE_VOID_FALL_REGULAR_KILL;
-                        }
-                    }
-                    cause = victimsTeam.isBedDestroyed() ? PlayerKillEvent.PlayerKillCause.PLAYER_PUSH_FINAL : PlayerKillEvent.PlayerKillCause.PLAYER_PUSH;
+                killer = null;
+                // check if kicked off in the last 10 seconds
+                if (lh != null && lh.getTime() >= System.currentTimeMillis() - 10000) {
+                    if (lh.getDamager() instanceof Player) killer = (Player) lh.getDamager();
+                    if (killer != null && killer.getUniqueId().equals(victim.getUniqueId())) killer = null;
+                }
+                // fell alone: the final kill goes to whoever broke the bed
+                if (killer == null) killer = getBedDestroyerKiller(arena, victim, victimsTeam);
+                if (killer != null) {
+                    message = victimsTeamBedDestroyed ? Messages.PLAYER_DIE_KNOCKED_BY_FINAL_KILL : Messages.PLAYER_DIE_KNOCKED_BY_REGULAR_KILL;
+                    cause = victimsTeamBedDestroyed ? PlayerKillEvent.PlayerKillCause.PLAYER_PUSH_FINAL : PlayerKillEvent.PlayerKillCause.PLAYER_PUSH;
                 }
             }
         }
@@ -659,6 +644,17 @@ public class DamageDeathMove implements Listener {
         e.setDeathMessage(null);
     }
 
+
+    /**
+     * The player who broke the victim's bed, while still in the game. Only a final death has one.
+     */
+    @Nullable
+    private static Player getBedDestroyerKiller(IArena arena, Player victim, ITeam victimsTeam) {
+        if (!victimsTeam.isBedDestroyed()) return null;
+        Player bedDestroyer = victimsTeam.getBedDestroyer();
+        if (bedDestroyer == null || bedDestroyer.equals(victim) || !arena.isPlayer(bedDestroyer)) return null;
+        return bedDestroyer;
+    }
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void onRespawn(PlayerRespawnEvent e) {
