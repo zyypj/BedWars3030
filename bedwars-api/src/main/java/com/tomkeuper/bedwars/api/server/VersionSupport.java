@@ -8,6 +8,8 @@ import com.tomkeuper.bedwars.api.entity.Despawnable;
 import com.tomkeuper.bedwars.api.entity.GeneratorHolder;
 import com.tomkeuper.bedwars.api.exceptions.InvalidEffectException;
 import com.tomkeuper.bedwars.api.hologram.containers.IHoloLine;
+import com.tomkeuper.bedwars.api.npc.IPlayerNPC;
+import com.tomkeuper.bedwars.api.npc.IPlayerNPCClickListener;
 import com.tomkeuper.bedwars.api.hologram.containers.IHologram;
 import org.bukkit.Effect;
 import org.bukkit.Location;
@@ -30,6 +32,8 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 public abstract class VersionSupport {
+
+    private IPlayerNPCClickListener npcClickListener;
 
     /**
      * Map of entities that are going to despawn based on a timer.
@@ -695,6 +699,35 @@ public abstract class VersionSupport {
      * @return the armor stand instance
      */
     public abstract ArmorStand createPacketArmorStand(@Nonnull Location loc, Iterable<Player> players);
+
+    /**
+     * Build a fake player to stand in the world, used by the join NPCs.
+     * <p>
+     * Concrete rather than abstract on purpose: a version that has not implemented it returns null and the
+     * caller falls back to a simpler body, instead of every module being forced to carry a copy.
+     *
+     * @param location  where it stands and which way it faces
+     * @param value     the base64 texture value of the skin
+     * @param signature the texture signature, which may be null for an unsigned skin
+     * @return the NPC, or null when this version cannot build one
+     */
+    public IPlayerNPC createPlayerNPC(@Nonnull Location location, @Nonnull String value, String signature) {
+        return null;
+    }
+
+    /**
+     * Who to tell when a packet NPC is clicked.
+     * <p>
+     * Set by the plugin and read by the version support, because only the version support can see the packet
+     * and only the plugin knows which NPC an id belongs to.
+     */
+    public void setNPCClickListener(IPlayerNPCClickListener listener) {
+        this.npcClickListener = listener;
+    }
+
+    public IPlayerNPCClickListener getNPCClickListener() {
+        return npcClickListener;
+    }
 
     /**
      * Update packet armor stand.

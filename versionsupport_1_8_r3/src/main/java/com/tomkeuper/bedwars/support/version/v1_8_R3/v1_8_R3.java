@@ -780,6 +780,11 @@ public class v1_8_R3 extends VersionSupport {
     @Override
     public void registerVersionListeners() {
         new VersionCommon(this);
+
+        // Packet NPCs are invisible to the event system, so their clicks are read off the wire instead.
+        NPCPacketInjector injector = new NPCPacketInjector(getPlugin(), this);
+        getPlugin().getServer().getPluginManager().registerEvents(injector, getPlugin());
+        injector.injectOnline();
     }
 
     @Override
@@ -922,6 +927,12 @@ public class v1_8_R3 extends VersionSupport {
         for (Player p : players) {
             ((CraftPlayer) p).getHandle().playerConnection.sendPacket(destroy);
         }
+    }
+
+    @Override
+    public com.tomkeuper.bedwars.api.npc.IPlayerNPC createPlayerNPC(Location location, String value, String signature) {
+        if (location.getWorld() == null) return null;
+        return new PacketPlayerNPC(getPlugin(), location, value, signature);
     }
 
     @Override

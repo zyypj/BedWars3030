@@ -69,6 +69,8 @@ import com.tomkeuper.bedwars.listeners.blockstatus.BlockStatusListener;
 import com.tomkeuper.bedwars.listeners.chat.ChatAFK;
 import com.tomkeuper.bedwars.listeners.chat.ChatFormatting;
 import com.tomkeuper.bedwars.listeners.joinhandler.*;
+import com.tomkeuper.bedwars.npc.NPCListener;
+import com.tomkeuper.bedwars.npc.NPCManager;
 import com.tomkeuper.bedwars.maprestore.internal.InternalAdapter;
 import com.tomkeuper.bedwars.mapselector.MapSelectorCache;
 import com.tomkeuper.bedwars.mapselector.MapSelectorConfig;
@@ -834,6 +836,10 @@ public class BedWars extends JavaPlugin {
         // Resource Chest
         if (config.getBoolean(ConfigPath.GENERAL_CONFIGURATION_RESOURCE_CHEST_ENABLED)) ResourceChestFeature.init();
 
+        /* Join NPCs. Registered before the arenas load so a world loading later still gets its npcs. */
+        NPCManager.init();
+        registerEvents(new NPCListener());
+
         // Register features
         SpoilPlayerTNTFeature.init();
         GenSplitFeature.init();
@@ -935,6 +941,10 @@ public class BedWars extends JavaPlugin {
     public void onDisable() {
         shuttingDown = true;
         addonManager.unloadAddons();
+
+        // The holograms are real armour stands: left standing they pile up a copy per restart.
+        if (NPCManager.getInstance() != null) NPCManager.getInstance().shutdown();
+
         if (!serverSoftwareSupport) return;
         if (getServerType() == ServerType.BUNGEE) {
             redisConnection.close();

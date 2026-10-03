@@ -24,9 +24,23 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.tomkeuper.bedwars.commands.bedwars.subcmds.sensitive.NPC.createArmorStand;
 
 public class JoinNPC {
+
+    /**
+     * Invisible stand used to carry one hologram line.
+     * <p>
+     * This used to be borrowed from the /bw npc subcommand, which now belongs to the Citizens free NPC system,
+     * so the Citizens path keeps its own copy.
+     */
+    private static ArmorStand createArmorStand(Location loc) {
+        ArmorStand a = loc.getWorld().spawn(loc, ArmorStand.class);
+        a.setGravity(false);
+        a.setVisible(false);
+        a.setCustomNameVisible(false);
+        a.setMarker(true);
+        return a;
+    }
     private static boolean citizensSupport = false;
 
     /* Here are stored NPC holograms without colors and placeholders translated used for refresh*/
