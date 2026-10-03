@@ -32,6 +32,8 @@ public class ArenaManager {
      * this is owned by us, which is what makes the orphan cleanup on boot safe to run.
      */
     public static final String WORLD_PREFIX = "bw_";
+    /** How often leaked game worlds are swept, in ticks. */
+    private static final long SWEEP_INTERVAL = 20L * 60 * 5;
 
     private static final int ID_LENGTH = 5;
     /** No l/1/i/0/o, so an id read off a sign or chat is never ambiguous. */
@@ -216,6 +218,19 @@ public class ArenaManager {
         if (removed > 0) {
             BedWars.plugin.getLogger().info("Limpeza de mundos de partida órfãos: " + removed + " removido(s).");
         }
+    }
+
+    /**
+     * Sweep orphan game worlds every few minutes instead of only at boot.
+     * <p>
+     * Nothing should reach this: a game that ends cleans up after itself. It is here so that a world leaked by
+     * a crash, or by a delete that lost a race with the server still writing to it, is gone in minutes rather
+     * than sitting on disk until the next restart.
+     */
+    public void startOrphanWorldSweeper() {
+        Bukkit.getScheduler().runTaskTimerAsynchronously(BedWars.plugin,
+                () -> Bukkit.getScheduler().runTask(BedWars.plugin, this::cleanupOrphanWorlds),
+                SWEEP_INTERVAL, SWEEP_INTERVAL);
     }
 
     /**

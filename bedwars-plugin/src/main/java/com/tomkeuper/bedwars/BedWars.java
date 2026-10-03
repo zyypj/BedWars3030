@@ -804,6 +804,9 @@ public class BedWars extends JavaPlugin {
                 /* Keep one joinable game per arena, self healing if one fails to load. */
                 startAutoScaleTopUpTask();
 
+                /* Catch any game world that leaked instead of leaving it until the next restart. */
+                arenaManager.startOrphanWorldSweeper();
+
             } else {
                 this.getLogger().severe("Não foi possível iniciar o sistema de scoreboard interno!");
                 Bukkit.getPluginManager().disablePlugin(this);

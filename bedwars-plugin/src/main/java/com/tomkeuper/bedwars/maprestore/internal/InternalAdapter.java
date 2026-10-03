@@ -112,27 +112,71 @@ public class InternalAdapter extends RestoreAdapter {
                     Bukkit.getScheduler().runTaskLater(plugin, () -> new Arena(a.getArenaName(), null), 80L);
                 }
             }
-            if (!a.getWorldName().equals(a.getMapName())) {
-                deleteWorld(a.getWorldName());
-            }
+            dropGameWorld(a);
         });
     }
 
     @Override
     public void onDisable(IArena a) {
-        if(BedWars.isShuttingDown()) {
-            boolean success = Bukkit.unloadWorld(a.getWorldName(), false);
-            if (!success) {
-                plugin.getLogger().warning("Falha ao descarregar o mundo: " + a.getWorldName());
-            }
+        if (BedWars.isShuttingDown()) {
+            // The scheduler is already going down, so this is the last chance to do it and it has to be inline.
+            unload(a);
+            dropGameWorldNow(a);
             return;
         }
-        Bukkit.getScheduler().runTask(getOwner(), () -> {
-            boolean success = Bukkit.unloadWorld(a.getWorldName(), false);
-            if (!success) {
-                plugin.getLogger().warning("Falha ao descarregar o mundo: " + a.getWorldName());
-            }
-        });
+        Bukkit.getScheduler().runTask(getOwner(), () -> dropGameWorld(a));
+    }
+
+    /**
+     * Unload a game world and delete the folder it left behind.
+     * <p>
+     * A disabled arena used to only be unloaded, which is why every server stop, and every arena taken out of
+     * rotation, left its {@code bw_} folder on disk for good.
+     */
+    private void dropGameWorld(IArena a) {
+        if (!unload(a)) {
+            // Deleting a world the server still has open only half works and it comes back on the next save.
+            plugin.getLogger().warning("Mundo ainda carregado, adiando a remocao: " + a.getWorldName());
+            Bukkit.getScheduler().runTaskLater(getOwner(), () -> {
+                if (unload(a)) deleteGameWorld(a);
+            }, 40L);
+            return;
+        }
+        deleteGameWorld(a);
+    }
+
+    /**
+     * Same thing without the scheduler, for use while the server is shutting down.
+     */
+    private void dropGameWorldNow(IArena a) {
+        if (!isGameWorld(a)) return;
+        FileUtil.delete(new File(Bukkit.getWorldContainer(), a.getWorldName()));
+    }
+
+    private void deleteGameWorld(IArena a) {
+        if (!isGameWorld(a)) return;
+        deleteWorld(a.getWorldName());
+    }
+
+    /**
+     * @return true when the world belongs to one game rather than being the template map everyone is cloned
+     * from, which must never be deleted
+     */
+    private boolean isGameWorld(IArena a) {
+        return !a.getWorldName().equals(a.getMapName());
+    }
+
+    /**
+     * @return true if the world is no longer loaded
+     */
+    private boolean unload(IArena a) {
+        if (Bukkit.getWorld(a.getWorldName()) == null) return true;
+
+        boolean success = Bukkit.unloadWorld(a.getWorldName(), false);
+        if (!success) {
+            plugin.getLogger().warning("Falha ao descarregar o mundo: " + a.getWorldName());
+        }
+        return success;
     }
 
     @Override

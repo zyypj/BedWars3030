@@ -10,16 +10,24 @@ import java.util.Properties;
 
 public class FileUtil {
 
-	public static void delete(File file) {
-		if(file.isDirectory()) {
-			//noinspection ConstantConditions
-			for(File subfile : file.listFiles()) {
-				delete(subfile);
+	/**
+	 * Delete a file, or a directory and everything under it.
+	 * <p>
+	 * The directory itself goes too. Leaving it behind is what used to fill the server root with empty
+	 * {@code bw_} folders from games that had already ended.
+	 *
+	 * @return true if nothing is left on disk
+	 */
+	public static boolean delete(File file) {
+		if (file == null || !file.exists()) return true;
+
+		if (file.isDirectory()) {
+			File[] children = file.listFiles();
+			if (children != null) {
+				for (File child : children) delete(child);
 			}
-		} else {
-            //noinspection ResultOfMethodCallIgnored
-            file.delete();
 		}
+		return file.delete();
 	}
 
 	public static void setMainLevel(String worldName, VersionSupport vs){
