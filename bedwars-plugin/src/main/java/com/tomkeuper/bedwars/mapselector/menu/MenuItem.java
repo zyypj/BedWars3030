@@ -104,8 +104,7 @@ public class MenuItem {
     }
 
     /**
-     * Menu placeholders run first so a value they produce can still be read by PlaceholderAPI, which is how the
-     * default lore counts the players of a group.
+     * Menu placeholders run first so a value they produce can still be read by PlaceholderAPI.
      */
     private String apply(@NotNull String input) {
         String result = input;

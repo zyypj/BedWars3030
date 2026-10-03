@@ -24,6 +24,9 @@ public class MapSelectorConfig extends ConfigManager {
 
     public static final String PATH = "map-selector";
 
+    /** Bumped when an entry has to be removed from files that already exist. */
+    public static final String CONFIG_VERSION = PATH + ".config-version";
+
     public static final String MENU_TITLE = PATH + ".menus.bedwars-menu.title";
     public static final String MENU_SLOTS = PATH + ".menus.bedwars-menu.slots";
     public static final String MENU_ITEMS = PATH + ".menus.bedwars-menu.items";
@@ -68,14 +71,10 @@ public class MapSelectorConfig extends ConfigManager {
         /* Main menu */
         addItem(MENU_ITEMS + ".join-random", 12, BedWars.getForCurrentVersion("BED", "BED", "RED_BED"), 0,
                 "&cBed Wars ({groupName})",
-                "&7%bw2023_group_count_{groupName}% jogando agora!", "", "&eClique para jogar!");
+                "&7{players} jogando agora!", "", "&eClique para jogar!");
         addItem(MENU_ITEMS + ".map-selector", 14, BedWars.getForCurrentVersion("SIGN", "SIGN", "OAK_SIGN"), 0,
                 "&cSeletor de Mapas ({groupName})",
                 "&7Escolha o mapa que você quer jogar", "&7entre os disponíveis.", "", "&eClique para ver!");
-        addItem(MENU_ITEMS + ".rejoin", 15, "ENDER_PEARL", 0,
-                "&cVoltar para a partida",
-                "&7Clique para voltar à sua partida", "&7caso tenha se desconectado.");
-        addItem(MENU_ITEMS + ".close", 22, "BARRIER", 0, "&cFechar");
 
         /* Maps menu */
         addItem(MAPS_ITEMS + ".map", 0, "PAPER", 0,
@@ -97,7 +96,39 @@ public class MapSelectorConfig extends ConfigManager {
                 "&8{groupName}", "", "&7Seleções: &a{selectionsType}", "", "&a▸ Clique para jogar");
 
         yml.options().copyDefaults(true);
+        migrate();
         save();
+    }
+
+    /**
+     * Bring an existing file up to date.
+     * <p>
+     * Defaults only ever add, so dropping an entry from the code above leaves it sitting in every file that was
+     * already written. The close and rejoin buttons were removed from the menu, so they are removed here too,
+     * once, and a stamp keeps an admin who puts one back from losing it again on the next start.
+     * <p>
+     * Version 3 swaps the PlaceholderAPI group count for {@code {players}}: {@code {groupName}} is the translated
+     * display name by then, and without PlaceholderAPI the raw placeholder was shown to players.
+     */
+    private void migrate() {
+        int version = getYml().getInt(CONFIG_VERSION, 0);
+        if (version >= 3) return;
+
+        if (version < 2) {
+            getYml().set(MENU_ITEMS + ".close", null);
+            getYml().set(MENU_ITEMS + ".rejoin", null);
+        }
+
+        for (String key : getKeys(MENU_ITEMS)) {
+            String path = MENU_ITEMS + "." + key + ".lore";
+            List<String> lore = getYml().getStringList(path);
+            if (lore.isEmpty()) continue;
+
+            List<String> fixed = new ArrayList<>(lore.size());
+            for (String line : lore) fixed.add(line.replace("%bw2023_group_count_{groupName}%", "{players}"));
+            getYml().set(path, fixed);
+        }
+        getYml().set(CONFIG_VERSION, 3);
     }
 
     private void addDefault(String path, Object value) {

@@ -1,6 +1,7 @@
 package com.tomkeuper.bedwars.mapselector.menu;
 
 import com.tomkeuper.bedwars.BedWars;
+import com.tomkeuper.bedwars.arena.Arena;
 import com.tomkeuper.bedwars.mapselector.MapSelectorConfig;
 import com.tomkeuper.bedwars.mapselector.MapSelectorUtils;
 import org.bukkit.entity.Player;
@@ -29,11 +30,13 @@ public class SelectorMenu extends MapSelectorMenu {
     public List<MenuItem> getItems() {
         List<MenuItem> items = new ArrayList<>();
         String displayGroup = MapSelectorUtils.getDisplayGroup(player, group);
+        String players = String.valueOf(Arena.getPlayers(group));
 
         for (String key : config().getKeys(MapSelectorConfig.MENU_ITEMS)) {
             items.add(MenuItem.parse(MapSelectorConfig.MENU_ITEMS + "." + key, config())
                     .player(player)
                     .replacement("{groupName}", displayGroup)
+                    .replacement("{players}", players)
                     .event(event -> handle(key)));
         }
         return items;
