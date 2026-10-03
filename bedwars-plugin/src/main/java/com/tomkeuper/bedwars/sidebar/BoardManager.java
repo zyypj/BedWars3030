@@ -22,11 +22,14 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.text.Collator;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.TimeZone;
 import java.util.UUID;
@@ -438,14 +441,11 @@ public class BoardManager implements IScoreboardService {
         if (arena == null) return null;
         Language language = Language.getPlayerLanguage(player);
         String genericTeamFormat = language.m(Messages.FORMATTING_SCOREBOARD_TEAM_GENERIC);
-        ITeam team;
-        try {
-            team = arena.getTeams().get(teamNumber - 1);
-        } catch (IndexOutOfBoundsException ignored) {
-            return null;
-        }
+        List<ITeam> teams = sortedTeams(arena, language);
+        if (teamNumber > teams.size()) return null;
+        ITeam team = teams.get(teamNumber - 1);
         String teamName = team.getDisplayName(language);
-        if (arena.getTeams().size() >= teamNumber) {
+        if (teams.size() >= teamNumber) {
             return genericTeamFormat
                     .replace("%bw_team_letter%", String.valueOf(teamName.length() != 0 ? teamName.charAt(0) : ""))
                     .replace("%bw_team_color%", team.getColor().chat().toString())
@@ -454,6 +454,18 @@ public class BoardManager implements IScoreboardService {
         } else {
             return null;
         }
+    }
+
+    /**
+     * Teams in alphabetical order of the name this language gives them, so %bw_team_1% is always the first one a
+     * reader would look for rather than whichever team happened to be created first.
+     */
+    private static List<ITeam> sortedTeams(IArena arena, Language language) {
+        Collator collator = Collator.getInstance(Locale.ROOT);
+        List<ITeam> teams = new ArrayList<>(arena.getTeams());
+        teams.sort(Comparator.comparing(team -> ChatColor.stripColor(
+                ChatColor.translateAlternateColorCodes('&', team.getDisplayName(language))), collator));
+        return teams;
     }
 
     private String getTeamStatus(ITeam currentTeam, Player player) {
