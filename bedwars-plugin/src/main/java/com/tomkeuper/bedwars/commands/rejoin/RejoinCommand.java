@@ -3,17 +3,19 @@ package com.tomkeuper.bedwars.commands.rejoin;
 import com.tomkeuper.bedwars.api.language.Language;
 import com.tomkeuper.bedwars.api.language.Messages;
 import com.tomkeuper.bedwars.arena.ReJoin;
-import com.tomkeuper.bedwars.configuration.Permissions;
 import com.tomkeuper.bedwars.configuration.Sounds;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.command.defaults.BukkitCommand;
 import org.bukkit.entity.Player;
 
+import java.util.Arrays;
+
 public class RejoinCommand extends BukkitCommand {
 
     public RejoinCommand(String name) {
         super(name);
+        setAliases(Arrays.asList("retornar", "reconectar"));
     }
 
     @Override
@@ -24,11 +26,6 @@ public class RejoinCommand extends BukkitCommand {
         }
 
         Player p = (Player) s;
-
-        if (!p.hasPermission(Permissions.PERMISSION_REJOIN)) {
-            p.sendMessage(Language.getMsg(p, Messages.COMMAND_NOT_FOUND_OR_INSUFF_PERMS));
-            return true;
-        }
 
         ReJoin rj = ReJoin.getPlayer(p);
 
