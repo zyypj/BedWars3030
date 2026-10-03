@@ -229,6 +229,7 @@ public class Portuguese extends Language {
         yml.addDefault(Messages.INTERACT_FULL_CHEST, "%bw_lang_prefix%&cO baú está cheio!");
         yml.addDefault(Messages.INTERACT_CHEST_DEPOSIT, "%bw_lang_prefix%&aVocê guardou &f%bw_amount% %bw_item% &ano baú.");
         yml.addDefault(Messages.INTERACT_ENDER_CHEST_DEPOSIT, "%bw_lang_prefix%&aVocê guardou &f%bw_amount% %bw_item% &ano baú do Ender.");
+        yml.addDefault(Messages.UPGRADES_TEAMMATE_FUNDS_USED, "%bw_lang_prefix%&e%bw_player% &7usou &f%bw_amount% %bw_item% &7do seu inventário em uma melhoria do time.");
         addItemMeanings(yml);
         yml.addDefault(Messages.INTERACT_CANNOT_BREAK_OWN_BED, "&cVocê não pode destruir sua própria cama!");
         yml.addDefault(Messages.INTERACT_BED_DESTROY_CHAT_ANNOUNCEMENT, "\n&f&lCAMA DESTRUÍDA > %bw_team_color%Cama do time %bw_team_name% &7foi destruída por %bw_player_color%%bw_player%&7!\n");

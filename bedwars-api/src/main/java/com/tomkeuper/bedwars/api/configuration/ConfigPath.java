@@ -79,6 +79,11 @@ public class ConfigPath {
     public static final String GENERAL_CONFIGURATION_RESOURCE_CHEST_BLOCKED = GENERAL_CONFIGURATION_RESOURCE_CHEST_PREFIX + "blocked-items";
     public static final String GENERAL_CONFIGURATION_RESOURCE_CHEST_MESSAGE = GENERAL_CONFIGURATION_RESOURCE_CHEST_PREFIX + "deposit-message";
     public static final String GENERAL_CONFIGURATION_RESOURCE_CHEST_HOLOGRAM = GENERAL_CONFIGURATION_RESOURCE_CHEST_PREFIX + "hologram";
+    public static final String GENERAL_CONFIGURATION_SHARED_FUNDS_PREFIX = "shared-funds.";
+    /** Shop and upgrade purchases can also spend what the buyer stored in their team chests and ender chest. */
+    public static final String GENERAL_CONFIGURATION_SHARED_FUNDS_CHESTS = GENERAL_CONFIGURATION_SHARED_FUNDS_PREFIX + "use-chests";
+    /** Team upgrades and traps can also spend what the buyer's teammates carry. */
+    public static final String GENERAL_CONFIGURATION_SHARED_FUNDS_TEAMMATES = GENERAL_CONFIGURATION_SHARED_FUNDS_PREFIX + "upgrades-use-teammates";
 
     public static final String GENERAL_CONFIGURATION_LOBBY_ITEMS_PATH = "lobby-items";
     public static final String GENERAL_CONFIGURATION_EXPERIMENTAL_TEAM_ASSIGNER = "use-experimental-team-assigner";

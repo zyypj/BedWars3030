@@ -376,6 +376,8 @@ public class Messages {
     public static String UPGRADES_LORE_REPLACEMENT_LOCKED = "upgrades-lore-locked";
     public static String UPGRADES_UPGRADE_BOUGHT_CHAT = "upgrades-new-purchase";
     public static String UPGRADES_UPGRADE_ALREADY_CHAT = "upgrades-already-purchase";
+    /** Sent to a teammate whose inventory helped pay for an upgrade. %bw_player%, %bw_amount%, %bw_item%. */
+    public static String UPGRADES_TEAMMATE_FUNDS_USED = "upgrades-teammate-funds-used";
     public static String UPGRADES_TRAP_QUEUE_LIMIT = "upgrades-trap-queue-full";
     public static String UPGRADES_TRAP_DEFAULT_TITLE = "upgrades-trap-default-title";
     public static String UPGRADES_TRAP_DEFAULT_SUBTITLE = "upgrades-trap-default-subtitle";

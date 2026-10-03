@@ -28,6 +28,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
@@ -429,7 +430,7 @@ public class CategoryContent implements ICategoryContent {
     }
 
     /**
-     * Get player's money amount
+     * Get player's money amount, counting what they stored in their team's chests and ender chest.
      */
     public static int calculateMoney(Player player, Material currency) {
         if (currency == Material.AIR) return (int) BedWars.getEconomy().getMoney(player);
@@ -438,6 +439,9 @@ public class CategoryContent implements ICategoryContent {
         for (ItemStack is : player.getInventory().getContents()) {
             if (is == null) continue;
             if (is.getType() == currency) amount += is.getAmount();
+        }
+        for (Inventory storage : PurchaseFunds.storage(player)) {
+            amount += PurchaseFunds.count(storage, currency);
         }
         return amount;
     }
@@ -563,9 +567,16 @@ public class CategoryContent implements ICategoryContent {
                 } else {
                     BedWars.nms.minusAmount(player, i, cost);
                     player.updateInventory();
+                    cost = 0;
                     break;
                 }
             }
+        }
+
+        // Whatever the inventory could not cover comes out of the chests.
+        for (Inventory storage : PurchaseFunds.storage(player)) {
+            if (cost <= 0) break;
+            cost -= PurchaseFunds.take(storage, currency, cost);
         }
 
     }

@@ -265,7 +265,7 @@ public class MenuBaseTrap implements MenuContent, EnemyBaseEnterTrap, TeamUpgrad
             if (currency == Material.AIR) {
                 BedWars.getEconomy().buyAction(player, BedWars.getUpgradeManager().getMoney(player, currency));
             } else {
-                BedWars.getAPI().getShopUtil().takeMoney(player, currency, cost);
+                BedWars.getUpgradeManager().takeMoney(player, currency, cost);
             }
         }
         Sounds.playSound(ConfigPath.SOUNDS_BOUGHT, player);

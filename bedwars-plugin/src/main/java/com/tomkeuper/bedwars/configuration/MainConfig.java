@@ -50,6 +50,8 @@ public class MainConfig extends ConfigManager {
         yml.addDefault(ConfigPath.GENERAL_CONFIGURATION_RESOURCE_CHEST_BLOCKED, Arrays.asList(BedWars.getForCurrentVersion("WOOD_SWORD", "WOODEN_SWORD", "WOODEN_SWORD"), "SHEARS", "COMPASS"));
         yml.addDefault(ConfigPath.GENERAL_CONFIGURATION_RESOURCE_CHEST_MESSAGE, true);
         yml.addDefault(ConfigPath.GENERAL_CONFIGURATION_RESOURCE_CHEST_HOLOGRAM, true);
+        yml.addDefault(ConfigPath.GENERAL_CONFIGURATION_SHARED_FUNDS_CHESTS, true);
+        yml.addDefault(ConfigPath.GENERAL_CONFIGURATION_SHARED_FUNDS_TEAMMATES, true);
         yml.addDefault(ConfigPath.GENERAL_CHAT_GLOBAL, yml.get("globalChat", false));
         yml.addDefault(ConfigPath.GENERAL_CHAT_FORMATTING, yml.get("formatChat", true));
         yml.addDefault("debug", false);

@@ -231,6 +231,7 @@ public class French extends Language {
         yml.addDefault(Messages.INTERACT_FULL_CHEST, "%bw_lang_prefix%&cLe coffre est plein!");
         yml.addDefault(Messages.INTERACT_CHEST_DEPOSIT, "%bw_lang_prefix%&aVous avez rangé &f%bw_amount% %bw_item% &adans le coffre.");
         yml.addDefault(Messages.INTERACT_ENDER_CHEST_DEPOSIT, "%bw_lang_prefix%&aVous avez rangé &f%bw_amount% %bw_item% &adans le coffre de l'Ender.");
+        yml.addDefault(Messages.UPGRADES_TEAMMATE_FUNDS_USED, "%bw_lang_prefix%&e%bw_player% &7used &f%bw_amount% %bw_item% &7from your inventory on a team upgrade.");
         yml.addDefault(Messages.INTERACT_CANNOT_BREAK_OWN_BED, "&cVous ne pouvez pas casser votre propre lit!");
         yml.addDefault(Messages.INTERACT_BED_DESTROY_CHAT_ANNOUNCEMENT, "\n&f&lDESTRUCTION DE LIT > %bw_team_color%%bw_team_name% Lit &7a été frit par %bw_player_color%%bw_player%&7!\n");
         yml.addDefault(Messages.INTERACT_BED_DESTROY_TITLE_ANNOUNCEMENT, "&cDESTRUCTION DE LIT!");

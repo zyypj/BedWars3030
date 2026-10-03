@@ -8,9 +8,12 @@ import com.tomkeuper.bedwars.api.upgrades.MenuContent;
 import com.tomkeuper.bedwars.api.upgrades.UpgradesIndex;
 import com.tomkeuper.bedwars.arena.Misc;
 import com.tomkeuper.bedwars.configuration.UpgradesConfig;
+import com.tomkeuper.bedwars.listeners.chat.ChatFormatting;
+import com.tomkeuper.bedwars.shop.main.PurchaseFunds;
 import com.tomkeuper.bedwars.upgrades.listeners.InventoryListener;
 import com.tomkeuper.bedwars.upgrades.listeners.UpgradeOpenListener;
 import com.tomkeuper.bedwars.upgrades.menu.*;
+import com.tomkeuper.bedwars.utils.ItemNames;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -304,7 +307,41 @@ public class UpgradesManager {
             double amount = BedWars.getEconomy().getMoney(player);
             return amount % 2 == 0 ? (int) amount : (int) (amount - 1);
         }
-        return BedWars.getAPI().getShopUtil().calculateMoney(player, currency);
+        int amount = BedWars.getAPI().getShopUtil().calculateMoney(player, currency);
+        // Upgrades serve the whole team, so teammates chip in with what they carry.
+        for (Player teammate : PurchaseFunds.teammates(player)) {
+            amount += PurchaseFunds.count(teammate.getInventory(), currency);
+        }
+        return amount;
+    }
+
+    /**
+     * Charge an upgrade: the buyer pays what they can, from their inventory and then their chests, and their
+     * teammates' inventories cover the rest.
+     *
+     * @param player   the buyer.
+     * @param currency see {@link #getMoney(Player, Material)}, except vault, which is charged elsewhere.
+     * @param amount   the price.
+     */
+    public void takeMoney(Player player, Material currency, int amount) {
+        int own = Math.min(amount, BedWars.getAPI().getShopUtil().calculateMoney(player, currency));
+        if (own > 0) BedWars.getAPI().getShopUtil().takeMoney(player, currency, own);
+
+        int remaining = amount - own;
+        for (Player teammate : PurchaseFunds.teammates(player)) {
+            if (remaining <= 0) break;
+            int taken = PurchaseFunds.take(teammate.getInventory(), currency, remaining);
+            if (taken <= 0) continue;
+            remaining -= taken;
+            teammate.updateInventory();
+
+            String message = Language.getMsg(teammate, Messages.UPGRADES_TEAMMATE_FUNDS_USED);
+            if (message == null || message.trim().isEmpty()) continue;
+            BedWars.plugin.adventure().player(teammate).sendMessage(ChatFormatting.parseLegacyMini(message
+                    .replace("%bw_player%", player.getDisplayName())
+                    .replace("%bw_amount%", String.valueOf(taken))
+                    .replace("%bw_item%", ItemNames.of(teammate, new ItemStack(currency), taken))));
+        }
     }
 
     /**
