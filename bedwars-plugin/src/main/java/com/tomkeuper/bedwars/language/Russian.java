@@ -145,6 +145,8 @@ public class Russian extends Language{
         yml.addDefault(Messages.INTERACT_CHEST_CANT_OPEN_TEAM_ELIMINATED, "&cТы не можешь открыть этот сундук, так как команда уничтожена!");
         yml.addDefault(Messages.INTERACT_CANNOT_PLACE_BLOCK, "%bw_lang_prefix%&cВы не можете ставить блоки здесь!");
         yml.addDefault(Messages.INTERACT_FULL_CHEST, "%bw_lang_prefix%&cThe chest is full!");
+        yml.addDefault(Messages.INTERACT_CHEST_DEPOSIT, "%bw_lang_prefix%&aYou stored &f%bw_amount% %bw_item% &ain the chest.");
+        yml.addDefault(Messages.INTERACT_ENDER_CHEST_DEPOSIT, "%bw_lang_prefix%&aYou stored &f%bw_amount% %bw_item% &ain the ender chest.");
         yml.addDefault(Messages.INTERACT_CANNOT_BREAK_BLOCK, "%bw_lang_prefix%&cВы можете ломать блоки только игроков!");
         yml.addDefault(Messages.INTERACT_CANNOT_BREAK_OWN_BED, "&cВы не можете разрушить свою кровать!");
         yml.addDefault(Messages.TEAM_ELIMINATED_CHAT, "\n&f&lУНИЧТОЖЕНИЕ КОММАНДЫ > %bw_team_color%%bw_team_name% команда &cбыла уничтожена!\n");
@@ -169,6 +171,7 @@ public class Russian extends Language{
         yml.addDefault(Messages.PLAYER_DIE_PVP_LOG_OUT_FINAL, "%bw_player_color%%bw_player% &7откючился пока сражался с %bw_killer_color%%bw_killer_name%&7. &b&lФИНАЛЬНОЕ УБИЙСТВО!");
         yml.addDefault(Messages.PLAYER_DIE_DISCONNECTED_FINAL_KILL, "%bw_player_color%%bw_player% &7was eliminated while disconnected by %bw_killer_color%%bw_killer_name%&7. &b&lFINAL KILL!");
         yml.addDefault(Messages.BED_HOLOGRAM_DESTROYED, "&c&lВаша кровать сломана!");
+        yml.addDefault(Messages.CHEST_HOLOGRAM, Arrays.asList("&bНАЖМИТЕ, ЧТОБЫ", "&e&lПОЛОЖИТЬ"));
         yml.addDefault(Messages.PLAYER_DIE_RESPAWN_TITLE, "&cВЫ ПОГИБЛИ!");
         yml.addDefault(Messages.PLAYER_DIE_RESPAWN_SUBTITLE, "&eВы возродитесь через &c%bw_time% &eсекунд!");
         yml.addDefault(Messages.PLAYER_DIE_RESPAWN_CHAT, "%bw_lang_prefix%&eВы возродитесь через &c%bw_time% &eсекунд!");

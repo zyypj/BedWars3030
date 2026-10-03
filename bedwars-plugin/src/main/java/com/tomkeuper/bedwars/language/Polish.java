@@ -224,6 +224,8 @@ public class Polish extends Language{
         yml.addDefault(Messages.INTERACT_CANNOT_PLACE_BLOCK, "%bw_lang_prefix%&cNie mozesz tutaj stawiac blokow!");
         yml.addDefault(Messages.INTERACT_CANNOT_BREAK_BLOCK, "%bw_lang_prefix%&c&cMozesz zniszczyc tylko bloki postawione przez graczy!");
         yml.addDefault(Messages.INTERACT_FULL_CHEST, "%bw_lang_prefix%&cThe chest is full!");
+        yml.addDefault(Messages.INTERACT_CHEST_DEPOSIT, "%bw_lang_prefix%&aYou stored &f%bw_amount% %bw_item% &ain the chest.");
+        yml.addDefault(Messages.INTERACT_ENDER_CHEST_DEPOSIT, "%bw_lang_prefix%&aYou stored &f%bw_amount% %bw_item% &ain the ender chest.");
         yml.addDefault(Messages.INTERACT_CANNOT_BREAK_OWN_BED, "&cNie mozesz zniszczyc swojego lozka!");
         yml.addDefault(Messages.INTERACT_BED_DESTROY_CHAT_ANNOUNCEMENT, "\n&f&lDESTRUCKJA LOZKA > %bw_team_color%%bw_team_name%&7Zostalo usmażone w głębokim tłuszczu przez %bw_player_color%%bw_player%&7!\n");
         yml.addDefault(Messages.INTERACT_BED_DESTROY_TITLE_ANNOUNCEMENT, "&cLOZKO ZNISZCZONE!");
@@ -348,6 +350,7 @@ public class Polish extends Language{
         yml.addDefault(Messages.TEAM_ELIMINATED_CHAT, "\n&f&lWYELIMINOWANA DRUZYNA > %bw_team_color%%bw_team_name% &cdruzyna &czostala wyeliminowana!\n");
         yml.addDefault(Messages.BED_HOLOGRAM_DEFEND, "&c&lChron swojego lozka!");
         yml.addDefault(Messages.BED_HOLOGRAM_DESTROYED, "&c&lTwoje lozko zostalo zniszczone!");
+        yml.addDefault(Messages.CHEST_HOLOGRAM, Arrays.asList("&bKLIKNIJ, ABY", "&e&lODŁOŻYĆ"));
 
         //SHOP
         yml.addDefault(Messages.SHOP_INDEX_NAME, "&8Szybkie kupowanie");

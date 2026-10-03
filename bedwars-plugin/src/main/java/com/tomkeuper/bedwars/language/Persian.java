@@ -229,6 +229,8 @@ public class Persian extends Language {
         yml.addDefault(Messages.INTERACT_CANNOT_PLACE_BLOCK, "%bw_lang_prefix%&cShoma Nemitavanid Inja Block Bezarid.");
         yml.addDefault(Messages.INTERACT_CANNOT_BREAK_BLOCK, "%bw_lang_prefix%&cFaghat Block Hayi Ke Player Ha Gozashtan Ghabele Kandan Ast.");
         yml.addDefault(Messages.INTERACT_FULL_CHEST, "%bw_lang_prefix%&cThe chest is full!");
+        yml.addDefault(Messages.INTERACT_CHEST_DEPOSIT, "%bw_lang_prefix%&aYou stored &f%bw_amount% %bw_item% &ain the chest.");
+        yml.addDefault(Messages.INTERACT_ENDER_CHEST_DEPOSIT, "%bw_lang_prefix%&aYou stored &f%bw_amount% %bw_item% &ain the ender chest.");
         yml.addDefault(Messages.INTERACT_CANNOT_BREAK_OWN_BED, "&cShoma Nemitavanid Bed Khodetoon Ra Bekanid.");
         yml.addDefault(Messages.INTERACT_BED_DESTROY_CHAT_ANNOUNCEMENT, "\n&f&lBED AZ BEYN RAFT > %bw_team_color%%bw_team_name% Bed &7Tavasote %bw_player_color%%bw_player% &7Az Beyn Raft!\n");
         yml.addDefault(Messages.INTERACT_BED_DESTROY_TITLE_ANNOUNCEMENT, "&cBED AZ BEYN RAFT!");
@@ -293,6 +295,7 @@ public class Persian extends Language {
                 "&a▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬"));
         yml.addDefault(Messages.BED_HOLOGRAM_DEFEND, "&c&lAz Bed khodetoon hefazat konid!");
         yml.addDefault(Messages.BED_HOLOGRAM_DESTROYED, "&c&lBed shoma az bein raft!");
+        yml.addDefault(Messages.CHEST_HOLOGRAM, Arrays.asList("&bCLICK TO", "&e&lDEPOSIT"));
         yml.addDefault(Messages.TEAM_ELIMINATED_CHAT, "\n&f&lTEAM ELIMINATED > %bw_team_color% Team %bw_team_name% &chazf shod!\n");
         yml.addDefault(Messages.NEXT_EVENT_BEDS_DESTROY, "&fHazf Bed Ha");
         yml.addDefault(Messages.NEXT_EVENT_DIAMOND_UPGRADE_II, "&fDiamond II");

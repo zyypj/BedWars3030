@@ -248,6 +248,8 @@ public class Bangla extends Language {
         yml.addDefault(Messages.INTERACT_CANNOT_PLACE_BLOCK, "%bw_lang_prefix%&cApni ekhane block place korte parben na!");
         yml.addDefault(Messages.INTERACT_CANNOT_BREAK_BLOCK, "%bw_lang_prefix%&cApni sudhu ekti player er place kora block vangte parben!");
         yml.addDefault(Messages.INTERACT_FULL_CHEST, "%bw_lang_prefix%&cThe chest is full!");
+        yml.addDefault(Messages.INTERACT_CHEST_DEPOSIT, "%bw_lang_prefix%&aYou stored &f%bw_amount% %bw_item% &ain the chest.");
+        yml.addDefault(Messages.INTERACT_ENDER_CHEST_DEPOSIT, "%bw_lang_prefix%&aYou stored &f%bw_amount% %bw_item% &ain the ender chest.");
         yml.addDefault(Messages.INTERACT_CANNOT_BREAK_OWN_BED, "&cApni apnar Bichana vangte parben na!");
         yml.addDefault(Messages.INTERACT_BED_DESTROY_CHAT_ANNOUNCEMENT, "\n&f&lBED DESTRUCTION > %bw_player_color%%bw_player% %bw_team_color%%bw_team_name% &7er Bichana destroy korlen!\n");
         yml.addDefault(Messages.INTERACT_BED_DESTROY_TITLE_ANNOUNCEMENT, "&cBICHANA DESTROY HOYE GIYECHE!");
@@ -312,6 +314,7 @@ public class Bangla extends Language {
                 "&a▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬"));
         yml.addDefault(Messages.BED_HOLOGRAM_DEFEND, "&c&lApnar Bichana rokkha korun!");
         yml.addDefault(Messages.BED_HOLOGRAM_DESTROYED, "&c&lApnar Bichana dhongso hoye giyeche!");
+        yml.addDefault(Messages.CHEST_HOLOGRAM, Arrays.asList("&bCLICK TO", "&e&lDEPOSIT"));
         yml.addDefault(Messages.TEAM_ELIMINATED_CHAT, "\n&f&lTEAM ELIMINATED > %bw_team_color%%bw_team_name% &cTeam ti eliminate holen!\n");
         yml.addDefault(Messages.NEXT_EVENT_BEDS_DESTROY, "&fBichana Shesh");
         yml.addDefault(Messages.NEXT_EVENT_DIAMOND_UPGRADE_II, "&fDiamond II");

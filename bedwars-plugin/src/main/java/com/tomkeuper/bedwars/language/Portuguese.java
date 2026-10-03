@@ -227,6 +227,9 @@ public class Portuguese extends Language {
         yml.addDefault(Messages.INTERACT_CANNOT_PLACE_BLOCK, "%bw_lang_prefix%&cVocê não pode colocar blocos aqui!");
         yml.addDefault(Messages.INTERACT_CANNOT_BREAK_BLOCK, "%bw_lang_prefix%&cVocê só pode quebrar blocos colocados por um jogador!");
         yml.addDefault(Messages.INTERACT_FULL_CHEST, "%bw_lang_prefix%&cO baú está cheio!");
+        yml.addDefault(Messages.INTERACT_CHEST_DEPOSIT, "%bw_lang_prefix%&aVocê guardou &f%bw_amount% %bw_item% &ano baú.");
+        yml.addDefault(Messages.INTERACT_ENDER_CHEST_DEPOSIT, "%bw_lang_prefix%&aVocê guardou &f%bw_amount% %bw_item% &ano baú do Ender.");
+        addItemMeanings(yml);
         yml.addDefault(Messages.INTERACT_CANNOT_BREAK_OWN_BED, "&cVocê não pode destruir sua própria cama!");
         yml.addDefault(Messages.INTERACT_BED_DESTROY_CHAT_ANNOUNCEMENT, "\n&f&lCAMA DESTRUÍDA > %bw_team_color%Cama do time %bw_team_name% &7foi destruída por %bw_player_color%%bw_player%&7!\n");
         yml.addDefault(Messages.INTERACT_BED_DESTROY_TITLE_ANNOUNCEMENT, "&cCAMA DESTRUÍDA!");
@@ -295,6 +298,7 @@ public class Portuguese extends Language {
                 "&a▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬"));
         yml.addDefault(Messages.BED_HOLOGRAM_DEFEND, "&c&lDefenda sua cama!");
         yml.addDefault(Messages.BED_HOLOGRAM_DESTROYED, "&c&lSua cama foi destruída!");
+        yml.addDefault(Messages.CHEST_HOLOGRAM, Arrays.asList("&bCLIQUE PARA", "&e&lDEPOSITAR"));
         yml.addDefault(Messages.TEAM_ELIMINATED_CHAT, "\n&f&lEQUIPE ELIMINADA > &cO time %bw_team_color%%bw_team_name% &cfoi eliminado!\n");
         yml.addDefault(Messages.NEXT_EVENT_BEDS_DESTROY, "&fDestruição de Camas");
         yml.addDefault(Messages.NEXT_EVENT_DIAMOND_UPGRADE_II, "&fDiamante II");
@@ -560,5 +564,72 @@ public class Portuguese extends Language {
         yml.addDefault(Messages.NPC_NAME_SOLO_UPGRADES.replace("%group%", group), Arrays.asList("&bMELHORIAS", "&e&lCLIQUE DIREITO"));
         yml.addDefault(Messages.NPC_NAME_TEAM_SHOP.replace("%group%", group), Arrays.asList("&bLOJA DA EQUIPE", "&e&lCLIQUE DIREITO"));
         yml.addDefault(Messages.NPC_NAME_SOLO_SHOP.replace("%group%", group), Arrays.asList("&bLOJA", "&e&lCLIQUE DIREITO"));
+    }
+
+    /**
+     * Portuguese names for the items a player actually deposits into a chest, used by the deposit message.
+     * <p>
+     * A {@code *_suffix} key names a whole family at once, so one entry covers all sixteen wool colours. Any
+     * material without an entry here falls back to its own name, so nothing is ever left unnamed: add
+     * {@code meaning-item-<material>-singular} and {@code -plural} to translate anything else.
+     */
+    private void addItemMeanings(YamlConfiguration yml) {
+        /* Resources */
+        item(yml, "iron_ingot", "Barra de Ferro", "Barras de Ferro");
+        item(yml, "gold_ingot", "Barra de Ouro", "Barras de Ouro");
+        item(yml, "diamond", "Diamante", "Diamantes");
+        item(yml, "emerald", "Esmeralda", "Esmeraldas");
+
+        /* Blocks. Both the 1.8 and the modern material names are covered. */
+        item(yml, "wool", "Lã", "Lãs");
+        item(yml, "*_wool", "Lã", "Lãs");
+        item(yml, "*_clay", "Argila Endurecida", "Argilas Endurecidas");
+        item(yml, "*_terracotta", "Argila Endurecida", "Argilas Endurecidas");
+        item(yml, "glass", "Vidro", "Vidros");
+        item(yml, "*_glass", "Vidro", "Vidros");
+        item(yml, "*_pane", "Painel de Vidro", "Painéis de Vidro");
+        item(yml, "ender_stone", "Pedra do Fim", "Pedras do Fim");
+        item(yml, "end_stone", "Pedra do Fim", "Pedras do Fim");
+        item(yml, "obsidian", "Obsidiana", "Obsidianas");
+        item(yml, "ladder", "Escada", "Escadas");
+        item(yml, "wood", "Madeira", "Madeiras");
+        item(yml, "*_wood", "Madeira", "Madeiras");
+        item(yml, "*_planks", "Madeira", "Madeiras");
+        item(yml, "sponge", "Esponja", "Esponjas");
+
+        /* Gear */
+        item(yml, "*_sword", "Espada", "Espadas");
+        item(yml, "*_pickaxe", "Picareta", "Picaretas");
+        item(yml, "*_axe", "Machado", "Machados");
+        item(yml, "shears", "Tesoura", "Tesouras");
+        item(yml, "*_helmet", "Capacete", "Capacetes");
+        item(yml, "*_chestplate", "Peitoral", "Peitorais");
+        item(yml, "*_leggings", "Calças", "Calças");
+        item(yml, "*_boots", "Bota", "Botas");
+
+        /* Utility */
+        item(yml, "bow", "Arco", "Arcos");
+        item(yml, "arrow", "Flecha", "Flechas");
+        item(yml, "tnt", "TNT", "TNTs");
+        item(yml, "*_bucket", "Balde", "Baldes");
+        item(yml, "water_bucket", "Balde de Água", "Baldes de Água");
+        item(yml, "milk_bucket", "Balde de Leite", "Baldes de Leite");
+        item(yml, "fireball", "Bola de Fogo", "Bolas de Fogo");
+        item(yml, "fire_charge", "Bola de Fogo", "Bolas de Fogo");
+        item(yml, "ender_pearl", "Pérola do End", "Pérolas do End");
+        item(yml, "snow_ball", "Bola de Neve", "Bolas de Neve");
+        item(yml, "snowball", "Bola de Neve", "Bolas de Neve");
+        item(yml, "egg", "Ovo", "Ovos");
+        item(yml, "*_apple", "Maçã Dourada", "Maçãs Douradas");
+        item(yml, "potion", "Poção", "Poções");
+        item(yml, "*_bed", "Cama", "Camas");
+        item(yml, "bed", "Cama", "Camas");
+        item(yml, "compass", "Bússola", "Bússolas");
+        item(yml, "chest", "Baú", "Baús");
+    }
+
+    private void item(YamlConfiguration yml, String material, String singular, String plural) {
+        yml.addDefault(Messages.MEANING_ITEM_SINGULAR.replace("%bw_material%", material), singular);
+        yml.addDefault(Messages.MEANING_ITEM_PLURAL.replace("%bw_material%", material), plural);
     }
 }

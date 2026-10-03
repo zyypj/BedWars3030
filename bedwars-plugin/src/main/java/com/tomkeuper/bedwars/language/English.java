@@ -229,6 +229,8 @@ public class English extends Language {
         yml.addDefault(Messages.INTERACT_CANNOT_PLACE_BLOCK, "%bw_lang_prefix%&cYou can't place blocks here!");
         yml.addDefault(Messages.INTERACT_CANNOT_BREAK_BLOCK, "%bw_lang_prefix%&cYou can only break blocks placed by a player!");
         yml.addDefault(Messages.INTERACT_FULL_CHEST, "%bw_lang_prefix%&cThe chest is full!");
+        yml.addDefault(Messages.INTERACT_CHEST_DEPOSIT, "%bw_lang_prefix%&aYou stored &f%bw_amount% %bw_item% &ain the chest.");
+        yml.addDefault(Messages.INTERACT_ENDER_CHEST_DEPOSIT, "%bw_lang_prefix%&aYou stored &f%bw_amount% %bw_item% &ain the ender chest.");
         yml.addDefault(Messages.INTERACT_CANNOT_BREAK_OWN_BED, "&cYou can't destroy your own bed!");
         yml.addDefault(Messages.INTERACT_BED_DESTROY_CHAT_ANNOUNCEMENT, "\n&f&lBED DESTRUCTION > %bw_team_color%%bw_team_name% Bed &7was deep fried by %bw_player_color%%bw_player%&7!\n");
         yml.addDefault(Messages.INTERACT_BED_DESTROY_TITLE_ANNOUNCEMENT, "&cBED DESTROYED!");
@@ -293,6 +295,7 @@ public class English extends Language {
                 "&a▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬"));
         yml.addDefault(Messages.BED_HOLOGRAM_DEFEND, "&c&lDefend your bed!");
         yml.addDefault(Messages.BED_HOLOGRAM_DESTROYED, "&c&lYour bed was destroyed!");
+        yml.addDefault(Messages.CHEST_HOLOGRAM, Arrays.asList("&bCLICK TO", "&e&lDEPOSIT"));
         yml.addDefault(Messages.TEAM_ELIMINATED_CHAT, "\n&f&lTEAM ELIMINATED > %bw_team_color%%bw_team_name% Team &chas been eliminated!\n");
         yml.addDefault(Messages.NEXT_EVENT_BEDS_DESTROY, "&fBed Gone");
         yml.addDefault(Messages.NEXT_EVENT_DIAMOND_UPGRADE_II, "&fDiamond II");

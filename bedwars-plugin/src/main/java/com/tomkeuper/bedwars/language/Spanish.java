@@ -150,6 +150,8 @@ public class Spanish extends Language {
         yml.addDefault(Messages.INTERACT_CANNOT_BREAK_OWN_BED, "&cNo puedes destruir tu propia cama!");
         yml.addDefault(Messages.INTERACT_CANNOT_PLACE_BLOCK, "%bw_lang_prefix%&cNo puedes colocar bloques aqui!");
         yml.addDefault(Messages.INTERACT_FULL_CHEST, "%bw_lang_prefix%&cThe chest is full!");
+        yml.addDefault(Messages.INTERACT_CHEST_DEPOSIT, "%bw_lang_prefix%&aYou stored &f%bw_amount% %bw_item% &ain the chest.");
+        yml.addDefault(Messages.INTERACT_ENDER_CHEST_DEPOSIT, "%bw_lang_prefix%&aYou stored &f%bw_amount% %bw_item% &ain the ender chest.");
         yml.addDefault(Messages.INTERACT_CANNOT_BREAK_BLOCK, "%bw_lang_prefix%&cSolo puedes romper bloques puesto por jugadores!");
         yml.addDefault(Messages.INTERACT_BED_DESTROY_CHAT_ANNOUNCEMENT, "\n&f&lCAMA DESTRUIDA > La cama del equipo %bw_team_color%%bw_team_name% &7ha sido destruida por %bw_player_color%%bw_player%&7!\n");
         yml.addDefault(Messages.INTERACT_BED_DESTROY_TITLE_ANNOUNCEMENT, "&cCAMA DESTRUÍDA!");
@@ -173,6 +175,7 @@ public class Spanish extends Language {
         yml.addDefault(Messages.PLAYER_DIE_PVP_LOG_OUT_FINAL, "%bw_player_color%%bw_player% &7se ha desconectado mientras luchaba con %bw_killer_color%%bw_killer_name%&7. &b&lMUERTE FINAL!");
         yml.addDefault(Messages.PLAYER_DIE_DISCONNECTED_FINAL_KILL, "%bw_player_color%%bw_player% &7was eliminated while disconnected by %bw_killer_color%%bw_killer_name%&7. &b&lFINAL KILL!");
         yml.addDefault(Messages.BED_HOLOGRAM_DESTROYED, "&c&lTu cama ha sido destruida!");
+        yml.addDefault(Messages.CHEST_HOLOGRAM, Arrays.asList("&bHAZ CLIC PARA", "&e&lDEPOSITAR"));
         yml.addDefault(Messages.PLAYER_DIE_RESPAWN_TITLE, "&cHAS MUERTO!");
         yml.addDefault(Messages.PLAYER_DIE_RESPAWN_SUBTITLE, "&eReaparecerás en &c%bw_time% &esegundos!");
         yml.addDefault(Messages.PLAYER_DIE_RESPAWN_CHAT, "%bw_lang_prefix%&eReaparecerás en &c%bw_time% &esegundos!");

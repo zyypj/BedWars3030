@@ -9,6 +9,7 @@ import com.tomkeuper.bedwars.api.language.Language;
 import com.tomkeuper.bedwars.api.language.Messages;
 import com.tomkeuper.bedwars.arena.Arena;
 import com.tomkeuper.bedwars.listeners.chat.ChatFormatting;
+import com.tomkeuper.bedwars.utils.ItemNames;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -46,6 +47,9 @@ public class ResourceChestFeature implements Listener {
         if (BedWars.config.getBoolean(ConfigPath.GENERAL_CONFIGURATION_RESOURCE_CHEST_ENABLED)
                 && instance == null) {
             instance = new ResourceChestFeature();
+            if (BedWars.config.getBoolean(ConfigPath.GENERAL_CONFIGURATION_RESOURCE_CHEST_HOLOGRAM)) {
+                ChestHologramFeature.init();
+            }
         }
     }
 
@@ -88,7 +92,7 @@ public class ResourceChestFeature implements Listener {
         Bukkit.getPluginManager().callEvent(event);
         if (event.isCancelled()) return;
 
-        safeDeposit(event.getPlayer(), event.getItem(), event.getTargetInventory());
+        safeDeposit(event.getPlayer(), event.getItem(), event.getTargetInventory(), event.getContainerType());
 
         ITeam team2 = arena.getTeam(event.getPlayer());
         if (team2 == null) return;
@@ -97,7 +101,9 @@ public class ResourceChestFeature implements Listener {
 
     }
 
-    private void safeDeposit(Player player, ItemStack hand, Inventory inventory) {
+    private void safeDeposit(Player player, ItemStack hand, Inventory inventory, Material container) {
+        // Keep an untouched copy: addItem may edit the stack it is given, and hand itself is resized below.
+        ItemStack deposited = hand.clone();
         ItemStack toStore = hand.clone();
 
         Map<Integer, ItemStack> leftovers = inventory.addItem(toStore);
@@ -121,5 +127,28 @@ public class ResourceChestFeature implements Listener {
             player.getInventory().setItem(player.getInventory().getHeldItemSlot(), null);
         }
 
+        announceDeposit(player, deposited, inserted, container);
+    }
+
+    /**
+     * Tell the player what actually went in, which is not always what they were holding when the chest was full
+     * enough to take only part of the stack.
+     */
+    private void announceDeposit(Player player, ItemStack deposited, int inserted, Material container) {
+        if (!BedWars.config.getBoolean(ConfigPath.GENERAL_CONFIGURATION_RESOURCE_CHEST_MESSAGE)) return;
+
+        String path = container == Material.ENDER_CHEST
+                ? Messages.INTERACT_ENDER_CHEST_DEPOSIT
+                : Messages.INTERACT_CHEST_DEPOSIT;
+
+        String message = Language.getMsg(player, path);
+        // An empty message is how a language turns the announcement off without touching the config.
+        if (message == null || message.trim().isEmpty()) return;
+
+        message = message
+                .replace("%bw_amount%", String.valueOf(inserted))
+                .replace("%bw_item%", ItemNames.of(player, deposited, inserted));
+
+        BedWars.plugin.adventure().player(player).sendMessage(ChatFormatting.parseLegacyMini(message));
     }
 }

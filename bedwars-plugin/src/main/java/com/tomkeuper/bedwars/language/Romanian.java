@@ -223,6 +223,8 @@ public class Romanian extends Language {
         yml.addDefault(Messages.INTERACT_CHEST_CANT_OPEN_TEAM_ELIMINATED, "&cNu poti deschide acest cufar pentru ca echipa nu a fost eliminata!");
         yml.addDefault(Messages.INTERACT_CANNOT_PLACE_BLOCK, "%bw_lang_prefix%&cNu poti pune blocuri aici!");
         yml.addDefault(Messages.INTERACT_FULL_CHEST, "%bw_lang_prefix%&cThe chest is full!");
+        yml.addDefault(Messages.INTERACT_CHEST_DEPOSIT, "%bw_lang_prefix%&aYou stored &f%bw_amount% %bw_item% &ain the chest.");
+        yml.addDefault(Messages.INTERACT_ENDER_CHEST_DEPOSIT, "%bw_lang_prefix%&aYou stored &f%bw_amount% %bw_item% &ain the ender chest.");
         yml.addDefault(Messages.INTERACT_CANNOT_BREAK_BLOCK, "%bw_lang_prefix%&cYou can only break blocks placed by a player!");
         yml.addDefault(Messages.INTERACT_CANNOT_BREAK_OWN_BED, "&cNu iti poti distruge propriul pat!");
         yml.addDefault(Messages.INTERACT_BED_DESTROY_CHAT_ANNOUNCEMENT, "\n&f&lPAT DISTRUS > %bw_team_color%Patul Echipei %bw_team_name% &7a fost distrus de %bw_player_color%%bw_player%&7!\n");
@@ -287,6 +289,7 @@ public class Romanian extends Language {
         yml.addDefault(Messages.GAME_END_NO_WINNERS, "&cNimeni nu a câștigat jocul!");
         yml.addDefault(Messages.BED_HOLOGRAM_DEFEND, "&c&lApara-ti patul!");
         yml.addDefault(Messages.BED_HOLOGRAM_DESTROYED, "&c&lPatul tau a fost distrus!");
+        yml.addDefault(Messages.CHEST_HOLOGRAM, Arrays.asList("&bCLICK PENTRU", "&e&lA DEPOZITA"));
         yml.addDefault(Messages.TEAM_ELIMINATED_CHAT, "\n&f&lTEAM ELIMINAT > %bw_team_color%Echipa %bw_team_name% &ca fost eliminata!\n");
         yml.addDefault(Messages.NEXT_EVENT_BEDS_DESTROY, "&fPat Distruge");
         yml.addDefault(Messages.NEXT_EVENT_DIAMOND_UPGRADE_II, "&fDiamant II");

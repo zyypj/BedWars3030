@@ -228,6 +228,8 @@ public class SimplifiedChinese extends Language {
         yml.addDefault(Messages.INTERACT_CANNOT_PLACE_BLOCK, "%bw_lang_prefix%&c你不能在这里放置方块！");
         yml.addDefault(Messages.INTERACT_CANNOT_BREAK_BLOCK, "%bw_lang_prefix%&c你只能破坏由玩家放置的方块！");
         yml.addDefault(Messages.INTERACT_FULL_CHEST, "%bw_lang_prefix%&cThe chest is full!");
+        yml.addDefault(Messages.INTERACT_CHEST_DEPOSIT, "%bw_lang_prefix%&aYou stored &f%bw_amount% %bw_item% &ain the chest.");
+        yml.addDefault(Messages.INTERACT_ENDER_CHEST_DEPOSIT, "%bw_lang_prefix%&aYou stored &f%bw_amount% %bw_item% &ain the ender chest.");
         yml.addDefault(Messages.INTERACT_CANNOT_BREAK_OWN_BED, "&c你不能破坏自己的床！");
         yml.addDefault(Messages.INTERACT_BED_DESTROY_CHAT_ANNOUNCEMENT, "\n&f&l床被破坏 > %bw_team_color%%bw_team_name%的床&7被%bw_player_color%%bw_player%&7破坏了！\n");
         yml.addDefault(Messages.INTERACT_BED_DESTROY_TITLE_ANNOUNCEMENT, "&c床被破坏！");
@@ -292,6 +294,7 @@ public class SimplifiedChinese extends Language {
                 "&a▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬"));
         yml.addDefault(Messages.BED_HOLOGRAM_DEFEND, "&c&l保护你的床！");
         yml.addDefault(Messages.BED_HOLOGRAM_DESTROYED, "&c&l你的床被破坏了！");
+        yml.addDefault(Messages.CHEST_HOLOGRAM, Arrays.asList("&b点击", "&e&l存入"));
         yml.addDefault(Messages.TEAM_ELIMINATED_CHAT, "\n&f&l队伍团灭 > %bw_team_color%%bw_team_name%&c已被团灭！\n");
         yml.addDefault(Messages.NEXT_EVENT_BEDS_DESTROY, "&f床被破坏");
         yml.addDefault(Messages.NEXT_EVENT_DIAMOND_UPGRADE_II, "&f钻石II级");

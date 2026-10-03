@@ -240,6 +240,12 @@ public class Messages {
     public static String MEANING_DIAMOND_PLURAL = "meaning-diamond-plural";
     public static String MEANING_VAULT_SINGULAR = "meaning-vault-singular";
     public static String MEANING_VAULT_PLURAL = "meaning-vault-plural";
+    /**
+     * Name of an item in a message. Replace %bw_material% with the lowercase material name, or with a
+     * {@code *_suffix} wildcard that names a whole family at once, e.g. {@code *_wool}.
+     */
+    public static String MEANING_ITEM_SINGULAR = "meaning-item-%bw_material%-singular";
+    public static String MEANING_ITEM_PLURAL = "meaning-item-%bw_material%-plural";
     public static String MEANING_NO_TRAP = "meaning-no-trap";
     public static String MEANING_ENABLED = "meaning-enabled";
     public static String MEANING_DISABLED = "meaning-disabled";
@@ -254,6 +260,8 @@ public class Messages {
     public static String INTERACT_CANNOT_PLACE_BLOCK = "interact-cant-place";
     public static String INTERACT_CANNOT_BREAK_BLOCK = "interact-cant-break";
     public static String INTERACT_FULL_CHEST = "interact-full-chest";
+    public static String INTERACT_CHEST_DEPOSIT = "interact-chest-deposit";
+    public static String INTERACT_ENDER_CHEST_DEPOSIT = "interact-ender-chest-deposit";
     public static String INTERACT_CANNOT_BREAK_OWN_BED = "interact-cant-destroy-bed";
     public static String INTERACT_BED_DESTROY_CHAT_ANNOUNCEMENT = "interact-bed-destroy-chat";
     public static String INTERACT_BED_DESTROY_TITLE_ANNOUNCEMENT = "interact-bed-destroy-title";
@@ -332,6 +340,8 @@ public class Messages {
 
     public static String BED_HOLOGRAM_DEFEND = "bed-hologram-defend";
     public static String BED_HOLOGRAM_DESTROYED = "bed-hologram-destroyed";
+    /** Lines shown above map chests and ender chests, top to bottom, when click-to-deposit is on. */
+    public static String CHEST_HOLOGRAM = "chest-hologram";
     public static String TEAM_ELIMINATED_CHAT = "team-eliminated";
 
     public static String HALLOWEEN_ITEM_NAME = "halloween-item-name";

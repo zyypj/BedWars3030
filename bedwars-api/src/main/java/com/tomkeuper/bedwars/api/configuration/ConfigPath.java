@@ -77,6 +77,8 @@ public class ConfigPath {
     public static final String GENERAL_CONFIGURATION_RESOURCE_CHEST_PREFIX = "click-in-chest-to-deposit-feature.";
     public static final String GENERAL_CONFIGURATION_RESOURCE_CHEST_ENABLED = GENERAL_CONFIGURATION_RESOURCE_CHEST_PREFIX + "enable";
     public static final String GENERAL_CONFIGURATION_RESOURCE_CHEST_BLOCKED = GENERAL_CONFIGURATION_RESOURCE_CHEST_PREFIX + "blocked-items";
+    public static final String GENERAL_CONFIGURATION_RESOURCE_CHEST_MESSAGE = GENERAL_CONFIGURATION_RESOURCE_CHEST_PREFIX + "deposit-message";
+    public static final String GENERAL_CONFIGURATION_RESOURCE_CHEST_HOLOGRAM = GENERAL_CONFIGURATION_RESOURCE_CHEST_PREFIX + "hologram";
 
     public static final String GENERAL_CONFIGURATION_LOBBY_ITEMS_PATH = "lobby-items";
     public static final String GENERAL_CONFIGURATION_EXPERIMENTAL_TEAM_ASSIGNER = "use-experimental-team-assigner";
