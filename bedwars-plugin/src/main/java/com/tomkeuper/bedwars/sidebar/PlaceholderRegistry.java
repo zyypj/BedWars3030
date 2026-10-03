@@ -96,7 +96,12 @@ public class PlaceholderRegistry {
     private String resolve(@NotNull Player player, @NotNull String identifier) {
         Function<Player, String> playerResolver = playerPlaceholders.get(identifier);
         Supplier<String> serverResolver = playerResolver == null ? serverPlaceholders.get(identifier) : null;
-        if (playerResolver == null && serverResolver == null) return null;
+        if (playerResolver == null && serverResolver == null) {
+            // Every placeholder is registered in lowercase, so %bw_winstreak_Solo% still finds %bw_winstreak_solo%.
+            String lower = identifier.toLowerCase();
+            if (lower.equals(identifier)) return null;
+            return resolve(player, lower);
+        }
 
         try {
             String value = playerResolver != null ? playerResolver.apply(player) : serverResolver.get();

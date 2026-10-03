@@ -301,9 +301,11 @@ public class BoardManager implements IScoreboardService {
         placeholders.registerPlayerPlaceholder("%bw_best_winstreak%", player -> String.valueOf(getWinstreak(player, null, true)));
         for (ArenaMode mode : ArenaMode.values()) {
             String group = mode.getGroup().toLowerCase();
-            // same names the stats menu uses, e.g. %bw_solo_winstreak%
+            // same names the stats menu uses, e.g. %bw_solo_winstreak%, plus the mode last: %bw_winstreak_solo%
             placeholders.registerPlayerPlaceholder("%bw_" + group + "_winstreak%", player -> String.valueOf(getWinstreak(player, group, false)));
             placeholders.registerPlayerPlaceholder("%bw_" + group + "_best_winstreak%", player -> String.valueOf(getWinstreak(player, group, true)));
+            placeholders.registerPlayerPlaceholder("%bw_winstreak_" + group + "%", player -> String.valueOf(getWinstreak(player, group, false)));
+            placeholders.registerPlayerPlaceholder("%bw_best_winstreak_" + group + "%", player -> String.valueOf(getWinstreak(player, group, true)));
         }
         placeholders.registerPlayerPlaceholder("%bw_next_event%", this::getNextEventName);
         placeholders.registerPlayerPlaceholder("%bw_on%", player -> String.valueOf(getOnlinePlayers(player)));

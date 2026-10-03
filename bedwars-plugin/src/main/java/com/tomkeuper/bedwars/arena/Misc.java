@@ -39,6 +39,7 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.regex.Pattern;
 
 import static com.tomkeuper.bedwars.BedWars.*;
 import static com.tomkeuper.bedwars.api.language.Language.getList;
@@ -424,6 +425,18 @@ public class Misc {
     }
 
     private static String replaceModeStatsPlaceholders(IPlayerStats stats, String s) {
+        // the mode can also go last and in any case: %bw_winstreak_Solo%, %bw_best_winstreak_Solo%
+        if (s.toLowerCase().contains("winstreak_")) {
+            for (ArenaMode mode : ArenaMode.values()) {
+                String group = mode.getGroup().toLowerCase();
+                IModeStats modeStats = stats.getModeStats().get(group);
+                s = s.replaceAll("(?i)" + Pattern.quote("%bw_best_winstreak_" + group + "%"),
+                        String.valueOf(modeStats == null ? 0 : modeStats.getBestWinstreak()));
+                s = s.replaceAll("(?i)" + Pattern.quote("%bw_winstreak_" + group + "%"),
+                        String.valueOf(modeStats == null ? 0 : modeStats.getWinstreak()));
+            }
+        }
+
         for (ArenaMode mode : ArenaMode.values()) {
             String prefix = "%bw_" + mode.getGroup().toLowerCase() + "_";
             if (!s.contains(prefix)) continue;

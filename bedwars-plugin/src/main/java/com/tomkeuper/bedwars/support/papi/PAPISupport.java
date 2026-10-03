@@ -148,10 +148,23 @@ public class PAPISupport extends PlaceholderExpansion {
                 case "best_winstreak":
                     return String.valueOf(stats.getBestWinstreak());
             }
-            // per mode: stats_<mode>_winstreak and stats_<mode>_best_winstreak, e.g. stats_solo_winstreak
-            boolean best = targetedStat.endsWith("_best_winstreak");
-            if (best || targetedStat.endsWith("_winstreak")) {
-                String mode = targetedStat.substring(0, targetedStat.length() - (best ? "_best_winstreak" : "_winstreak").length()).toLowerCase();
+            // per mode, in any case: stats_solo_winstreak, stats_solo_best_winstreak, stats_winstreak_Solo and
+            // stats_best_winstreak_Solo
+            String lowerStat = targetedStat.toLowerCase();
+            String mode = null;
+            boolean best = false;
+            if (lowerStat.startsWith("best_winstreak_")) {
+                mode = lowerStat.substring("best_winstreak_".length());
+                best = true;
+            } else if (lowerStat.startsWith("winstreak_")) {
+                mode = lowerStat.substring("winstreak_".length());
+            } else if (lowerStat.endsWith("_best_winstreak")) {
+                mode = lowerStat.substring(0, lowerStat.length() - "_best_winstreak".length());
+                best = true;
+            } else if (lowerStat.endsWith("_winstreak")) {
+                mode = lowerStat.substring(0, lowerStat.length() - "_winstreak".length());
+            }
+            if (mode != null) {
                 // read without getModeStats(mode), which would create an empty entry for any typo
                 IModeStats modeStats = stats.getModeStats().get(mode);
                 if (modeStats == null) return "0";
