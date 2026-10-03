@@ -41,6 +41,7 @@ import com.tomkeuper.bedwars.commands.leave.LeaveCommand;
 import com.tomkeuper.bedwars.commands.mapselector.MapSelectorCommand;
 import com.tomkeuper.bedwars.commands.party.PartyCommand;
 import com.tomkeuper.bedwars.commands.rejoin.RejoinCommand;
+import com.tomkeuper.bedwars.commands.stats.StatsCommand;
 import com.tomkeuper.bedwars.commands.shout.ShoutCommand;
 import com.tomkeuper.bedwars.commands.start.StartCommand;
 import com.tomkeuper.bedwars.configuration.*;
@@ -913,6 +914,7 @@ public class BedWars extends JavaPlugin {
         if (!nms.isBukkitCommandRegistered("l")) {
             nms.registerCommand("l", new LeaveCommand("l"));
         }
+        nms.registerCommand("stats", new StatsCommand("stats"));
         if (getServerType() != ServerType.BUNGEE && config.getBoolean(ConfigPath.GENERAL_ENABLE_PARTY_CMD)) {
             Bukkit.getLogger().info("Registrando o comando /party..");
             nms.registerCommand("party", new PartyCommand("party"));

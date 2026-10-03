@@ -77,6 +77,13 @@ public class Inventory implements Listener {
             }
         }
 
+        // The stats menu is read only, whoever's stats it shows. Checked before the empty slot checks so nothing can
+        // be dropped into it either.
+        if (e.getView().getTopInventory().getHolder() instanceof Misc.StatsMenuHolder) {
+            e.setCancelled(true);
+            return;
+        }
+
         if (e.getCurrentItem() == null) return;
         if (e.getCurrentItem().getType() == Material.AIR) return;
 

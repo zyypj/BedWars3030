@@ -25,6 +25,7 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Firework;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.FireworkMeta;
@@ -277,7 +278,33 @@ public class Misc {
     /**
      * open stats GUI to player
      */
+    /**
+     * Marks an open stats menu. The title names whose stats it shows, so it cannot be told apart by title once a
+     * player can open someone else's.
+     */
+    public static final class StatsMenuHolder implements InventoryHolder {
+        private Inventory inventory;
+
+        @Override
+        public @NotNull Inventory getInventory() {
+            return inventory;
+        }
+    }
+
     public static void openStatsGUI(Player p) {
+        openStatsGUI(p, p, BedWars.getStatsManager().get(p.getUniqueId()), null);
+    }
+
+    /**
+     * Show someone's stats to a player, in the viewer's language.
+     *
+     * @param target    the player the stats belong to, or null when they are not on this server
+     * @param stats     the stats to show
+     * @param levelData {@link com.tomkeuper.bedwars.api.database.IDatabase#getLevelData}, read for the level
+     *                  placeholders only when target is null
+     */
+    public static void openStatsGUI(Player viewer, @Nullable Player target, IPlayerStats stats, @Nullable Object[] levelData) {
+        Player p = viewer;
 
         Bukkit.getScheduler().runTask(plugin, () -> {
 
@@ -285,7 +312,9 @@ public class Misc {
                 return;
 
             /* create inventory */
-            Inventory inv = Bukkit.createInventory(null, config.getInt(ConfigPath.GENERAL_CONFIGURATION_STATS_GUI_SIZE), replaceStatsPlaceholders(p, getMsg(p, Messages.PLAYER_STATS_GUI_INV_NAME), true));
+            StatsMenuHolder holder = new StatsMenuHolder();
+            Inventory inv = Bukkit.createInventory(holder, config.getInt(ConfigPath.GENERAL_CONFIGURATION_STATS_GUI_SIZE), replaceStatsPlaceholders(p, target, stats, levelData, getMsg(p, Messages.PLAYER_STATS_GUI_INV_NAME), true));
+            holder.inventory = inv;
 
             /* add custom items to gui */
             for (String s : config.getYml().getConfigurationSection(ConfigPath.GENERAL_CONFIGURATION_STATS_PATH).getKeys(false)) {
@@ -298,10 +327,10 @@ public class Misc {
                 i.setAmount(Math.max(1, config.getInt(ConfigPath.GENERAL_CONFIGURATION_STATS_ITEMS_AMOUNT.replace("%path%", s))));
                 ItemMeta im = i.getItemMeta();
                 im.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
-                im.setDisplayName(replaceStatsPlaceholders(p, getMsg(p, Messages.PLAYER_STATS_GUI_PATH + "-" + s + "-name"), true));
+                im.setDisplayName(replaceStatsPlaceholders(p, target, stats, levelData, getMsg(p, Messages.PLAYER_STATS_GUI_PATH + "-" + s + "-name"), true));
                 List<String> lore = new ArrayList<>();
                 for (String string : getList(p, Messages.PLAYER_STATS_GUI_PATH + "-" + s + "-lore")) {
-                    lore.add(replaceStatsPlaceholders(p, string, true));
+                    lore.add(replaceStatsPlaceholders(p, target, stats, levelData, string, true));
                 }
                 im.setLore(lore);
                 i.setItemMeta(im);
@@ -314,7 +343,21 @@ public class Misc {
     }
 
     public static String replaceStatsPlaceholders(Player player, @NotNull String s, boolean papiReplacements) {
-        IPlayerStats stats = BedWars.getStatsManager().get(player.getUniqueId());
+        return replaceStatsPlaceholders(player, player, BedWars.getStatsManager().get(player.getUniqueId()), null, s, papiReplacements);
+    }
+
+    /**
+     * @param viewer the player reading it, whose language formats the dates
+     * @param target the player the stats belong to, or null when they are not on this server: the name then comes
+     *               from the stats, the level from levelData, and the prefix and PlaceholderAPI are left out
+     */
+    public static String replaceStatsPlaceholders(Player viewer, @Nullable Player target, IPlayerStats stats,
+                                                  @Nullable Object[] levelData, @NotNull String s, boolean papiReplacements) {
+        Player player = viewer;
+        String displayName = target != null ? target.getDisplayName() : stats.getName();
+        String name = target != null ? target.getName() : stats.getName();
+        if (displayName == null) displayName = "";
+        if (name == null) name = "";
 
         if (s.contains("%bw_kills%"))
             s = s.replace("%bw_kills%", String.valueOf(stats.getKills()));
@@ -337,11 +380,11 @@ public class Misc {
         if (s.contains("%bw_play_last%"))
             s = s.replace("%bw_play_last%", new SimpleDateFormat(getMsg(player, Messages.FORMATTING_STATS_DATE_FORMAT)).format(stats.getLastPlay() != null ? Timestamp.from(stats.getLastPlay()) : Timestamp.from(Instant.now())));
         if (s.contains("%bw_player%"))
-            s = s.replace("%bw_player%", player.getDisplayName());
+            s = s.replace("%bw_player%", displayName);
         if (s.contains("%bw_playername%"))
-            s = s.replace("%bw_playername%", player.getName());
+            s = s.replace("%bw_playername%", name);
         if (s.contains("%bw_prefix%"))
-            s = s.replace("%bw_prefix%", BedWars.getChatSupport().getPrefix(player));
+            s = s.replace("%bw_prefix%", target != null ? BedWars.getChatSupport().getPrefix(target) : "");
         if (s.contains("%bw_assists%"))
             s = s.replace("%bw_assists%", String.valueOf(stats.getAssists()));
         if (s.contains("%bw_final_assists%"))
@@ -353,20 +396,31 @@ public class Misc {
         if (s.contains("%bw_best_winstreak%"))
             s = s.replace("%bw_best_winstreak%", String.valueOf(stats.getBestWinstreak()));
 
-        if (s.contains("%bw_level%"))
-            s = s.replace("%bw_level%", BedWars.getLevelSupport().getLevel(player));
-        if (s.contains("%bw_level_unformatted%"))
-            s = s.replace("%bw_level_unformatted%", String.valueOf(BedWars.getLevelSupport().getPlayerLevel(player)));
-        if (s.contains("%bw_current_xp%"))
-            s = s.replace("%bw_current_xp%", BedWars.getLevelSupport().getCurrentXpFormatted(player));
-        if (s.contains("%bw_required_xp%"))
-            s = s.replace("%bw_required_xp%", BedWars.getLevelSupport().getRequiredXpFormatted(player));
-        if (s.contains("%bw_progress%"))
-            s = s.replace("%bw_progress%", BedWars.getLevelSupport().getProgressBar(player));
+        if (target != null) {
+            if (s.contains("%bw_level%"))
+                s = s.replace("%bw_level%", BedWars.getLevelSupport().getLevel(target));
+            if (s.contains("%bw_level_unformatted%"))
+                s = s.replace("%bw_level_unformatted%", String.valueOf(BedWars.getLevelSupport().getPlayerLevel(target)));
+            if (s.contains("%bw_current_xp%"))
+                s = s.replace("%bw_current_xp%", BedWars.getLevelSupport().getCurrentXpFormatted(target));
+            if (s.contains("%bw_required_xp%"))
+                s = s.replace("%bw_required_xp%", BedWars.getLevelSupport().getRequiredXpFormatted(target));
+            if (s.contains("%bw_progress%"))
+                s = s.replace("%bw_progress%", BedWars.getLevelSupport().getProgressBar(target));
+        } else {
+            // level data: 0 level, 1 xp, 2 level name, 3 next level cost
+            boolean hasLevel = levelData != null && levelData.length >= 4;
+            s = s.replace("%bw_level%", hasLevel && levelData[2] != null ? ChatColor.translateAlternateColorCodes('&', String.valueOf(levelData[2])) : "");
+            s = s.replace("%bw_level_unformatted%", hasLevel ? String.valueOf(levelData[0]) : "0");
+            s = s.replace("%bw_current_xp%", hasLevel ? String.valueOf(levelData[1]) : "0");
+            s = s.replace("%bw_required_xp%", hasLevel ? String.valueOf(levelData[3]) : "0");
+            s = s.replace("%bw_progress%", "");
+        }
 
         s = replaceModeStatsPlaceholders(stats, s);
 
-        return papiReplacements ? SupportPAPI.getSupportPAPI().replace(player, s) : s;
+        if (target == null) return s;
+        return papiReplacements ? SupportPAPI.getSupportPAPI().replace(target, s) : s;
     }
 
     private static String replaceModeStatsPlaceholders(IPlayerStats stats, String s) {
