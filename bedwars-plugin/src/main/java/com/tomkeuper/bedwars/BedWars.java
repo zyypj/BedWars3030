@@ -904,6 +904,9 @@ public class BedWars extends JavaPlugin {
         if (!(nms.isBukkitCommandRegistered("leave") && getServerType() == ServerType.BUNGEE)) {
             nms.registerCommand("leave", new LeaveCommand("leave"));
         }
+        if (!nms.isBukkitCommandRegistered("l")) {
+            nms.registerCommand("l", new LeaveCommand("l"));
+        }
         if (getServerType() != ServerType.BUNGEE && config.getBoolean(ConfigPath.GENERAL_ENABLE_PARTY_CMD)) {
             Bukkit.getLogger().info("Registrando o comando /party..");
             nms.registerCommand("party", new PartyCommand("party"));

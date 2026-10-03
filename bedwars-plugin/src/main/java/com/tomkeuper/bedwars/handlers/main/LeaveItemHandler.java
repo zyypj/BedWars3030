@@ -2,7 +2,6 @@ package com.tomkeuper.bedwars.handlers.main;
 
 import com.tomkeuper.bedwars.BedWars;
 import com.tomkeuper.bedwars.api.arena.IArena;
-import com.tomkeuper.bedwars.api.configuration.ConfigPath;
 import com.tomkeuper.bedwars.api.items.handlers.HandlerType;
 import com.tomkeuper.bedwars.api.items.handlers.IPermanentItem;
 import com.tomkeuper.bedwars.api.language.Language;
@@ -12,19 +11,15 @@ import com.tomkeuper.bedwars.arena.Misc;
 import com.tomkeuper.bedwars.api.items.handlers.PermanentItemHandler;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
-import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.scheduler.BukkitTask;
 
 import java.util.HashMap;
 import java.util.UUID;
 
-import static com.tomkeuper.bedwars.BedWars.config;
 import static com.tomkeuper.bedwars.commands.bedwars.subcmds.regular.CmdLeave.openLeaveGUI;
 
 public class LeaveItemHandler extends PermanentItemHandler {
 
     private static final HashMap<UUID, Long> delay = new HashMap<>();
-    private static final HashMap<UUID, BukkitTask> leaving = new HashMap<>();
     public LeaveItemHandler(String id, Plugin plugin, com.tomkeuper.bedwars.api.BedWars api) {
         super(id, plugin, api);
     }
@@ -48,32 +43,8 @@ public class LeaveItemHandler extends PermanentItemHandler {
             if (BedWars.getPartyManager().isOwner(player)) {
                 openLeaveGUI(player);
             } else {
-                int leaveDelay;
-                if (a.isSpectator(player)) {
-                    leaveDelay = config.getInt(ConfigPath.GENERAL_CONFIGURATION_SPECTATOR_ITEMS_LEAVE_DELAY.replace("%path%", item.getIdentifier()));
-                } else {
-                    leaveDelay = config.getInt(ConfigPath.GENERAL_CONFIGURATION_PRE_GAME_ITEMS_LEAVE_DELAY.replace("%path%", item.getIdentifier()));
-                }
-                if (leaveDelay == 0) {
-                    Misc.moveToLobbyOrKick(player, arena, arena.isSpectator(player.getUniqueId()));
-                } else {
-                    BukkitTask qt = leaving.get(player.getUniqueId());
-                    if (qt != null) {
-                        update(player.getUniqueId());
-                        qt.cancel();
-                        leaving.remove(player.getUniqueId());
-                        player.sendMessage(Language.getMsg(player, Messages.COMMAND_LEAVE_CANCELED));
-                        return;
-                    }
-                    player.sendMessage(Language.getMsg(player, Messages.COMMAND_LEAVE_STARTED).replace("%bw_leave_delay%", String.valueOf(leaveDelay)));
-                    BukkitTask bukkitTask = new BukkitRunnable() {
-                        public void run() {
-                            Misc.moveToLobbyOrKick(player, arena, arena.isSpectator(player.getUniqueId()));
-                            leaving.remove(player.getUniqueId());
-                        }
-                    }.runTaskLater(BedWars.plugin, leaveDelay * 20L);
-                    leaving.put(player.getUniqueId(), bukkitTask);
-                }
+                update(player.getUniqueId());
+                Misc.moveToLobbyOrKick(player, a, a.isSpectator(player.getUniqueId()));
             }
         }
     }
