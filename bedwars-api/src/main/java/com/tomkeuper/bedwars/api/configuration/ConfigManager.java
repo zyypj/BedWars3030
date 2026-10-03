@@ -74,6 +74,8 @@ public class ConfigManager {
     public void reload() {
         loadError = false;
         YamlConfiguration newYml = new YamlConfiguration();
+        // Keep the defaults registered in code, or a key missing from the file reads as 0/false after a reload.
+        if (yml != null && yml.getDefaults() != null) newYml.setDefaults(yml.getDefaults());
         try {
             newYml.load(config);
             newYml.options().copyDefaults(true);

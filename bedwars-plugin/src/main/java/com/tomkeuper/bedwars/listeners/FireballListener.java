@@ -42,14 +42,28 @@ public class FireballListener implements Listener {
     private static final Map<UUID, Long> RECENT_FIREBALL_KNOCKBACKS = new ConcurrentHashMap<>();
     private static volatile double fireballFallDamageReduction = 0.0D;
 
-    private final List<String> explosionProofMaterials;
-    private final double fireballExplosionSize, fireballHorizontalSelf, fireballHorizontalOthers, fireballVerticalSelf, fireballVerticalOthers;
-    private final double fireballJumpTolerance;
-    private final double damageSelf, damageEnemy, damageTeammates;
-    private final double fireballSpeedMultiplier, fireballCooldown;
-    private final boolean fireballMakeFire;
+    private static FireballListener instance;
+
+    private List<String> explosionProofMaterials;
+    private double fireballExplosionSize, fireballHorizontalSelf, fireballHorizontalOthers, fireballVerticalSelf, fireballVerticalOthers;
+    private double fireballJumpTolerance;
+    private double damageSelf, damageEnemy, damageTeammates;
+    private double fireballSpeedMultiplier, fireballCooldown;
+    private boolean fireballMakeFire;
 
     public FireballListener() {
+        instance = this;
+        loadSettings();
+    }
+
+    /**
+     * Read the fireball settings again, after the main config was reloaded.
+     */
+    public static void reloadSettings() {
+        if (instance != null) instance.loadSettings();
+    }
+
+    private void loadSettings() {
         YamlConfiguration config = BedWars.config.getYml();
         explosionProofMaterials = config.getList(ConfigPath.GENERAL_FIREBALL_EXPLOSION_PROOF_BLOCKS).stream().map(Object::toString).collect(Collectors.toList());
         fireballExplosionSize = config.getDouble(ConfigPath.GENERAL_FIREBALL_EXPLOSION_SIZE);
